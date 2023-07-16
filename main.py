@@ -6,6 +6,7 @@ input_stream = FileStream('prueba.txt')
 
 lexer = yaplLexer(input_stream)
 token_stream = CommonTokenStream(lexer)
+token_stream.fill()
 
 token = lexer.nextToken()
 
@@ -42,6 +43,7 @@ while token.type != Token.EOF:
     token = lexer.nextToken()
 
 #print(list_tokens)
-
+for element in token_stream.tokens:
+    print(element.type)
 parser = yaplParser(token_stream)
 tree = parser.program()

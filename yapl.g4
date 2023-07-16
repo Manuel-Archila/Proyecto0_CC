@@ -96,8 +96,8 @@ WHILE: [wW][hH][iI][lL][eE];
 NEW: [nN][eE][wW];
 NOT: [nN][oO][tT];
 LET: [lL][eE][tT];
-ID: LETTER (LETTER | DIGIT)*;
 TYPE: UPPERCASE (ID)*;
+ID: LETTER (LETTER | DIGIT)*;
 OBJECT: LOWERCASE ID;
 
 // cadenas
