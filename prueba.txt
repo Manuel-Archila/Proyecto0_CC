@@ -1,1 +1,4 @@
-CLASS Rectangulo %%% 
+CLASS Rectangulo % % % &
+
+-- hola
+"asnoieniasndinasoidnasiodnddddddddddddddddddddddddddddddddddddddddddioasndoinasoindoinsoinasoinaoisindoindoindoindoindoindo" "andia"
