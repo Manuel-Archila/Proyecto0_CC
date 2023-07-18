@@ -2,26 +2,22 @@ grammar yapl;
 
 /* GRAMATICA */
 
-program: 
-    class SEMICOLON POSITIVE;
+program: (class SEMICOLON)+;
 
-class:
-    CLASS TYPE LSQUARE INHERITS TYPE RSQUARE LBRACE LSQUARE feature RSQUARE KLEENE;
+class: CLASS TYPE (INHERITS TYPE)? LBRACE (feature SEMICOLON)* RBRACE ;
 
-feature:
-    ID LPAR LSQUARE formal LSQUARE COMMA formal RSQUARE KLEENE RSQUARE RPAR COLON TYPE LBRACE expr RBRACE
-    | ID COLON TYPE LSQUARE ASSIGN expr RSQUARE;
+feature: ID LPAR (formal (COMMA formal)*)? RPAR COLON TYPE LBRACE expr RBRACE
+    | ID COLON TYPE (ASSIGN expr)? ;
 
-formal:
-    ID COLON TYPE;
+formal: ID COLON TYPE;
 
-expr: 
-    ID COLON expr
-    | expr LSQUARE AT TYPE RSQUARE DOT ID LPAR LSQUARE expr LSQUARE COMMA expr RSQUARE KLEENE RSQUARE RPAR
+expr: ID ASSIGN expr
+    | expr (AT TYPE)? DOT ID LPAR (expr (COMMA expr)*)? RPAR
+    | ID LPAR (expr (COMMA expr)*)? RPAR
     | IF expr THEN expr ELSE expr FI
     | WHILE expr LOOP expr POOL
-    | LBRACE LSQUARE expr SEMICOLON RSQUARE POSITIVE RBRACE
-    | LET ID COLON TYPE LSQUARE ASSIGN expr RSQUARE LSQUARE COMMA ID COLON TYPE LSQUARE ASSIGN expr RSQUARE RSQUARE KLEENE IN expr
+    | LBRACE (expr SEMICOLON)+ RBRACE
+    | LET ID COLON TYPE (ASSIGN expr)? (COMMA ID COLON TYPE (ASSIGN expr)?)* IN expr
     | NEW TYPE
     | ISVOID expr
     | expr PLUS expr
@@ -44,7 +40,6 @@ expr:
 
 // ENTEROS
 DIGIT: [0-9];
-
 UPPERCASE: [A-Z];
 LOWERCASE: [a-z];
 LETTER: [a-zA-Z];
@@ -61,10 +56,6 @@ LT: '<';
 LE: '<=';
 EQUALS: '=';
 ASSIGN: '<-';
-
-KLEENE: '"*"';
-POSITIVE: '"+"';
-
 LPAR: '(';
 RPAR: ')';
 COLON: ':';
@@ -96,16 +87,14 @@ WHILE: [wW][hH][iI][lL][eE];
 NEW: [nN][eE][wW];
 NOT: [nN][oO][tT];
 LET: [lL][eE][tT];
-TYPE: UPPERCASE (ID)*;
-ID: LETTER (LETTER | DIGIT)*;
-OBJECT: LOWERCASE ID;
+TYPE: UPPERCASE (LETTER | DIGIT | '_')*;
 
-// cadenas
-STRING : '"' ( ESC_SEQ | ~["\b\t\n\f\r\\] )* '"';
-fragment ESC_SEQ : '\\' [btnf];
+ID: LOWERCASE (LETTER | DIGIT | '_')*;
+STRING: '"' .*? '"';
 
 // comentarios
 COMMENT: '--' ~[\r\n]* -> skip;
+CLOSED_COMMENT: '(*' .*? '*)' -> skip;
 WHITESPACE: [ \t\r\n\f]+ -> skip;
 
-ERROR: .;
+ERROR: . ;
