@@ -1,6 +1,5 @@
 from antlr4 import *
 from dist.yaplParser import yaplParser
-import graphviz as gv
 from CustomErrorListener import CustomErrorListener
 from MyLexer import MyLexer
 from TreeBuildingVisitor import TreeBuildingVisitor
