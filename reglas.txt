@@ -1,0 +1,85 @@
+Reglas de tipos:
+
+    Elementos básicos:
+    - Int
+    - String
+    - Bool
+
+    Elementos compuestos:
+    - Los elementos básicos pueden ser usados en definiciones de clases para crear nuevos elementos
+    - Las clases Int, String y Bool no pueden ser padres de ninguna otra clase
+
+    Operaciones de tipo
+
+    Int:
+    Int + Int = Int
+    Operaciones permitidas: Suma (+), Resta (-), Multiplicación (*), División (/), Módulo (%).
+
+    String:
+    String + String = String
+    Operaciones permitidas: Concatenación (+), Longitud (length).
+
+    Booleano (Bool):
+    Bool ^ Bool = Bool
+    Operaciones permitidas: Conjunción lógica (AND), Disyunción lógica (OR), Negación lógica (NOT).
+
+
+Reglas de Ambito:
+- Es necesario realizar la declaración de un atributo dentro de una clase antes de poder utilizarlo.
+- Dentro de una clase, es posible hacer llamadas a un metodo de manera recursiva.
+- En una clase existen dos tipos de ambitos: Locales, son aquellos que limitan  su alcance dentro del método específico o bloque donde se ha declarado. Mientras que los Globales, está definido dentro de la sección del cuerpo de la clase, abarcando toda la clase en sí misma. 
+- Los métodos y atributos de una clase pueden ser llamados desde cualquier parte de la clase, sin importar el orden en que se hayan declarado. Ya que son de acceso publico.
+- Si se tienen dos variables declaradas dentro de un metodo, una local y otra global, y se hace una llamada a la variable sin especificar el ambito, se tomará la variable local.
+- Un identificador solo puede ser definido una vez dentro de un mismo ambito.
+- Si una clase hereda de otra y la clase sobrecarga un metodo de la clase padre, el metodo debe tener los mismo parametros y tipo de retorno que el método de la clase padre.
+- Solo se puede heredar de una clase y no puede haber herencia recursiva. 
+
+
+Reglas para valores predeterminado:
+- Para los int el valor sera 0.
+- Para los sting el valor sera "" que simboliza una cadena vacia.
+- Para los bool el valor sera false.
+
+
+Reglas de casteo:
+- Si se intenta hacer la conversion de bool a int. El valor false será representado por un 0 mientras que el valor True sera con un 1.
+- De la misma forma la conversion de int a bool. Un 0 representará el valor false mientras que un 1 representará el valor True.
+- No es posible el casteo explícito.
+
+
+Reglas para expresiones de asignación:
+- Las asignaciones deben de tener esta forma: <id> <- <expr>
+- La <expr> utilizada debe ser del mismo tipo que el declarado para <id>, o debe ser un tipo derivado del tipo de <id>.
+- El valor de la <expr> en el lado derecho se asigna al objeto <id>.
+- El tipo de dato de la asignación es igual al tipo de dato de la expresion <expr>.
+- Si en el lado izquierdo de la asignación se hace referencia a un atributo de una clase, es necesario que dicho atributo esté previamente definido dentro de la clase.
+- Tanto en el lado izquierdo como en el lado derecho de la asignación, se permiten identificadores recursivos. 
+
+
+Reglas de llamadas de métodos y valores de retorno:
+- Si el argumento de un método es un tipo básico (int, string, bool), entonces el argumento se pasa por valor.
+- Si el argumento de un método es un tipo compuesto (clase), entonces el argumento se pasa por referencia.
+- Los parametros de un método cuentan como variables locales del método.
+- La evaluación de los argumentos de un método se realiza de izquierda a derecha.
+- El tipo del valor de retorno debe coincidir con el tipo de retorno declarado en la definición del método.
+- En caso de ser llamado por una expresión de asignación, el valor de retorno del método se asigna a la variable del lado izquierdo de la asignación.
+
+
+Reglas de estructuras de control:
+- En estructuras de control "if" o "while", la <expr> debe ser de tipo booleano.
+- Si ambas ramas de un "if" son de un mismo tipo el valor de retorno sera de ese mismo tipo. En caso contrario sera un supertipo que englobe ambos tipos.
+- El tipo de dato de la estructura while es Object.
+
+
+Reglas de expresiones:
+- Los operadores aritmeticos se aplican unicamente a objetos de tipo int y su valor de retorno es del mismo tipo.
+- Los operadores de comparación se aplican unicamente a objetos del mismo tipo u objetos que hereden de la misma clase y su valor de retorno es de tipo bool.
+- Al plicar el operador unario "~" a un objeto de la clase int el valor de retorno sera de tipo int.
+- Al aplicar el operador not a una expresión booleano el valor de retorno sera de tipo bool.
+
+
+Reglas para clases epeciales:
+- Hay una clase especial llamada "IO" que contiene funciones para realizar operaciones de entrada y salida de valores de tipo entero y booleano.
+- La tabla de símbolos debe incluir de manera predeterminada las definiciones de las clases IO, Int, String y Bool, junto con sus respectivos métodos ya establecidos.
+
+

@@ -21,14 +21,6 @@ print("=============================")
 
 print(tabla_simbolos.get_table())
 
-# for token in token_stream.tokens:
-#     lexema = token.text
-#     linea = token.line
-#     columna = token.column
-#     tipo_token = lexer.symbolicNames[token.type] if token.type != Token.EOF else "EOF"
-
-#     # Registrar el lexema y sus atributos en la tabla de símbolos
-#     agregar_simbolo(tabla_simbolos, lexema, linea, columna, tipo_token)
 
 parser = yaplParser(token_stream)
 parser.removeErrorListeners()
