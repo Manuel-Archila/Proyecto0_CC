@@ -1,8 +1,9 @@
 from dist.yaplLexer import yaplLexer
 
 class MyLexer(yaplLexer):
-    def __init__(self, input_stream):
+    def __init__(self, input_stream, ts):
         super().__init__(input_stream)
+        self.ts = ts
         
 
     def nextToken(self):
@@ -14,13 +15,18 @@ class MyLexer(yaplLexer):
             if len(token.text) > MAX_STRING_LENGTH:
                 print("Error: Tamaño de lexema excedido en linea", token.line, ": ", token.text)
                 token.type = yaplLexer.ERROR
+                #ts.agregar_simbolo(token.text, token.line, token.column, token.type)
                 #return
             elif '\n' in token.text:
                 print("Error: Nueva linea detectado dentro del String en linea ", token.line, ": ", token.text)
                 token.type = yaplLexer.ERROR
+                #ts.agregar_simbolo(token.text, token.line, token.column, token.type)
                 #return
             
         elif token.type == yaplLexer.ERROR:
             print("Error léxico en línea", token.line, ": ", token.text)
+        
+        if token.type != yaplLexer.ERROR:
+            self.ts.agregar_simbolo(token.text, token.line, token.column, token.type)
         
         return token
