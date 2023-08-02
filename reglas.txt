@@ -29,7 +29,7 @@ Reglas de Ambito:
 - Dentro de una clase, es posible hacer llamadas a un metodo de manera recursiva.
 - En una clase existen dos tipos de ambitos: Locales, son aquellos que limitan  su alcance dentro del método específico o bloque donde se ha declarado. Mientras que los Globales, está definido dentro de la sección del cuerpo de la clase, abarcando toda la clase en sí misma. 
 - Los métodos y atributos de una clase pueden ser llamados desde cualquier parte de la clase, sin importar el orden en que se hayan declarado. Ya que son de acceso publico.
-- Si se tienen dos variables declaradas dentro de un metodo, una local y otra global, y se hace una llamada a la variable sin especificar el ambito, se tomará la variable local.
+- Si se tienen dos variables declaradas dentro de un metodo con el mismo nombre, una local y otra global, y se hace una llamada a la variable sin especificar el ambito, se tomará la variable local.
 - Un identificador solo puede ser definido una vez dentro de un mismo ambito.
 - Si una clase hereda de otra y la clase sobrecarga un metodo de la clase padre, el metodo debe tener los mismo parametros y tipo de retorno que el método de la clase padre.
 - Solo se puede heredar de una clase y no puede haber herencia recursiva. 
