@@ -8,7 +8,7 @@ class TreeBuildingVisitor(yaplVisitor):
         self.graph = Digraph()
         self.node_id = 0
 
-    def visit(self, tree):
+    def visitar(self, tree):
         node_label = self.getNodeLabel(tree)
         self.graph.node(str(self.node_id), node_label)
         parent_id = self.node_id
@@ -17,7 +17,7 @@ class TreeBuildingVisitor(yaplVisitor):
         if not isinstance(tree, TerminalNode):  # Check if node is not terminal
             for child in tree.children:  # Now we can safely access children
                 self.graph.edge(str(parent_id), str(self.node_id))
-                self.visit(child)
+                self.visitar(child)
 
     def getNodeLabel(self, node):
         if isinstance(node, TerminalNode):

@@ -40,9 +40,9 @@ expr: ID ASSIGN expr
 
 // ENTEROS
 DIGIT: [0-9];
+LETTER: [a-zA-Z];
 UPPERCASE: [A-Z];
 LOWERCASE: [a-z];
-LETTER: [a-zA-Z];
 
 // Caracteres especiales
 DOT: '.';

@@ -4,11 +4,14 @@ from CustomErrorListener import CustomErrorListener
 from MyLexer import MyLexer
 from TreeBuildingVisitor import TreeBuildingVisitor
 from TS import TS 
+from SymbolTable import *
+from SemanticAnalyzerVisitor import SemanticAnalyzerVisitor, SemanticError
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
 archi = None
+
 
 def cargar_archivo():
     global archi
@@ -35,7 +38,7 @@ def cerrar_ventana():
     guardar_archivo()
     
     tabla_simbolos = TS()
-
+    
     input_stream = FileStream('entrada.txt')
 
     lexer = MyLexer(input_stream, tabla_simbolos)
@@ -55,6 +58,17 @@ def cerrar_ventana():
     parserErrorListener = CustomErrorListener("sintáctico")
     parser.addErrorListener(parserErrorListener)
     tree = parser.program()
+    symbol_table = SymbolTable()
+    semantic_visitor = SemanticAnalyzerVisitor(symbol_table)
+    try:
+        semantic_visitor.visit_program(tree)
+    except SemanticError as error:
+        print(f"Semantic error at line {error.line}: {error}")  
+    
+
+
+    print(symbol_table.print_table())
+    
     errores_sintacticos = parserErrorListener.errores
     errores_lexicos = lexer.errors  
     if parserErrorListener.getErrorCount() > 0:
@@ -71,7 +85,7 @@ def cerrar_ventana():
 
     else:
         visitor = TreeBuildingVisitor()
-        visitor.visit(tree)
+        visitor.visitar(tree)
 
         dot_graph = visitor.getDotGraph()
         dot_graph.render(filename='output.gv', view=True, format='png')
