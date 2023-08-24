@@ -27,11 +27,13 @@ expr: ID ASSIGN expr
     | DIAC expr
     | expr LT expr
     | expr LE expr
+    | expr RT expr
+    | expr RE expr
     | expr EQUALS expr
     | NOT expr
     | LPAR expr RPAR
     | ID
-    | DIGIT
+    | DIGIT+
     | STRING
     | TRUE
     | FALSE;
@@ -40,9 +42,9 @@ expr: ID ASSIGN expr
 
 // ENTEROS
 DIGIT: [0-9];
-LETTER: [a-zA-Z];
-UPPERCASE: [A-Z];
-LOWERCASE: [a-z];
+// LETTER: ;
+// UPPERCASE: ;
+// LOWERCASE: ;
 
 // Caracteres especiales
 DOT: '.';
@@ -53,6 +55,8 @@ DIVIDE: '/';
 PLUS: '+';
 MINUS: '-';
 LT: '<';
+RT: '>';
+RE: '>=';
 LE: '<=';
 EQUALS: '=';
 ASSIGN: '<-';
@@ -87,14 +91,16 @@ WHILE: [wW][hH][iI][lL][eE];
 NEW: [nN][eE][wW];
 NOT: [nN][oO][tT];
 LET: [lL][eE][tT];
-TYPE: UPPERCASE (LETTER | DIGIT | '_')*;
 
-ID: LOWERCASE (LETTER | DIGIT | '_')*;
+TYPE: [A-Z] ([a-zA-Z] | DIGIT | '_')*;
+// OBJECT: LOWERCASE ID;
+
+ID: [a-z] ([a-zA-Z] | DIGIT | '_')*;
 STRING: '"' .*? '"';
 
 // comentarios
 COMMENT: '--' ~[\r\n]* -> skip;
-CLOSED_COMMENT: '(*' .*? '*)' -> skip;
+CLOSED_COMMENT: '(' .? '*)' -> skip;
 WHITESPACE: [ \t\r\n\f]+ -> skip;
 
 ERROR: . ;
