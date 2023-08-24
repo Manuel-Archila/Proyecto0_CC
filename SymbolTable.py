@@ -1,8 +1,10 @@
 class Symbol:
-    def __init__(self, name, symbol_type, data_type=None):
+    def __init__(self, name, symbol_type, line, scope, data_type=None):
         self.name = name  # Name of the symbol (e.g., variable name)
+        self.line = line  # Line where the symbol was declared
         self.symbol_type = symbol_type  # e.g., "variable", "function", "class"
         self.data_type = data_type  # e.g., "int", "string", custom class name
+        self.scope = scope  # Scope where the symbol was declared
         # Add more attributes if needed
 
 
@@ -34,9 +36,10 @@ class SymbolTable:
     def __init__(self):
         self.stack = [Scope()]  # Initialize with a global scope
 
-    def put(self, name, symbol_type, data_type=None):
+    def put(self, name, line, symbol_type, data_type=None):
         """Add a symbol to the current scope."""
-        symbol = Symbol(name, symbol_type, data_type)
+        scope = len(self.stack)-1
+        symbol = Symbol(name, symbol_type, line, scope, data_type)
         self.stack[-1].put(name, symbol)
 
     def get(self, name):
@@ -60,6 +63,6 @@ class SymbolTable:
         for index, scope in enumerate(self.stack):
             print("Scope Level:", index)
             for name, symbol in scope.symbols.items():
-                print(f"  Name: {symbol.name}, Type: {symbol.symbol_type}, Data Type: {symbol.data_type}")
+                print(f"  Name: {symbol.name}, Type: {symbol.symbol_type}, Line: {symbol.line}, Scope: {symbol.scope}, Data Type: {symbol.data_type}")
             print()
 

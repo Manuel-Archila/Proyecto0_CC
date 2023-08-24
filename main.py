@@ -45,12 +45,12 @@ def cerrar_ventana():
     token_stream = CommonTokenStream(lexer)
     token_stream.fill()
 
-    print(tabla_simbolos.buscar_simbolo(';'))
+    #print(tabla_simbolos.buscar_simbolo(';'))
 
     print("=============================")
 
 
-    print(tabla_simbolos.get_table())
+    #print(tabla_simbolos.get_table())
 
 
     parser = yaplParser(token_stream)

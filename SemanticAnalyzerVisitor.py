@@ -1,4 +1,4 @@
-
+from antlr4.tree.Tree import TerminalNode
 class SemanticError(Exception):
     """Exception raised for semantic errors."""
     def __init__(self, message, line=None):
@@ -12,7 +12,6 @@ class SemanticAnalyzerVisitor:
         self.errors = []
 
     def visit_program(self, node):
-        # Example: Visit all classes in the program
         for class_node in node.class_():
             self.visit_class(class_node)
 
@@ -22,24 +21,64 @@ class SemanticAnalyzerVisitor:
         if self.symbol_table.get(class_name):
             self.errors.append(SemanticError(f"Class {class_name} already defined", node.line))
         else:
-            self.symbol_table.put(class_name, "class")
-            # Add more checks for class declarations if needed...
+            self.symbol_table.put(class_name, node.start.line, "class")
+
+            #self.symbol_table.push_scope()
+
+            for feature in node.feature():
+                self.visit_feature(feature)
+
+            #self.symbol_table.pop_scope()
+
+    
+    def visit_feature(self, node):
+        if node.LPAR():
+            self.visit_method(node)
+        else:
+            self.visit_attribute(node)
+
+    def visit_method(self, node):
+        self.symbol_table.put(node.ID().getText(), node.start.line, "function")
+
+        #self.symbol_table.push_scope()
+        for formal in node.formal():
+            self.visit_formal(formal)
+
+        if node.expr():
+            self.visit_expr(node.expr())
+        
+        #self.symbol_table.pop_scope()
+
+    def visit_attribute(self, node):
+        self.symbol_table.put(node.ID().getText(), node.start.line, "atribute")
+
 
     def visit_expr(self, node):
-        # Example: Check type consistency in binary operations
-        if node.operation in ['+', '-', '*', '/']:
-            left_type = self.get_expr_type(node.left_expr)
-            right_type = self.get_expr_type(node.right_expr)
+        for hijo in node.getChildren():
+            self.verify_expr(hijo)
+
+        #self.symbol_table.put(node.ID()[0].getText(), "expr")
+
+        # # Example: Check type consistency in binary operations
+        # if node.operation in ['+', '-', '*', '/']:
+        #     left_type = self.get_expr_type(node.left_expr)
+        #     right_type = self.get_expr_type(node.right_expr)
             
-            if left_type != 'int' or right_type != 'int':
-                self.report_error(SemanticError(f"Invalid operand types for {node.operation}: {left_type} and {right_type}", node.line))
+        #     if left_type != 'int' or right_type != 'int':
+        #         self.report_error(SemanticError(f"Invalid operand types for {node.operation}: {left_type} and {right_type}", node.line))
             
-            # Assuming the result type of these operations is 'int'
-            node.evaluated_type = 'int'
+        #     # Assuming the result type of these operations is 'int'
+        #     node.evaluated_type = 'int'
         
-        # Add more checks for other types of expressions...
+        # # Add more checks for other types of expressions...
 
     def visit_formal(self, node):
+
+        for hijo in node.getChildren():
+            self.verify_expr(hijo)
+
+        #self.symbol_table.put(node.ID()[0].getText(), "formal")
+
         # Example: Check if the formal parameter is already defined in the current scope
         if self.symbol_table.get(node.name):
             self.errors.append(SemanticError(f"Variable {node.name} already defined in the current scope", node.line))
@@ -47,7 +86,13 @@ class SemanticAnalyzerVisitor:
             self.symbol_table.put(node.name, "variable", node.type)
         
         # Add more checks for formal declarations if needed...
+    
+    def verify_expr(self, node):
+        node_type = node.getText()
+        line = self.get_line(node)
+        self.symbol_table.put(node_type, line, node)
         
+
     def get_expr_type(self, expr):
         # Handle literals
         if expr.type in ['int_literal', 'string_literal', 'bool_literal']:
@@ -76,6 +121,17 @@ class SemanticAnalyzerVisitor:
             return 'function'
         
         # Add more checks for other types of expressions...
+        else:
+            return None
+
+    def get_line(self, node):
+        # Si el nodo es un TerminalNode, se puede obtener la línea directamente.
+        if isinstance(node, TerminalNode):
+            return node.symbol.line
+        # De lo contrario, si es un nodo de una regla, se utiliza `start`.
+        elif hasattr(node, 'start'):
+            return node.start.line
+        # Si el nodo no tiene información de línea, devuelve None o cualquier valor por defecto.
         else:
             return None
 
