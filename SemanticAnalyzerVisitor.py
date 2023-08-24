@@ -23,12 +23,12 @@ class SemanticAnalyzerVisitor:
         else:
             self.symbol_table.put(class_name, node.start.line, "class")
 
-            #self.symbol_table.push_scope()
-
+            self.symbol_table.push_scope()
+            # print("Anadi un una clase a la tabla")
             for feature in node.feature():
                 self.visit_feature(feature)
 
-            #self.symbol_table.pop_scope()
+            self.symbol_table.pop_scope()
 
     
     def visit_feature(self, node):
@@ -38,18 +38,20 @@ class SemanticAnalyzerVisitor:
             self.visit_attribute(node)
 
     def visit_method(self, node):
+        # print("Anadi un un metodo a la tabla")
         self.symbol_table.put(node.ID().getText(), node.start.line, "function")
 
-        #self.symbol_table.push_scope()
+        self.symbol_table.push_scope()
         for formal in node.formal():
             self.visit_formal(formal)
 
         if node.expr():
             self.visit_expr(node.expr())
         
-        #self.symbol_table.pop_scope()
+        self.symbol_table.pop_scope()
 
     def visit_attribute(self, node):
+        # print("Anadi un un atributo a la tabla")
         self.symbol_table.put(node.ID().getText(), node.start.line, "atribute")
 
 
@@ -83,6 +85,7 @@ class SemanticAnalyzerVisitor:
         if self.symbol_table.get(node.name):
             self.errors.append(SemanticError(f"Variable {node.name} already defined in the current scope", node.line))
         else:
+            # print("Anadi un un formal a la tabla")
             self.symbol_table.put(node.name, "variable", node.type)
         
         # Add more checks for formal declarations if needed...
@@ -90,6 +93,7 @@ class SemanticAnalyzerVisitor:
     def verify_expr(self, node):
         node_type = node.getText()
         line = self.get_line(node)
+        # print("Anadi un una expresion a la tabla")
         self.symbol_table.put(node_type, line, node)
         
 

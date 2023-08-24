@@ -66,9 +66,9 @@ def cerrar_ventana():
         print(f"Semantic error at line {error.line}: {error}")  
     
 
-
-    print(symbol_table.print_table())
-    print(semantic_visitor.errors)
+    # print("Symbol table stack", symbol_table.stack)
+    symbol_table.print_table()
+    # print(semantic_visitor.errors)
     
     errores_sintacticos = parserErrorListener.errores
     errores_lexicos = lexer.errors  
