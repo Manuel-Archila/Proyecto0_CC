@@ -35,7 +35,7 @@ digraph {
 	14 -> 17
 	17 [label=Expr]
 	17 -> 18
-	18 [label="\"Hola Papeles.\n\""]
+	18 [label="\"Hello world.\n\""]
 	14 -> 19
 	19 [label=")"]
 	7 -> 20

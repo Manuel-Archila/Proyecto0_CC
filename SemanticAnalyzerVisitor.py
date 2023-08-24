@@ -23,7 +23,7 @@ class SemanticAnalyzerVisitor:
             self.errors.append(SemanticError(f"Class {class_name} already defined", node.line))
         else:
             self.symbol_table.put(class_name, "class")
-            # Add other semantic checks or visits here...
+            # Add more checks for class declarations if needed...
 
     def visit_expr(self, node):
         # Example: Check type consistency in binary operations

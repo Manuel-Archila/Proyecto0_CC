@@ -100,7 +100,7 @@ STRING: '"' .*? '"';
 
 // comentarios
 COMMENT: '--' ~[\r\n]* -> skip;
-CLOSED_COMMENT: '(' .? '*)' -> skip;
+CLOSED_COMMENT: '(*' .*? '*)' -> skip;
 WHITESPACE: [ \t\r\n\f]+ -> skip;
 
 ERROR: . ;

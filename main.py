@@ -68,6 +68,7 @@ def cerrar_ventana():
 
 
     print(symbol_table.print_table())
+    print(semantic_visitor.errors)
     
     errores_sintacticos = parserErrorListener.errores
     errores_lexicos = lexer.errors  
