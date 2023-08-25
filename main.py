@@ -39,7 +39,7 @@ def cerrar_ventana():
     
     tabla_simbolos = TS()
     
-    input_stream = FileStream('entrada.txt')
+    input_stream = FileStream('entrada2.txt')
 
     lexer = MyLexer(input_stream, tabla_simbolos)
     token_stream = CommonTokenStream(lexer)
