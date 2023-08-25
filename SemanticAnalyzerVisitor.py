@@ -57,7 +57,10 @@ class SemanticAnalyzerVisitor:
 
     def visit_expr(self, node):
         for hijo in node.getChildren():
-            self.verify_expr(hijo)
+            if not isinstance(hijo, TerminalNode):
+                self.visit_expr(hijo)
+            else:
+                self.verify_expr(hijo)
 
         #self.symbol_table.put(node.ID()[0].getText(), "expr")
 
@@ -75,27 +78,42 @@ class SemanticAnalyzerVisitor:
         # # Add more checks for other types of expressions...
 
     def visit_formal(self, node):
+        print("Entre al formal")
 
         for hijo in node.getChildren():
-            self.verify_expr(hijo)
+            self.verify_formal(hijo)
 
-        #self.symbol_table.put(node.ID()[0].getText(), "formal")
+        # #self.symbol_table.put(node.ID()[0].getText(), "formal")
 
-        # Example: Check if the formal parameter is already defined in the current scope
-        if self.symbol_table.get(node.name):
-            self.errors.append(SemanticError(f"Variable {node.name} already defined in the current scope", node.line))
-        else:
-            # print("Anadi un un formal a la tabla")
-            self.symbol_table.put(node.name, "variable", node.type)
+        # # Example: Check if the formal parameter is already defined in the current scope
+        # if self.symbol_table.get(node.name):
+        #     self.errors.append(SemanticError(f"Variable {node.name} already defined in the current scope", node.line))
+        # else:
+        #     # print("Anadi un un formal a la tabla")
+        #     self.symbol_table.put(node.name, "variable", node.type)
         
-        # Add more checks for formal declarations if needed...
+        # # Add more checks for formal declarations if needed...
     
     def verify_expr(self, node):
+        
+        # if not isinstance(node, TerminalNode):
+        #     if node.getChildren():
+        #         for hijo in node.getChildren():
+        #             self.verify_expr(hijo)
+
         node_type = node.getText()
         line = self.get_line(node)
+
         # print("Anadi un una expresion a la tabla")
         self.symbol_table.put(node_type, line, node)
         
+
+    def verify_formal(self, node):      
+        node_type = node.getText()
+        line = self.get_line(node)
+
+        # print("Anadi un un formal a la tabla")
+        self.symbol_table.put(node_type, line, node)
 
     def get_expr_type(self, expr):
         # Handle literals

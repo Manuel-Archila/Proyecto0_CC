@@ -6,6 +6,7 @@ from TreeBuildingVisitor import TreeBuildingVisitor
 from TS import TS 
 from SymbolTable import *
 from SemanticAnalyzerVisitor import SemanticAnalyzerVisitor, SemanticError
+from SemanticAnalyzer import SemanticAnalyzerMio
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -59,7 +60,7 @@ def cerrar_ventana():
     parser.addErrorListener(parserErrorListener)
     tree = parser.program()
     symbol_table = SymbolTable()
-    semantic_visitor = SemanticAnalyzerVisitor(symbol_table)
+    semantic_visitor = SemanticAnalyzerMio(symbol_table)
     try:
         semantic_visitor.visit_program(tree)
     except SemanticError as error:
