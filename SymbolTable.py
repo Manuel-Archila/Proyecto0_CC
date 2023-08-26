@@ -13,14 +13,19 @@ class SymbolTable:
         self.scopes = []
         self.current_scope_index = 0
         self.scope_counter = 0
+
+        self.scope_counter2 = 0
+        self.current_scope_index2 = 0
     
     def enter_scope(self):
         self.scope_counter += 1
         scope_name = f"scope_{self.scope_counter}"
         self.scopes.append({})  # Agregar un nuevo ámbito vacío
         self.current_scope_index = len(self.scopes) - 1
+        print("Entrando al scope:", self.current_scope_index)
     
     def exit_scope(self):
+        print("Saliendo del scope:", self.current_scope_index)
         if self.current_scope_index > 0:
             self.current_scope_index -= 1
     
@@ -34,6 +39,13 @@ class SymbolTable:
             if name in self.scopes[scope_index]:
                 return self.scopes[scope_index][name]
         return None
+
+    def enter_scope2(self):
+        self.scope_counter += 1
+        scope_name = f"scope_{self.scope_counter}"
+        self.scopes.append({})  # Agregar un nuevo ámbito vacío
+        self.current_scope_index = len(self.scopes) - 1
+        print("Entrando al scope:", self.current_scope_index)
     
     def __repr__(self):
         symbols_repr = []

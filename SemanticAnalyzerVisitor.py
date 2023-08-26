@@ -1,150 +1,113 @@
+from dist.yaplVisitor import yaplVisitor
+from dist.yaplParser import yaplParser
 from antlr4.tree.Tree import TerminalNode
-class SemanticError(Exception):
-    """Exception raised for semantic errors."""
-    def __init__(self, message, line=None):
-        super().__init__(message)
-        self.line = line
+from SymbolTable import Symbol, SymbolTable
 
-
-class SemanticAnalyzerVisitor:
+class SemanticAnalyzerMio(yaplVisitor):
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
-        self.errors = []
 
-    def visit_program(self, node):
-        for class_node in node.class_():
-            self.visit_class(class_node)
-
-    def visit_class(self, node):
-        # Example: Check if class is already defined
-        class_name = node.TYPE()[0].getText()
-        if self.symbol_table.get(class_name):
-            self.errors.append(SemanticError(f"Class {class_name} already defined", node.line))
-        else:
-            self.symbol_table.put(class_name, node.start.line, "class")
-
-            self.symbol_table.push_scope()
-            # print("Anadi un una clase a la tabla")
-            for feature in node.feature():
-                self.visit_feature(feature)
-
-            self.symbol_table.pop_scope()
-
+    def visit_program(self, ctx:yaplParser.ProgramContext):
+        return self.visitChildren(ctx)
     
-    def visit_feature(self, node):
-        if node.LPAR():
-            self.visit_method(node)
-        else:
-            self.visit_attribute(node)
-
-    def visit_method(self, node):
-        # print("Anadi un un metodo a la tabla")
-        self.symbol_table.put(node.ID().getText(), node.start.line, "function")
-
-        self.symbol_table.push_scope()
-        for formal in node.formal():
-            self.visit_formal(formal)
-
-        if node.expr():
-            self.visit_expr(node.expr())
+    def visitClass(self, ctx:yaplParser.ClassContext):
+        print("Llamada a class")
         
-        self.symbol_table.pop_scope()
-
-    def visit_attribute(self, node):
-        # print("Anadi un un atributo a la tabla")
-        self.symbol_table.put(node.ID().getText(), node.start.line, "atribute")
-
-
-    def visit_expr(self, node):
-        for hijo in node.getChildren():
-            if not isinstance(hijo, TerminalNode):
-                self.visit_expr(hijo)
-            else:
-                self.verify_expr(hijo)
-
-        #self.symbol_table.put(node.ID()[0].getText(), "expr")
-
-        # # Example: Check type consistency in binary operations
-        # if node.operation in ['+', '-', '*', '/']:
-        #     left_type = self.get_expr_type(node.left_expr)
-        #     right_type = self.get_expr_type(node.right_expr)
-            
-        #     if left_type != 'int' or right_type != 'int':
-        #         self.report_error(SemanticError(f"Invalid operand types for {node.operation}: {left_type} and {right_type}", node.line))
-            
-        #     # Assuming the result type of these operations is 'int'
-        #     node.evaluated_type = 'int'
-        
-        # # Add more checks for other types of expressions...
-
-    def visit_formal(self, node):
-        print("Entre al formal")
-
-        for hijo in node.getChildren():
-            self.verify_formal(hijo)
-
-        # #self.symbol_table.put(node.ID()[0].getText(), "formal")
-
-        # # Example: Check if the formal parameter is already defined in the current scope
-        # if self.symbol_table.get(node.name):
-        #     self.errors.append(SemanticError(f"Variable {node.name} already defined in the current scope", node.line))
-        # else:
-        #     # print("Anadi un un formal a la tabla")
-        #     self.symbol_table.put(node.name, "variable", node.type)
-        
-        # # Add more checks for formal declarations if needed...
+        self.symbol_table.enter_scope()
+        print(ctx.TYPE()[0].getText())
+        self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class")
+        self.symbol_table.enter_scope()
+        temp = self.visitChildren(ctx)
+        self.symbol_table.exit_scope()
+        self.symbol_table.exit_scope()
+        return temp
     
-    def verify_expr(self, node):
-        
-        # if not isinstance(node, TerminalNode):
-        #     if node.getChildren():
-        #         for hijo in node.getChildren():
-        #             self.verify_expr(hijo)
+    def visitFeature(self, ctx:yaplParser.FeatureContext):
+        print("Llamada a feature")
 
-        node_type = node.getText()
-        line = self.get_line(node)
+        if ctx.LPAR():
+            self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
+            #print("Enter")
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx)
+            #print("Exit")
+            self.symbol_table.exit_scope()
+            # #print("Exit")
+            # self.symbol_table.exit_scope()
+            # self.symbol_table.exit_scope()
+            return temp
 
-        # print("Anadi un una expresion a la tabla")
-        self.symbol_table.put(node_type, line, node)
-        
-
-    def verify_formal(self, node):      
-        node_type = node.getText()
-        line = self.get_line(node)
-
-        # print("Anadi un un formal a la tabla")
-        self.symbol_table.put(node_type, line, node)
-
-    def get_expr_type(self, expr):
-        # Handle literals
-        if expr.type in ['int_literal', 'string_literal', 'bool_literal']:
-            return expr.type.split('_')[0]
-        
-        # Handle variables
-        elif expr.type == 'variable':
-            symbol = self.symbol_table.get(expr.variable_name)
-            if symbol:
-                return symbol.data_type
-            else:
-                self.report_error(SemanticError(f"Variable {expr.variable_name} not declared", expr.line))
-                return None
-        
-        # Handle binary operations
-        elif expr.operation in ['+', '-', '*', '/']:
-            return 'int'
-        elif expr.operation in ['<', '<=', '>', '>=', '==', '!=']:
-            return 'bool'
-        
-        # Handle function or method calls (placeholder logic)
-        elif expr.type == 'function_call':
-            function_name = expr.function_name
-            # Here, you'd check the return type of the function or method.
-            # For now, let's assume all functions return 'int' for simplicity.
-            return 'function'
-        
-        # Add more checks for other types of expressions...
         else:
-            return None
+            self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute")
+            #print("Enter")
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx)
+            #print("Exit")
+            self.symbol_table.exit_scope()
+            return temp
+    
+    def visitFormal(self, ctx:yaplParser.FormalContext):
+        self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "variableT", ctx.TYPE().getText())
+        # #print("Exit")
+        # self.symbol_table.exit_scope()
+
+        return None
+    
+    def visitExpr(self, ctx:yaplParser.ExprContext):
+        # print("Llamada a Expr")
+        new_scope_required = ctx.IF()
+
+        if new_scope_required:
+            #print("Enter")
+            self.symbol_table.enter_scope()
+        # ARREGLAR IF Y ELSE DESPUES DE HACER EL RESTO
+        if ctx.IF():
+            #print("Enter")
+            self.symbol_table.enter_scope()
+            self.symbol_table.put(ctx.getText(), ctx.start.line, "if")
+
+            if ctx.ELSE():
+                # print("ctx trae un else")
+                # self.symbol_table.exit_scope()
+                # print("Entro al else")
+                #print("Enter")
+                self.symbol_table.enter_scope()
+                self.symbol_table.put(ctx.getText(), ctx.start.line, "else")
+                # temp = self.visitChildren(ctx)
+                #print("Exit")
+                self.symbol_table.exit_scope()
+            # else:
+            #     temp = self.visitChildren(ctx)
+
+            temp = self.visitChildren(ctx)
+            #print("Exit")
+            self.symbol_table.exit_scope()
+            # self.symbol_table.exit_scope()
+
+            return temp
+
+
+        elif ctx.WHILE():
+            #print("entre a while")
+            #print("Enter")
+            self.symbol_table.enter_scope()
+            self.symbol_table.put('ctx.getText()', ctx.start.line, "while")
+            temp = self.visitChildren(ctx)
+            #print("Exit")
+            self.symbol_table.exit_scope()
+            return temp
+
+        elif ctx.LET():
+            for i in range(len(ctx.ID())):
+                self.symbol_table.put(ctx.ID()[i], self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
+                # for chil in ctx.getChildren():
+                #     print(chil.getText())
+
+                return self.visitChildren(ctx)
+            #self.symbol_table.exit_scope()
+        else:
+            temp = self.visitChildren(ctx)
+            return temp
 
     def get_line(self, node):
         # Si el nodo es un TerminalNode, se puede obtener la línea directamente.
@@ -156,7 +119,3 @@ class SemanticAnalyzerVisitor:
         # Si el nodo no tiene información de línea, devuelve None o cualquier valor por defecto.
         else:
             return None
-
-    def report_error(self, error):
-        self.errors.append(error)
-

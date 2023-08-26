@@ -13,15 +13,12 @@ class SemanticAnalyzerMio(yaplVisitor):
     def visitClass(self, ctx:yaplParser.ClassContext):
         print("Llamada a class")
         
-        print("Enter")
-        self.symbol_table.enter_scope() 
+        self.symbol_table.enter_scope()
+        print(ctx.TYPE()[0].getText())
         self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class")
-        print("Enter")
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
-        print("Exit")
         self.symbol_table.exit_scope()
-        print("Exit")
         self.symbol_table.exit_scope()
         return temp
     
@@ -30,28 +27,28 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         if ctx.LPAR():
             self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
-            print("Enter")
+            #print("Enter")
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
-            print("Exit")
+            #print("Exit")
             self.symbol_table.exit_scope()
-            # print("Exit")
+            # #print("Exit")
             # self.symbol_table.exit_scope()
             # self.symbol_table.exit_scope()
             return temp
 
         else:
             self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute")
-            print("Enter")
+            #print("Enter")
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
-            print("Exit")
+            #print("Exit")
             self.symbol_table.exit_scope()
             return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
         self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "variableT", ctx.TYPE().getText())
-        # print("Exit")
+        # #print("Exit")
         # self.symbol_table.exit_scope()
 
         return None
@@ -61,11 +58,11 @@ class SemanticAnalyzerMio(yaplVisitor):
         new_scope_required = ctx.IF()
 
         if new_scope_required:
-            print("Enter")
+            #print("Enter")
             self.symbol_table.enter_scope()
-        
+        # ARREGLAR IF Y ELSE DESPUES DE HACER EL RESTO
         if ctx.IF():
-            print("Enter")
+            #print("Enter")
             self.symbol_table.enter_scope()
             self.symbol_table.put(ctx.getText(), ctx.start.line, "if")
 
@@ -73,18 +70,17 @@ class SemanticAnalyzerMio(yaplVisitor):
                 # print("ctx trae un else")
                 # self.symbol_table.exit_scope()
                 # print("Entro al else")
-                print("Enter")
+                #print("Enter")
                 self.symbol_table.enter_scope()
                 self.symbol_table.put(ctx.getText(), ctx.start.line, "else")
                 # temp = self.visitChildren(ctx)
-                print("Exit")
+                #print("Exit")
                 self.symbol_table.exit_scope()
             # else:
             #     temp = self.visitChildren(ctx)
 
-
             temp = self.visitChildren(ctx)
-            print("Exit")
+            #print("Exit")
             self.symbol_table.exit_scope()
             # self.symbol_table.exit_scope()
 
@@ -93,11 +89,11 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         elif ctx.WHILE():
             #print("entre a while")
-            print("Enter")
+            #print("Enter")
             self.symbol_table.enter_scope()
             self.symbol_table.put('ctx.getText()', ctx.start.line, "while")
             temp = self.visitChildren(ctx)
-            print("Exit")
+            #print("Exit")
             self.symbol_table.exit_scope()
             return temp
 
@@ -106,13 +102,11 @@ class SemanticAnalyzerMio(yaplVisitor):
                 self.symbol_table.put(ctx.ID()[i], self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
                 # for chil in ctx.getChildren():
                 #     print(chil.getText())
+
                 return self.visitChildren(ctx)
             #self.symbol_table.exit_scope()
-
         else:
-            self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
-            self.symbol_table.exit_scope()
             return temp
 
     def get_line(self, node):
