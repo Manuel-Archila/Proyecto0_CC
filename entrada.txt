@@ -3,7 +3,17 @@ class Main inherits IO {
     main() : Object { 
         out_string("Hello world.\n") 
     } ; 
+
+    count( initial : Int ) : Int {
+        0
+    };
 };
+
+
+
+
+
+
 
 
 

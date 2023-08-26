@@ -11,73 +11,109 @@ class SemanticAnalyzerMio(yaplVisitor):
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
-        self.symbol_table.enter_scope()
+        print("Llamada a class")
+        
+        print("Enter")
+        self.symbol_table.enter_scope() 
         self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class")
+        print("Enter")
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
+        print("Exit")
+        self.symbol_table.exit_scope()
+        print("Exit")
         self.symbol_table.exit_scope()
         return temp
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
+        print("Llamada a feature")
 
         if ctx.LPAR():
             self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
-
+            print("Enter")
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
+            print("Exit")
             self.symbol_table.exit_scope()
-
+            # print("Exit")
+            # self.symbol_table.exit_scope()
+            # self.symbol_table.exit_scope()
             return temp
 
         else:
             self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute")
-
-            return self.visitChildren(ctx)
+            print("Enter")
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx)
+            print("Exit")
+            self.symbol_table.exit_scope()
+            return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
         self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "variableT", ctx.TYPE().getText())
+        # print("Exit")
+        # self.symbol_table.exit_scope()
 
         return None
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
+        # print("Llamada a Expr")
+        new_scope_required = ctx.IF()
 
-        print(ctx.getText())
+        if new_scope_required:
+            print("Enter")
+            self.symbol_table.enter_scope()
         
         if ctx.IF():
-
+            print("Enter")
             self.symbol_table.enter_scope()
-            #self.symbol_table.put('ctx.getText()', ctx.start.line, "if")
+            self.symbol_table.put(ctx.getText(), ctx.start.line, "if")
 
-            for hijo in ctx.getChildren():
-                if hijo.getText() == "else":
-                    self.symbol_table.enter_scope()
-                    #self.symbol_table.put('ctx.getText()', ctx.start.line, "else")
-                    temp = self.visitChildren(ctx)
-                    self.symbol_table.exit_scope()
-                    break
+            if ctx.ELSE():
+                # print("ctx trae un else")
+                # self.symbol_table.exit_scope()
+                # print("Entro al else")
+                print("Enter")
+                self.symbol_table.enter_scope()
+                self.symbol_table.put(ctx.getText(), ctx.start.line, "else")
+                # temp = self.visitChildren(ctx)
+                print("Exit")
+                self.symbol_table.exit_scope()
+            # else:
+            #     temp = self.visitChildren(ctx)
+
 
             temp = self.visitChildren(ctx)
+            print("Exit")
             self.symbol_table.exit_scope()
+            # self.symbol_table.exit_scope()
+
             return temp
 
 
-        if ctx.WHILE():
-            print("entre a while")
+        elif ctx.WHILE():
+            #print("entre a while")
+            print("Enter")
             self.symbol_table.enter_scope()
-            #self.symbol_table.put('ctx.getText()', ctx.start.line, "while")
+            self.symbol_table.put('ctx.getText()', ctx.start.line, "while")
             temp = self.visitChildren(ctx)
+            print("Exit")
             self.symbol_table.exit_scope()
             return temp
 
-        if ctx.LET():
+        elif ctx.LET():
             for i in range(len(ctx.ID())):
                 self.symbol_table.put(ctx.ID()[i], self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
-                for chil in ctx.getChildren():
-                    print(chil.getText())
+                # for chil in ctx.getChildren():
+                #     print(chil.getText())
                 return self.visitChildren(ctx)
+            #self.symbol_table.exit_scope()
 
         else:
-            return self.visitChildren(ctx)
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx)
+            self.symbol_table.exit_scope()
+            return temp
 
     def get_line(self, node):
         # Si el nodo es un TerminalNode, se puede obtener la línea directamente.

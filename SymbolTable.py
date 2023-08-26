@@ -11,7 +11,7 @@ class Symbol:
 class SymbolTable:
     def __init__(self):
         self.scopes = []
-        self.current_scope_index = -1
+        self.current_scope_index = 0
         self.scope_counter = 0
     
     def enter_scope(self):
