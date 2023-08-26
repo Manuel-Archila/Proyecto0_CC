@@ -46,12 +46,10 @@ def cerrar_ventana():
     token_stream = CommonTokenStream(lexer)
     token_stream.fill()
 
-    #print(tabla_simbolos.buscar_simbolo(';'))
 
     print("=============================")
 
 
-    #print(tabla_simbolos.get_table())
 
 
     parser = yaplParser(token_stream)
@@ -67,9 +65,7 @@ def cerrar_ventana():
         print(f"Semantic error at line {error.line}: {error}")  
     
 
-    # print("Symbol table stack", symbol_table.stack)
-    symbol_table.print_table()
-    # print(semantic_visitor.errors)
+    print(symbol_table)
     
     errores_sintacticos = parserErrorListener.errores
     errores_lexicos = lexer.errors  
