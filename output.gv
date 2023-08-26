@@ -173,23 +173,31 @@ digraph {
 	84 -> 86
 	86 [label="("]
 	84 -> 87
-	87 [label=")"]
-	84 -> 88
-	88 [label=":"]
-	84 -> 89
-	89 [label=Int]
-	84 -> 90
-	90 [label="{"]
+	87 [label=Formal]
+	87 -> 88
+	88 [label=initial]
+	87 -> 89
+	89 [label=":"]
+	87 -> 90
+	90 [label=Int]
 	84 -> 91
-	91 [label=Expr]
-	91 -> 92
-	92 [label=0]
+	91 [label=")"]
+	84 -> 92
+	92 [label=":"]
 	84 -> 93
-	93 [label="}"]
-	1 -> 94
-	94 [label=";"]
-	1 -> 95
-	95 [label="}"]
-	0 -> 96
-	96 [label=";"]
+	93 [label=Int]
+	84 -> 94
+	94 [label="{"]
+	84 -> 95
+	95 [label=Expr]
+	95 -> 96
+	96 [label=0]
+	84 -> 97
+	97 [label="}"]
+	1 -> 98
+	98 [label=";"]
+	1 -> 99
+	99 [label="}"]
+	0 -> 100
+	100 [label=";"]
 }

@@ -14,10 +14,44 @@ class Main inherits IO {
         }
     };
 
-    count() : Int {
+    count( initial : Int ) : Int {
         0
     };
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
