@@ -5,12 +5,14 @@ from MyLexer import MyLexer
 from TreeBuildingVisitor import TreeBuildingVisitor
 from TS import TS 
 from SymbolTable import *
-from SemanticAnalyzerVisitor import SemanticAnalyzerVisitor, SemanticError
+from SemanticVisitor import SemanticR
 from SemanticAnalyzer import SemanticAnalyzerMio
+import tempfile
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
+archivo_temporal = None
 archi = None
 
 
@@ -24,23 +26,22 @@ def cargar_archivo():
             contenido_texto.insert(tk.END, f.read()) 
 
 def guardar_archivo():
-    global archi
-    if not archi:
-        archivo = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.txt")])
-    else:
-        archivo = archi
-    if archivo:
-        contenido = contenido_texto.get("1.0", tk.END).splitlines()
-        with open(archivo, "w") as f:
-            for i, linea in enumerate(contenido, start=1):
-                f.write(f"{linea}\n")
+    global archivo_temporal
+    contenido = contenido_texto.get("1.0", tk.END)
+    if not archivo_temporal:
+        archivo_temporal = tempfile.NamedTemporaryFile(delete=False)
+    archivo_temporal.write(contenido.encode())
+    archivo_temporal.close()
 
 def cerrar_ventana():
     guardar_archivo()
     
     tabla_simbolos = TS()
+
+
     
-    input_stream = FileStream('entrada2.txt')
+    if archivo_temporal:
+        input_stream = FileStream(archivo_temporal.name)
 
     lexer = MyLexer(input_stream, tabla_simbolos)
     token_stream = CommonTokenStream(lexer)
@@ -61,11 +62,17 @@ def cerrar_ventana():
     semantic_visitor = SemanticAnalyzerMio(symbol_table)
     try:
         semantic_visitor.visit_program(tree)
-    except SemanticError as error:
-        print(f"Semantic error at line {error.line}: {error}")  
+    except:
+        pass
+        #print(f"Semantic error at line {error.line}: {error}")  
     
 
     print(symbol_table)
+
+    semanticR = SemanticR(symbol_table)
+
+    semanticR.visit_program(tree)
+
     
     errores_sintacticos = parserErrorListener.errores
     errores_lexicos = lexer.errors  
@@ -88,6 +95,12 @@ def cerrar_ventana():
         dot_graph = visitor.getDotGraph()
         dot_graph.render(filename='output.gv', view=True, format='png')
 
+def resetear_todo():
+    global archivo_temporal
+    archivo_temporal = None  # Reiniciar el archivo temporal
+    contenido_texto.delete("1.0", tk.END)  # Borrar el contenido del área de edición
+    actualizar_numeros_de_linea()  # Actualizar los números de línea si es necesario
+
 def actualizar_numeros_de_linea(event=None):
     contenido = contenido_texto.get("1.0", tk.END).splitlines()
     numeros_linea = "\n".join(str(i) for i in range(1, len(contenido) + 1))
@@ -107,6 +120,9 @@ boton_cargar.pack(side=tk.LEFT, padx=5, pady=5)
 
 boton_cerrar = tk.Button(boton_frame, text="Analizar Codigo", command=cerrar_ventana)
 boton_cerrar.pack(side=tk.LEFT, padx=5, pady=5)
+
+boton_resetear = tk.Button(boton_frame, text="Resetear Todo", command=resetear_todo)
+boton_resetear.pack(side=tk.LEFT, padx=5, pady=5)
 
 contenido_frame = tk.Frame(ventana)
 contenido_frame.pack(fill=tk.BOTH, expand=True)

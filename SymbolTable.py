@@ -8,49 +8,70 @@ class Symbol:
     def __repr__(self):
         return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope)
 
-class SymbolTable:
-    def __init__(self):
-        self.scopes = []
-        self.current_scope_index = 0
-        self.scope_counter = 0
-
-        self.scope_counter2 = 0
-        self.current_scope_index2 = 0
+class Scope:
+    def __init__(self, name):
+        self.name = name
+        self.symbols = {}
     
-    def enter_scope(self):
-        self.scope_counter += 1
-        scope_name = f"scope_{self.scope_counter}"
-        self.scopes.append({})  # Agregar un nuevo ámbito vacío
-        self.current_scope_index = len(self.scopes) - 1
-        print("Entrando al scope:", self.current_scope_index)
-    
-    def exit_scope(self):
-        print("Saliendo del scope:", self.current_scope_index)
-        if self.current_scope_index > 0:
-            self.current_scope_index -= 1
-    
-    def put(self, name, line, symbol_type, data_type=None):
-        current_scope = self.scopes[self.current_scope_index]
-        symbol = Symbol(name, line, symbol_type, self.current_scope_index, data_type)
-        current_scope[name] = symbol
+    def put(self, symbol):
+        self.symbols[symbol.name] = symbol
     
     def get(self, name):
-        for scope_index in range(self.current_scope_index, -1, -1):
-            if name in self.scopes[scope_index]:
-                return self.scopes[scope_index][name]
-        return None
-
-    def enter_scope2(self):
-        self.scope_counter += 1
-        scope_name = f"scope_{self.scope_counter}"
-        self.scopes.append({})  # Agregar un nuevo ámbito vacío
-        self.current_scope_index = len(self.scopes) - 1
-        print("Entrando al scope:", self.current_scope_index)
+        return self.symbols.get(name, None)
     
     def __repr__(self):
         symbols_repr = []
-        for scope_index, scope_symbols in enumerate(self.scopes):
-            symbols_repr.append(f"Scope: {scope_index}")
-            symbols_repr.extend([str(symbol) for symbol in scope_symbols.values()])
-            symbols_repr.append("")  # Add an empty line between scopes
+        symbols_repr.append(f"Scope: {self.name}")
+        symbols_repr.extend([str(symbol) for symbol in self.symbols.values()])
+        symbols_repr.append("")  # Add an empty line between scopes
         return "\n".join(symbols_repr)
+
+class SymbolTable:
+    def __init__(self):
+        self.scopes = []
+        self.full_scopes = []
+
+        self.scopes2 = []
+        self.full_scopes2 = []
+    
+    def enter_scope(self):
+        self.scopes.append(Scope(len(self.full_scopes)))
+        self.full_scopes.append(Scope(len(self.full_scopes)))
+    
+    def exit_scope(self):
+       self.scopes.pop()
+    
+    def put(self, name, line, symbol_type, data_type=None):
+        current_scope = self.scopes[-1].name
+        symbol = Symbol(name, line, symbol_type, current_scope, data_type)
+        self.full_scopes[current_scope].put(symbol)
+    
+    # def get(self, name):
+    #     for scope_index in range(self.current_scope_index, -1, -1):
+    #         if name in self.scopes[scope_index]:
+    #             return self.scopes[scope_index][name]
+    #     return None
+    
+
+    def enter_scope2(self):
+        self.scopes2.append(Scope(len(self.full_scopes2)))
+        self.full_scopes2.append(Scope(len(self.full_scopes2)))
+    
+    def exit_scope2(self):
+       self.scopes2.pop()
+    
+    def put2(self, name, line, symbol_type, data_type=None):
+        current_scope = self.scopes2[-1].name
+        print("El put se haria en el scope: ", current_scope)
+        print(name, line, symbol_type, current_scope, data_type)
+
+    
+    def __repr__(self):
+
+        table_repr = []
+        for index, scope in enumerate(self.full_scopes):
+            table_repr.append(f"Scope {index}:")
+            table_repr.extend([str(symbol) for symbol in scope.symbols.values()])
+            table_repr.append("")  # Add an empty line between scopes
+
+        return "\n".join(table_repr)

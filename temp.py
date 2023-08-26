@@ -8,32 +8,60 @@ class Symbol:
     def __repr__(self):
         return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope)
 
+class Scope:
+    def __init__(self, name):
+        self.name = name
+        self.symbols = {}
+    
+    def put(self, symbol):
+        self.symbols[symbol.name] = symbol
+    
+    def get(self, name):
+        return self.symbols.get(name, None)
+    
+    def __repr__(self):
+        symbols_repr = []
+        symbols_repr.append(f"Scope: {self.name}")
+        symbols_repr.extend([str(symbol) for symbol in self.symbols.values()])
+        symbols_repr.append("")  # Add an empty line between scopes
+        return "\n".join(symbols_repr)
+
 class SymbolTable:
     def __init__(self):
         self.scopes = []
-        self.current_scope_index = -1
-        self.scope_counter = 0
+        self.full_scopes = []
+
     
     def enter_scope(self):
-        self.scope_counter += 1
-        scope_name = f"scope_{self.scope_counter}"
-        self.scopes.append({})  # Agregar un nuevo ámbito vacío
-        self.current_scope_index = len(self.scopes) - 1
+
+        self.scopes.append(Scope(len(self.full_scopes)))
+        self.full_scopes.append(Scope(len(self.full_scopes)))
+
     
     def exit_scope(self):
-        if self.current_scope_index > 0:
-            self.current_scope_index -= 1
+        self.scopes.pop()
     
     def put(self, name, line, symbol_type, data_type=None):
-        current_scope = self.scopes[self.current_scope_index]
-        symbol = Symbol(name, line, symbol_type, self.current_scope_index, data_type)
-        current_scope[name] = symbol
+        current_scope = self.scopes[-1].name
+
+        symbol = Symbol(name, line, symbol_type, current_scope, data_type)
+
+        self.full_scopes[current_scope].put(symbol)
     
-    def get(self, name):
-        for scope_index in range(self.current_scope_index, -1, -1):
-            if name in self.scopes[scope_index]:
-                return self.scopes[scope_index][name]
-        return None
+    # def get(self, name):
+    #     for scope_index in range(self.current_scope_index, -1, -1):
+    #         if name in self.scopes[scope_index]:
+    #             return self.scopes[scope_index][name]
+    #     return None
+        
+    def print_table(self):
+        table_repr = []
+        for index, scope in enumerate(self.full_scopes):
+            table_repr.append(f"Scope {index}:")
+            table_repr.extend([str(symbol) for symbol in scope.symbols.values()])
+            table_repr.append("")  # Add an empty line between scopes
+
+        print("\n".join(table_repr))
     
     def __repr__(self):
         symbols_repr = []
@@ -44,40 +72,25 @@ class SymbolTable:
         return "\n".join(symbols_repr)
     
 
-symbolTable = SymbolTable()
+symbo = SymbolTable()
 
-symbolTable.enter_scope()
-symbolTable.put("Main", 2, "class", "none")
+symbo.enter_scope()
+symbo.put("Main", 1, "CLASS", "int")
+symbo.enter_scope()
+symbo.put("main", 1, "function", "int")
+symbo.enter_scope()
+symbo.put("x", 1, "variable", "int")
+symbo.enter_scope()
+symbo.put("while", 1, "while", "int")
+symbo.exit_scope()
+symbo.exit_scope()
+symbo.put("contador", 1, "function", "int")
+symbo.enter_scope()
+symbo.put("inicio", 1, "variable", "int")
+symbo.exit_scope()
+symbo.put("count", 1, "function", "int")
+symbo.enter_scope()
+symbo.put("initial", 1, "variable", "int")
+symbo.exit_scope()
 
-symbolTable.enter_scope()
-symbolTable.put("main", 3, "function", "Object")
-
-symbolTable.enter_scope()
-symbolTable.put("x", 4, "variable", "Int")
-
-symbolTable.enter_scope()
-symbolTable.put("if", 5, "if", "if")
-symbolTable.exit_scope()
-
-symbolTable.enter_scope()
-symbolTable.put("else", 5, "else", "else")
-symbolTable.exit_scope()
-
-symbolTable.enter_scope()
-symbolTable.put("while", 5, "while", "while")
-symbolTable.exit_scope()
-
-symbolTable.exit_scope()
-symbolTable.exit_scope()
-symbolTable.exit_scope()
-
-symbolTable.put("count", 17, "function", "Int")
-
-symbolTable.enter_scope()
-symbolTable.put("initial", 18, "variableT", "Int")
-
-symbolTable.enter_scope()
-symbolTable.put("0", 19, "variable", "Int")
-
-
-print(symbolTable)
+symbo.print_table()
