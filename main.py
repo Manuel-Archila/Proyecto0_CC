@@ -68,6 +68,7 @@ def cerrar_ventana():
     
 
     print(symbol_table)
+    print("=============================")
 
     semanticR = SemanticR(symbol_table)
 

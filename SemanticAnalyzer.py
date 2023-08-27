@@ -27,30 +27,20 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         if ctx.LPAR():
             self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
-            #print("Enter")
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
-            #print("Exit")
             self.symbol_table.exit_scope()
-            # #print("Exit")
-            # self.symbol_table.exit_scope()
-            # self.symbol_table.exit_scope()
             return temp
 
         else:
-            self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute")
-            #print("Enter")
-            self.symbol_table.enter_scope()
-            temp = self.visitChildren(ctx)
-            #print("Exit")
-            self.symbol_table.exit_scope()
-            return temp
+            self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
+
+            return None
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
-        self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "variableT", ctx.TYPE().getText())
+        self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "formal", ctx.TYPE().getText())
         # #print("Exit")
         # self.symbol_table.exit_scope()
-
         return None
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
@@ -106,6 +96,7 @@ class SemanticAnalyzerMio(yaplVisitor):
                 return self.visitChildren(ctx)
             #self.symbol_table.exit_scope()
         else:
+            self.symbol_table.put("ctx.ID()[i]", self.get_line(ctx), "variable","ctx.TYPE()[i].getText()")
             temp = self.visitChildren(ctx)
             return temp
 

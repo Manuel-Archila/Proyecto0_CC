@@ -11,11 +11,9 @@ class SemanticR(yaplVisitor):
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
-        print("Llamada a class")
         
         self.symbol_table.enter_scope2()
         print(ctx.TYPE()[0].getText())
-        self.symbol_table.put2(ctx.TYPE()[0].getText(), ctx.start.line, "class")
         self.symbol_table.enter_scope2()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope2()
@@ -23,10 +21,8 @@ class SemanticR(yaplVisitor):
         return temp
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
-        print("Llamada a feature")
 
         if ctx.LPAR():
-            self.symbol_table.put2(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
             #print("Enter")
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
@@ -38,7 +34,6 @@ class SemanticR(yaplVisitor):
             return temp
 
         else:
-            self.symbol_table.put2(ctx.ID().getText(), self.get_line(ctx), "atribute")
             #print("Enter")
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
@@ -47,7 +42,7 @@ class SemanticR(yaplVisitor):
             return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
-        self.symbol_table.put2(ctx.ID().getText(), ctx.start.line, "variableT", ctx.TYPE().getText())
+        pass
         # #print("Exit")
         # self.symbol_table.exit_scope2()
 
@@ -86,6 +81,9 @@ class SemanticR(yaplVisitor):
 
             return temp
 
+        if ctx.PLUS():
+            print(ctx.DIGIT())
+            print(ctx.getText())
 
         elif ctx.WHILE():
             #print("entre a while")
@@ -104,18 +102,14 @@ class SemanticR(yaplVisitor):
                 #     print(chil.getText())
 
                 return self.visitChildren(ctx)
-            #self.symbol_table.exit_scope2()
         else:
             temp = self.visitChildren(ctx)
             return temp
 
     def get_line(self, node):
-        # Si el nodo es un TerminalNode, se puede obtener la línea directamente.
         if isinstance(node, TerminalNode):
             return node.symbol.line
-        # De lo contrario, si es un nodo de una regla, se utiliza `start`.
         elif hasattr(node, 'start'):
             return node.start.line
-        # Si el nodo no tiene información de línea, devuelve None o cualquier valor por defecto.
         else:
             return None
