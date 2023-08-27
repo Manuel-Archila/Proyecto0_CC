@@ -5,6 +5,7 @@ from MyLexer import MyLexer
 from TreeBuildingVisitor import TreeBuildingVisitor
 from TS import TS 
 from SymbolTable import *
+from SymbolT import *
 from SemanticVisitor import SemanticR
 from SemanticAnalyzer import SemanticAnalyzerMio
 import tempfile
