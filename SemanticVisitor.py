@@ -81,9 +81,9 @@ class SemanticR(yaplVisitor):
 
             return temp
 
-        if ctx.PLUS():
-            print(ctx.DIGIT())
-            print(ctx.getText())
+        if ctx.PLUS() is not None:
+            for hijo in ctx.getChildren():
+                print(hijo.getText())
 
         elif ctx.WHILE():
             #print("entre a while")
