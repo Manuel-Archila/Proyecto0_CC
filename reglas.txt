@@ -13,7 +13,7 @@ Reglas de tipos:
 
     Int:
     Int + Int = Int
-    Operaciones permitidas: Suma (+), Resta (-), Multiplicación (*), División (/), Módulo (%).
+    Operaciones permitidas: Suma (+), Resta (-), Multiplicación (*), División (/).
 
     String:
     String + String = String

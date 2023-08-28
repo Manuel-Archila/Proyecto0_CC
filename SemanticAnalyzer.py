@@ -87,16 +87,17 @@ class SemanticAnalyzerMio(yaplVisitor):
             self.symbol_table.exit_scope()
             return temp
 
+
         elif ctx.LET():
             for i in range(len(ctx.ID())):
-                self.symbol_table.put(ctx.ID()[i], self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
+                self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
                 # for chil in ctx.getChildren():
                 #     print(chil.getText())
 
                 return self.visitChildren(ctx)
             #self.symbol_table.exit_scope()
         else:
-            self.symbol_table.put("ctx.ID()[i]", self.get_line(ctx), "variable","ctx.TYPE()[i].getText()")
+            #self.symbol_table.put("ctx.ID()[i]", self.get_line(ctx), "variable","ctx.TYPE()[i].getText()")
             temp = self.visitChildren(ctx)
             return temp
 

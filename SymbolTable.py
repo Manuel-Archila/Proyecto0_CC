@@ -46,12 +46,24 @@ class SymbolTable:
         symbol = Symbol(name, line, symbol_type, current_scope, data_type)
         self.full_scopes[current_scope].put(symbol)
     
-    # def get(self, name):
-    #     for scope_index in range(self.current_scope_index, -1, -1):
-    #         if name in self.scopes[scope_index]:
-    #             return self.scopes[scope_index][name]
-    #     return None
+    def getItem(self, name, scopee):
+        #print("getItem")
+        #for scope_index in range(len(self.full_scopes)-1, -1, -1):
+            # print(self.full_scopes[scope_index].symbols.keys())
+            # print(name)
+        if name in self.full_scopes[scopee].symbols.keys():
+            # table_repr = []
+            # for index, scope in enumerate(self.full_scopes):
+            #     table_repr.append(f"Scope {index}:")
+            #     table_repr.extend([str(symbol) for symbol in scope.symbols.values()])
+            #     table_repr.append("")  # Add an empty line between scopes
+
+            # print("\n".join(table_repr))
+            return True, self.full_scopes[scopee].symbols[name].data_type
+        return False, None
     
+    def getScope(self):
+        return self.scopes2[-1].name
 
     def enter_scope2(self):
         self.scopes2.append(Scope(len(self.full_scopes2)))
