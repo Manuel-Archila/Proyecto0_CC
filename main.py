@@ -29,10 +29,15 @@ def cargar_archivo():
 def guardar_archivo():
     global archivo_temporal
     contenido = contenido_texto.get("1.0", tk.END)
+    
     if not archivo_temporal:
         archivo_temporal = tempfile.NamedTemporaryFile(delete=False)
-    archivo_temporal.write(contenido.encode())
-    archivo_temporal.close()
+    
+    with open(archivo_temporal.name, 'wb') as archivo:
+        archivo.write(contenido.encode())
+    
+    archivo_temporal.close()  # Cerrar el archivo después de escribir en él
+
 
 def cerrar_ventana():
     guardar_archivo()
@@ -44,58 +49,58 @@ def cerrar_ventana():
     if archivo_temporal:
         input_stream = FileStream(archivo_temporal.name)
 
-    lexer = MyLexer(input_stream, tabla_simbolos)
-    token_stream = CommonTokenStream(lexer)
-    token_stream.fill()
+        lexer = MyLexer(input_stream, tabla_simbolos)
+        token_stream = CommonTokenStream(lexer)
+        token_stream.fill()
 
 
-    print("=============================")
+        print("=============================")
 
 
 
 
-    parser = yaplParser(token_stream)
-    parser.removeErrorListeners()
-    parserErrorListener = CustomErrorListener("sintáctico")
-    parser.addErrorListener(parserErrorListener)
-    tree = parser.program()
-    symbol_table = SymbolT()
-    semantic_visitor = SemanticAnalyzerMio(symbol_table)
-    try:
-        semantic_visitor.visit_program(tree)
-    except:
-        pass
-        #print(f"Semantic error at line {error.line}: {error}")  
-    
+        parser = yaplParser(token_stream)
+        parser.removeErrorListeners()
+        parserErrorListener = CustomErrorListener("sintáctico")
+        parser.addErrorListener(parserErrorListener)
+        tree = parser.program()
+        symbol_table = SymbolT()
+        semantic_visitor = SemanticAnalyzerMio(symbol_table)
+        try:
+            semantic_visitor.visit_program(tree)
+        except:
+            pass
+            #print(f"Semantic error at line {error.line}: {error}")  
+        
 
-    print(symbol_table)
-    print("=============================")
+        print(symbol_table)
+        print("=============================")
 
-    semanticR = SemanticR(symbol_table)
+        semanticR = SemanticR(symbol_table)
 
-    semanticR.visit_program(tree)
+        semanticR.visit_program(tree)
 
-    
-    errores_sintacticos = parserErrorListener.errores
-    errores_lexicos = lexer.errors  
-    if parserErrorListener.getErrorCount() > 0:
+        
+        errores_sintacticos = parserErrorListener.errores
+        errores_lexicos = lexer.errors  
+        if parserErrorListener.getErrorCount() > 0:
 
-        mensaje = "Se encontraron errores sintácticos:\n\n"
-        mensaje += "Errores sintácticos:\n"
-        for error in errores_sintacticos:
-            mensaje += f"- {error}\n"
-        mensaje += "\nErrores léxicos:\n"
-        for error in errores_lexicos:
-            mensaje += f"- {error}\n"
+            mensaje = "Se encontraron errores sintácticos:\n\n"
+            mensaje += "Errores sintácticos:\n"
+            for error in errores_sintacticos:
+                mensaje += f"- {error}\n"
+            mensaje += "\nErrores léxicos:\n"
+            for error in errores_lexicos:
+                mensaje += f"- {error}\n"
 
-        messagebox.showerror("Errores Sintácticos", mensaje)
+            messagebox.showerror("Errores Sintácticos", mensaje)
 
-    else:
-        visitor = TreeBuildingVisitor()
-        visitor.visitar(tree)
+        else:
+            visitor = TreeBuildingVisitor()
+            visitor.visitar(tree)
 
-        dot_graph = visitor.getDotGraph()
-        dot_graph.render(filename='output.gv', view=True, format='png')
+            dot_graph = visitor.getDotGraph()
+            dot_graph.render(filename='output.gv', view=True, format='png')
 
 def resetear_todo():
     global archivo_temporal

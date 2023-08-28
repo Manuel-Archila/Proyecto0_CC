@@ -253,7 +253,29 @@ class SemanticR(yaplVisitor):
                 self.errores.append(error)
                 print(error)
                 return "Bool"
-            
+
+        elif ctx.ISVOID():
+            first_child = self.visit(ctx.getChild(1))
+
+            current_scope = self.symbol_table.getScope()
+
+            respuesta1 = self.symbol_table.getItem(ctx.getChild(1).getText(), current_scope)
+
+            if respuesta1[0] == True:
+                first_child = respuesta1[1]
+
+            if first_child is None:
+                first_child = "Indefinido"
+
+            if first_child == "String" or first_child == "Int":
+                print("No hay errores")
+                return "Bool"
+            else:
+                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede validar a nulabilidad de  " + first_child
+                self.errores.append(error)
+                print(error)
+                return "Bool"
+
         elif ctx.WHILE():
             #print("entre a while")
             #print("Enter")
@@ -278,6 +300,27 @@ class SemanticR(yaplVisitor):
         elif ctx.STRING():
             return "String"
         
+        elif ctx.ID():
+
+            if ctx.getChildCount() > 0:
+
+                if ctx.ASSIGN():
+                    return (self.visitChildren(ctx))
+                
+                if ctx.LPAR():
+                    print("Entro a LPAR")
+                    funtion = ctx.ID()[0].getText()
+                    current_scope = self.symbol_table.getScope()
+
+                    respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
+
+                    return respuesta1[1]
+            else:
+                return "String"
+        
+        elif ctx.TRUE() or ctx.FALSE():
+            return "Bool"
+    
         else:
             temp = self.visitChildren(ctx)
             return temp
