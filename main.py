@@ -59,7 +59,7 @@ def cerrar_ventana():
     parserErrorListener = CustomErrorListener("sintáctico")
     parser.addErrorListener(parserErrorListener)
     tree = parser.program()
-    symbol_table = SymbolTable()
+    symbol_table = SymbolT()
     semantic_visitor = SemanticAnalyzerMio(symbol_table)
     try:
         semantic_visitor.visit_program(tree)

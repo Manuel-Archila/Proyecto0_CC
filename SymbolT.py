@@ -33,15 +33,23 @@ class Scope:
 
 class SymbolT:
     def __init__(self):
-        self.root = Scope("0")  # Change root name to "0"
-        self.current_scope = self.root
-        self.scope_counter = 1  # To generate unique scope names
+        self.current_scope = None
+        self.scope_counter = 0
+        self.root = None
+
+        self.current_scope2 = None
+        self.scope_counter2 = 0
     
     def enter_scope(self):
-        new_scope = Scope(str(self.scope_counter), self.current_scope)
-        self.current_scope.add_child(new_scope)
-        self.current_scope = new_scope
-        self.scope_counter += 1
+        if self.scope_counter == 0:
+            self.root = Scope(str(self.scope_counter))
+            self.current_scope = self.root
+            self.scope_counter += 1
+        else:
+            new_scope = Scope(str(self.scope_counter), self.current_scope)
+            self.current_scope.add_child(new_scope)
+            self.current_scope = new_scope
+            self.scope_counter += 1
     
     def exit_scope(self):
         if self.current_scope.parent:
@@ -51,6 +59,49 @@ class SymbolT:
         symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type)
         self.current_scope.put(symbol)
     
+    def enter_scope2(self):
+        if self.scope_counter2 == 0:
+            self.root2 = Scope(str(self.scope_counter2))
+            self.current_scope2 = self.root2
+            self.scope_counter2 += 1
+        else:
+            new_scope = Scope(str(self.scope_counter2), self.current_scope2)
+            self.current_scope2.add_child(new_scope)
+            self.current_scope2 = new_scope
+            self.scope_counter2 += 1
+    
+    def exit_scope2(self):
+        if self.current_scope2.parent:
+            self.current_scope2 = self.current_scope2.parent
+    
+    def put2(self, name, line, symbol_type, data_type=None):
+        symbol = Symbol(name, line, symbol_type, self.current_scope2.name, data_type)
+        self.current_scope2.put(symbol)
+    
+    def visit_elements(self, scope, name):
+    # Check if the current scope has the desired name
+        if scope.name == name:
+            return scope
+        for child in scope.children:
+            result = self.visit_elements(child, name)
+            if result:
+                return result
+        return None
+        
+    
+    def getScope(self):
+        name = self.current_scope2.name
+        scope = self.visit_elements(self.root, name)
+        return scope
+
+    def getItem(self, name, scope):
+        current_scope = scope
+        while current_scope:
+            if name in current_scope.symbols:
+                return True, current_scope.symbols[name].data_type
+            current_scope = current_scope.parent
+        return False, None
+          
     def __repr__(self):
         def recurse(scope, indent=0):
             result = [repr(scope)]
