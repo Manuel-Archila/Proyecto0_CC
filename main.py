@@ -66,8 +66,14 @@ def cerrar_ventana():
         tree = parser.program()
         symbol_table = SymbolT()
         semantic_visitor = SemanticAnalyzerMio(symbol_table)
+        
+        
         try:
             semantic_visitor.visit_program(tree)
+            semantic_visitor.error_mmain()
+            semantic_visitor.error_mmain2()
+
+            print(semantic_visitor.errores)
         except:
             pass
             #print(f"Semantic error at line {error.line}: {error}")  

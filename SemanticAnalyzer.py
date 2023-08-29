@@ -6,15 +6,29 @@ from SymbolTable import Symbol, SymbolTable
 class SemanticAnalyzerMio(yaplVisitor):
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
+        self.mmain = False
+        self.mmain2 = False
+        self.errores = []
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
         print("Llamada a class")
+        if ctx.INHERITS():
+            if ctx.TYPE()[1].getText() == ctx.TYPE()[0].getText():
+                self.errores.append("Error: Herencia circular")
+                print("Error: Herencia circular")
+                return None
+            if ctx.TYPE()[0] == "Main":
+                self.errores.append("Error: Herencia de Main")
+                print("Error: Herencia de Main")
+                return None
         
         self.symbol_table.enter_scope()
-        print(ctx.TYPE()[0].getText())
+        if ctx.TYPE()[0].getText() == "Main":
+            print("Entro a mm")
+            self.mmain = True
         self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class")
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
@@ -26,6 +40,17 @@ class SemanticAnalyzerMio(yaplVisitor):
         print("Llamada a feature")
 
         if ctx.LPAR():
+
+            if ctx.ID().getText() == "main":
+                self.mmain2 = True
+
+                if ctx.formal():
+                    self.errores.append("Error: La funcion main no debe poseer parametros")
+                    print("Error: La funcion main no debe poseer parametros")
+
+
+                    
+                    
             self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
@@ -111,3 +136,13 @@ class SemanticAnalyzerMio(yaplVisitor):
         # Si el nodo no tiene información de línea, devuelve None o cualquier valor por defecto.
         else:
             return None
+        
+    def error_mmain(self):
+        if self.mmain == False:
+            self.errores.append("Error: No hay clase Main")
+            print("Error: No hay clase Main")
+            
+    def error_mmain2(self):
+        if self.mmain2 == False:
+            self.errores.append("Error: No hay metodo main")
+            print("Error: No hay metodo main")

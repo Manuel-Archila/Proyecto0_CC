@@ -103,10 +103,8 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
-                print("No hay errores")
                 return "Int"
             elif first_child == "String" and second_child == "String":
-                print("No hay errores")
                 return "String"
             else:
                 mensaje ="Error en linea" + str(self.get_line(ctx)) + ": No se puede sumar " + first_child + " con " + second_child
@@ -135,7 +133,6 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
-                print("No hay errores")
                 return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede restar " + first_child + " con " + second_child
@@ -164,7 +161,6 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
-                print("No hay errores")
                 return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede multiplicar " + first_child + " con " + second_child
@@ -193,7 +189,6 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
-                print("No hay errores")
                 return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede dividir " + first_child + " con " + second_child
@@ -223,7 +218,6 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
-                print("No hay errores")
                 return "Bool"
 
             else:
@@ -246,7 +240,6 @@ class SemanticR(yaplVisitor):
                 first_child = "Indefinido"
 
             if first_child == "Bool":
-                print("No hay errores")
                 return "Bool"
             else:
                 error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede negar " + first_child
@@ -268,7 +261,6 @@ class SemanticR(yaplVisitor):
                 first_child = "Indefinido"
 
             if first_child == "String" or first_child == "Int":
-                print("No hay errores")
                 return "Bool"
             else:
                 error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede validar a nulabilidad de  " + first_child
