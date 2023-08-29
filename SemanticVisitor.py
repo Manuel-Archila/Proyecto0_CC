@@ -9,12 +9,22 @@ class SemanticR(yaplVisitor):
         self.errores = []
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
+        self.symbol_table.enter_scope2()
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
-        
-        self.symbol_table.enter_scope2()
-        print(ctx.TYPE()[0].getText())
+
+        if ctx.INHERITS():
+
+            current_scope = self.symbol_table.getScope()
+
+            respuesta1 = self.symbol_table.getSymbol(ctx.TYPE()[1].getText(), current_scope)
+
+            hereda2 = respuesta1.hereda
+
+            print(hereda2)
+ 
+        #print(ctx.TYPE()[0].getText())
         self.symbol_table.enter_scope2()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope2()

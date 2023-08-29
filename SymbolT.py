@@ -1,12 +1,13 @@
 class Symbol:
-    def __init__(self, name, line, symbol_type, scope, data_type=None):
+    def __init__(self, name, line, symbol_type, scope, data_type=None, hereda=None):
         self.name = name  
         self.line = line  
         self.symbol_type = symbol_type  
         self.data_type = data_type  
         self.scope = scope  
+        self.hereda = hereda
     def __repr__(self):
-        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope)
+        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda)
 
 class Scope:
     def __init__(self, name, parent=None):
@@ -50,13 +51,14 @@ class SymbolT:
             self.current_scope.add_child(new_scope)
             self.current_scope = new_scope
             self.scope_counter += 1
-    
+        print("Entrando al scope", self.current_scope.name)    
     def exit_scope(self):
         if self.current_scope.parent:
+            print("Saliendo del scope", self.current_scope.name)
             self.current_scope = self.current_scope.parent
     
-    def put(self, name, line, symbol_type, data_type=None):
-        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type)
+    def put(self, name, line, symbol_type, data_type=None, hereda=None):
+        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda)
         self.current_scope.put(symbol)
     
     def enter_scope2(self):
@@ -101,6 +103,14 @@ class SymbolT:
                 return True, current_scope.symbols[name].data_type
             current_scope = current_scope.parent
         return False, None
+    
+    def getSymbol(self, name, scope):
+        current_scope = scope
+        while current_scope:
+            if name in current_scope.symbols:
+                return current_scope.symbols[name]
+            current_scope = current_scope.parent
+        return None
           
     def __repr__(self):
         def recurse(scope, indent=0):

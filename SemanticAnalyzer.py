@@ -11,25 +11,39 @@ class SemanticAnalyzerMio(yaplVisitor):
         self.errores = []
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
+        self.symbol_table.enter_scope()
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
         print("Llamada a class")
+        hereda = None
+        
         if ctx.INHERITS():
-            if ctx.TYPE()[1].getText() == ctx.TYPE()[0].getText():
+
+            hereda = ctx.TYPE()[1].getText()
+
+            if ctx.TYPE()[0].getText() == ctx.TYPE()[1].getText():
                 self.errores.append("Error: Herencia circular")
                 print("Error: Herencia circular")
-                return None
-            if ctx.TYPE()[0] == "Main":
+                
+            if ctx.TYPE()[0].getText() == "Main":
                 self.errores.append("Error: Herencia de Main")
                 print("Error: Herencia de Main")
-                return None
+                
         
-        self.symbol_table.enter_scope()
+        
         if ctx.TYPE()[0].getText() == "Main":
-            print("Entro a mm")
             self.mmain = True
-        self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class")
+
+        
+        if hereda is None:
+            print("No hereda")
+            if ctx.TYPE()[0].getText() == "Main" or ctx.TYPE()[0].getText() == "Object":
+                hereda = None
+            else:
+                hereda = "Object"
+        
+        self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class", None , hereda)
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope()

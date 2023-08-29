@@ -1,0 +1,57 @@
+class Object {
+    abort() : Object {
+        pass
+    };
+
+    type_name() : String {
+        pass
+    };
+
+    copy() : Object {
+        pass
+    };
+
+};
+
+class String inherits Object {
+
+    length() : Int {
+        pass
+    };
+
+    concat(str : String) : String {
+        pass
+    };
+
+    substr(i : Int, one : Int) : Int {
+        pass
+    };
+    
+};
+
+class Int inherits Object {
+
+};
+
+class Bool inherits Object {
+
+};
+
+class IO inherits Object {
+    out_string(str : String) : String {
+        pass
+    };
+    
+    out_int(i : Int) : Int {
+        pass
+    };
+
+    in_string() : String {
+        pass
+    };
+
+    in_int() : Int {
+        pass
+    };
+
+};
