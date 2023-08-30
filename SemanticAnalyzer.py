@@ -15,7 +15,7 @@ class SemanticAnalyzerMio(yaplVisitor):
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
-        print("Llamada a class")
+        #print("Llamada a class")
         hereda = None
         
         if ctx.INHERITS():
@@ -51,7 +51,7 @@ class SemanticAnalyzerMio(yaplVisitor):
         return temp
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
-        print("Llamada a feature")
+        #print("Llamada a feature")
 
         if ctx.LPAR():
 

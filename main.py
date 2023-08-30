@@ -85,6 +85,9 @@ def cerrar_ventana():
         parser.addErrorListener(parserErrorListener)
         tree = parser.program()
         symbol_table = SymbolT()
+        # symbol_table.build_natives()
+        # print(symbol_table)
+        #input("Presione enter para continuar...")
         semantic_visitor = SemanticAnalyzerMio(symbol_table)
         
         

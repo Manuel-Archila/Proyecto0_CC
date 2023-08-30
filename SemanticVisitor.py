@@ -7,6 +7,7 @@ class SemanticR(yaplVisitor):
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
         self.errores = []
+        self.classes = []
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         self.symbol_table.enter_scope2()
@@ -16,13 +17,30 @@ class SemanticR(yaplVisitor):
 
         if ctx.INHERITS():
 
-            current_scope = self.symbol_table.getScope()
+            hereda2 = ctx.TYPE()[1].getText()
 
-            respuesta1 = self.symbol_table.getSymbol(ctx.TYPE()[1].getText(), current_scope)
+            salmon = True
+            # self.classes.append(ctx.TYPE()[0].getText())
 
-            hereda2 = respuesta1.hereda
+            while salmon:
+                if hereda2 not in self.classes:
+                    self.classes.append(hereda2)
+                    current_scope = self.symbol_table.getScope()
 
-            print(hereda2)
+                    respuesta1 = self.symbol_table.getSymbol(ctx.TYPE()[1].getText(), current_scope)
+
+                    hereda2 = respuesta1.hereda
+
+                    if hereda2 == "Object" or hereda2 == None:
+                        self.classes = []
+                        salmon = False
+                else:
+                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " hereda de una clase que ya heredo"
+                    self.errores.append(mensaje)
+                    print(mensaje)
+                    salmon = False
+            print("Classes:")
+            print(self.classes)
  
         #print(ctx.TYPE()[0].getText())
         self.symbol_table.enter_scope2()
