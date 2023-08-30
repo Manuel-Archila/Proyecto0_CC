@@ -2,7 +2,7 @@
 class Main { 
 
    main() : Object {
-        NEW Uno
+        pass
         
     };
 
@@ -17,16 +17,8 @@ class Uno {
 };
 
 class Dos inherits Uno {
-   
-   resultado : Int <- count();
 
+   constructor () : Dos {
+        out_string("Countdown: ")
+   };
 };
-
-
-
-
-
-
-
-
-

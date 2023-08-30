@@ -90,7 +90,6 @@ class SymbolT:
                 return result
         return None
         
-    
     def getScope(self):
         name = self.current_scope2.name
         scope = self.visit_elements(self.root, name)
@@ -134,9 +133,9 @@ class SymbolT:
         # Scope 1
         self.enter_scope()
         self.enter_scope2()
-        self.put("abort", 0, "function", None, None)
-        self.put("type_name", 0, "function", None, None)
-        self.put("copy", 0, "function", None, None)
+        self.put("abort", 0, "function", "Object", None)
+        self.put("type_name", 0, "function", "String", None)
+        self.put("copy", 0, "function", "Object", None)
         self.exit_scope2()
         self.exit_scope()
         # Scope 2
@@ -157,9 +156,9 @@ class SymbolT:
         # Scope 5
         self.enter_scope()
         self.enter_scope2()
-        self.put("length", 0, "function", None, None)
-        self.put("concat", 0, "function", None, None)
-        self.put("substr", 0, "function", None, None)
+        self.put("length", 0, "function", "Int", None)
+        self.put("concat", 0, "function", "String", None)
+        self.put("substr", 0, "function", "Int", None)
         self.exit_scope()
         self.exit_scope2()
         # Scope 6
@@ -193,10 +192,10 @@ class SymbolT:
         # Scope 11
         self.enter_scope()
         self.enter_scope2()
-        self.put("out_string", 0, "function", None, None)
-        self.put("out_int", 0, "function", None, None)
-        self.put("in_string", 0, "function", None, None)
-        self.put("in_int", 0, "function", None, None)
+        self.put("out_string", 0, "function", "String", None)
+        self.put("out_int", 0, "function", "Int", None)
+        self.put("in_string", 0, "function", "String", None)
+        self.put("in_int", 0, "function", "Int", None)
         self.exit_scope()
         self.exit_scope2()
         # Scope 12

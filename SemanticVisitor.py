@@ -46,7 +46,7 @@ class SemanticR(yaplVisitor):
         self.symbol_table.enter_scope2()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope2()
-        self.symbol_table.exit_scope2()
+        #self.symbol_table.exit_scope2()
         return temp
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
@@ -328,11 +328,16 @@ class SemanticR(yaplVisitor):
                     return (self.visitChildren(ctx))
                 
                 if ctx.LPAR():
-                    print("Entro a LPAR")
+
                     funtion = ctx.ID()[0].getText()
                     current_scope = self.symbol_table.getScope()
+                    print(current_scope)
+                    print("simon si si si s")
+                    ##AQUI TENEMOS QUE VER
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
+
+                    print(respuesta1)
 
                     return respuesta1[1]
             else:

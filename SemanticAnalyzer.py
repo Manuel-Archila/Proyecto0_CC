@@ -47,7 +47,7 @@ class SemanticAnalyzerMio(yaplVisitor):
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope()
-        self.symbol_table.exit_scope()
+        #self.symbol_table.exit_scope()
         return temp
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
