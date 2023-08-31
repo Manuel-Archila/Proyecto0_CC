@@ -333,9 +333,54 @@ class SemanticR(yaplVisitor):
                     current_scope = self.symbol_table.getScope()
                     print(current_scope)
                     print("simon si si si s")
-                    ##AQUI TENEMOS QUE VER
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
+
+                    if respuesta1[0] == False:
+
+                        seaClass = True
+
+                        parent_ctx = ctx
+
+                        while seaClass:
+                            parent_ctx = parent_ctx.parentCtx
+                            if isinstance(parent_ctx, yaplParser.ClassContext):
+
+                                if parent_ctx.INHERITS():
+                                    hereda = parent_ctx.TYPE()[1].getText()
+                                    print(hereda)
+
+                                    scopeH = self.symbol_table.getSpecificScope(hereda)
+
+                                    print(scopeH)
+                                    print(funtion)
+
+                                    resp = self.symbol_table.getItem(funtion, scopeH)
+
+                                    
+                                    if resp[0] == True:
+                                        print(resp[1])
+                                        return resp[1]
+                                    else:
+                                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconoce  " + funtion
+                                        self.errores.append(error)
+                                        print(error)
+                                        return "Bool"
+
+                                    
+                                else:
+                                    print("no hereda")
+                                    
+
+                                seaClass = False
+                            
+                            
+
+
+                            
+                        
+                    
+
 
                     print(respuesta1)
 

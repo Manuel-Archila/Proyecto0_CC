@@ -13,7 +13,7 @@ class Scope:
     def __init__(self, name, parent=None):
         self.name = name
         self.parent = parent
-        self.children = []  # List to store child scopes
+        self.children = []  
         self.symbols = {}
     
     def put(self, symbol):
@@ -94,6 +94,23 @@ class SymbolT:
         name = self.current_scope2.name
         scope = self.visit_elements(self.root, name)
         return scope
+
+    def getSpecificScope(self, name):
+        current_scope = self.current_scope
+        while current_scope:
+            if name in current_scope.symbols:
+                contador = 0
+                for scope in current_scope.symbols:
+                    if scope != name:
+                        contador += 1
+                    if scope == name:
+                        break
+                return current_scope.children[contador]
+
+            current_scope = current_scope.parent
+        return None
+        
+        
 
     def getItem(self, name, scope):
         current_scope = scope

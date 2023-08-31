@@ -105,7 +105,7 @@ digraph {
 	45 -> 52
 	52 [label=Expr]
 	52 -> 53
-	53 [label=out_string]
+	53 [label=count]
 	52 -> 54
 	54 [label="("]
 	52 -> 55
