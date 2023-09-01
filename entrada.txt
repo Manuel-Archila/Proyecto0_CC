@@ -8,7 +8,7 @@ class Main {
 
 };
 
-class Tres{
+class Tres inherits Dos{
 
    hola( initial : Int ) : Int {
         0

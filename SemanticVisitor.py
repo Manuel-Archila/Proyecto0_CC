@@ -23,11 +23,13 @@ class SemanticR(yaplVisitor):
             # self.classes.append(ctx.TYPE()[0].getText())
 
             while salmon:
+                # print("Toca agregar a la lista de clases: " + hereda2 + " porque hereda a " + ctx.TYPE()[0].getText())
                 if hereda2 not in self.classes:
+                    # print("Agregue a la lista de clases: " + hereda2)
                     self.classes.append(hereda2)
                     current_scope = self.symbol_table.getScope()
 
-                    respuesta1 = self.symbol_table.getSymbol(ctx.TYPE()[1].getText(), current_scope)
+                    respuesta1 = self.symbol_table.getSymbol(hereda2, current_scope)
 
                     hereda2 = respuesta1.hereda
 
@@ -35,12 +37,13 @@ class SemanticR(yaplVisitor):
                         self.classes = []
                         salmon = False
                 else:
-                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " hereda de una clase que ya heredo"
+                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " hereda de causando un ciclo de herencia"
                     self.errores.append(mensaje)
                     print(mensaje)
                     salmon = False
             print("Classes:")
             print(self.classes)
+            self.classes = []
  
         #print(ctx.TYPE()[0].getText())
         self.symbol_table.enter_scope2()
