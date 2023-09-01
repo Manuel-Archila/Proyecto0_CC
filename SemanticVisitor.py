@@ -379,13 +379,20 @@ class SemanticR(yaplVisitor):
                         while seaClass:
                             parent_ctx = parent_ctx.parentCtx
                             if isinstance(parent_ctx, yaplParser.ClassContext):
+                                parent_ctx = parent_ctx.TYPE()[0].getText()
 
                                 while not inheri:
-                                    input()
 
-                                    ## aqui es lo que hay que modificar para que en lugar de ver por herencia vaya a ver a la tabla de simbolos de quien hereda
-                                    if parent_ctx.INHERITS():
-                                        hereda = parent_ctx.TYPE()[1].getText()# esto esta bien pero en ligar de ser hereda en la posisicon 1 debe ser obtenido por la tabla
+                                    sco = self.symbol_table.getSpecific(parent_ctx)
+                                    
+                                    r = self.symbol_table.getSymbol(parent_ctx, sco)
+
+                                    print(r)
+
+
+                                    if r.hereda != "None":
+                                        hereda = r.hereda
+
 
                                         print(hereda)
 
@@ -408,7 +415,7 @@ class SemanticR(yaplVisitor):
                                             print(resp[1])
                                             return resp[1]
                                         
-                                    elif parent_ctx.getText() == "Main":
+                                    elif r.hereda == "Main":
                                         error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                                         self.errores.append(error)
                                         print(error)
@@ -427,7 +434,7 @@ class SemanticR(yaplVisitor):
                             
                         
                     
-                    print("hola")
+                    print("adios")
 
                     print(respuesta1)
 

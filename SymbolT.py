@@ -110,15 +110,15 @@ class SymbolT:
     #         current_scope = current_scope.parent
     #     return None
     
-    # def getSpecific(self, name, scope, clase):
-    #     if name in scope.symbols:
-    #         return True, scope.symbols[name]
-    #     for child in scope.children:
-    #         print(child)
-    #         if name in child.symbols:
-    #             if clase in child.parent.symbols:
-    #                 pass
-    #                 #return True, child.symbols[name]
+    def getSpecific(self, name):
+        print("Buscando", name)
+        current_scope = self.current_scope
+        while current_scope:
+            if name in current_scope.symbols:
+                return current_scope
+
+            current_scope = current_scope.parent
+        return None
             
     def getSpecificScope(self, name):
         current_scope = self.current_scope
