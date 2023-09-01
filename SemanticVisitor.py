@@ -8,6 +8,8 @@ class SemanticR(yaplVisitor):
         self.symbol_table = symbol_table
         self.errores = []
         self.classes = []
+        self.NOexiste= []
+        self.circular = True
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         self.symbol_table.enter_scope2()
@@ -20,29 +22,35 @@ class SemanticR(yaplVisitor):
             hereda2 = ctx.TYPE()[1].getText()
 
             salmon = True
-            # self.classes.append(ctx.TYPE()[0].getText())
 
             while salmon:
-                # print("Toca agregar a la lista de clases: " + hereda2 + " porque hereda a " + ctx.TYPE()[0].getText())
                 if hereda2 not in self.classes:
-                    # print("Agregue a la lista de clases: " + hereda2)
                     self.classes.append(hereda2)
                     current_scope = self.symbol_table.getScope()
 
                     respuesta1 = self.symbol_table.getSymbol(hereda2, current_scope)
 
-                    hereda2 = respuesta1.hereda
+                    if respuesta1 == None:
+                        if hereda2 not in self.NOexiste:
+                            mensaje = "Error: La clase " + hereda2 + " no existe"
+                            self.NOexiste.append(hereda2)
+                            self.errores.append(mensaje)
+                            print(mensaje)
+                        salmon = False
+                    else:
+
+                        hereda2 = respuesta1.hereda
 
                     if hereda2 == "Object" or hereda2 == None:
                         self.classes = []
                         salmon = False
                 else:
-                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " hereda de causando un ciclo de herencia"
-                    self.errores.append(mensaje)
-                    print(mensaje)
+                    if self.circular:
+                        mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " causa un ciclo de herencia"
+                        self.errores.append(mensaje)
+                        print(mensaje)
+                        self.circular = False
                     salmon = False
-            print("Classes:")
-            print(self.classes)
             self.classes = []
  
         #print(ctx.TYPE()[0].getText())
@@ -270,13 +278,35 @@ class SemanticR(yaplVisitor):
             if first_child is None:
                 first_child = "Indefinido"
 
-            if first_child == "Bool":
+            if first_child == "Bool" or first_child == "Int":
                 return "Bool"
             else:
                 error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede negar " + first_child
                 self.errores.append(error)
                 print(error)
                 return "Bool"
+            
+        elif ctx.DIAC():
+            first_child = self.visit(ctx.getChild(1))
+
+            current_scope = self.symbol_table.getScope()
+
+            respuesta1 = self.symbol_table.getItem(ctx.getChild(1).getText(), current_scope)
+
+            if respuesta1[0] == True:
+                first_child = respuesta1[1]
+
+            if first_child is None:
+                first_child = "Indefinido"
+
+            if first_child == "Bool" or first_child == "Int":
+                return "Int"
+            else:
+                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede hacer el complemento de " + first_child
+                self.errores.append(error)
+                print(error)
+                return "Int"
+
 
         elif ctx.ISVOID():
             first_child = self.visit(ctx.getChild(1))

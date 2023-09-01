@@ -95,6 +95,11 @@ class SymbolT:
         name = self.current_scope2.name
         scope = self.visit_elements(self.root, name)
         return scope
+    
+    def getScopE(self):
+        name = self.current_scope.name
+        scope = self.visit_elements(self.root, name)
+        return scope
 
     # def getSpecificScope(self, name):
     #     current_scope = self.current_scope

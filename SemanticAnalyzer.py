@@ -29,6 +29,11 @@ class SemanticAnalyzerMio(yaplVisitor):
             if ctx.TYPE()[0].getText() == "Main":
                 self.errores.append("Error: Herencia de Main")
                 print("Error: Herencia de Main")
+
+            if ctx.TYPE()[1].getText() == "String" or ctx.TYPE()[1].getText() == "Int" or ctx.TYPE()[1].getText() == "Bool":
+                self.errores.append("Error: No se puede heredar de clases nativas")
+                print("Error: No se puede heredar de clases nativas")
+            
                 
         
         
@@ -42,8 +47,18 @@ class SemanticAnalyzerMio(yaplVisitor):
                 hereda = None
             else:
                 hereda = "Object"
+
+        current = self.symbol_table.getScopE()
+
+        resp = self.symbol_table.getItem(ctx.TYPE()[0].getText(), current)
+
+        if resp[0] == True:
+            self.errores.append("Error: La clase " + ctx.TYPE()[0].getText() + " ya existe")
+            print("Error: La clase " + ctx.TYPE()[0].getText() + " ya existe")
+
+        else:
         
-        self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class", None , hereda)
+            self.symbol_table.put(ctx.TYPE()[0].getText(), ctx.start.line, "class", None , hereda)
         self.symbol_table.enter_scope()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope()
@@ -62,17 +77,35 @@ class SemanticAnalyzerMio(yaplVisitor):
                     self.errores.append("Error: La funcion main no debe poseer parametros")
                     print("Error: La funcion main no debe poseer parametros")
 
+            
+            current = self.symbol_table.getScopE()
 
-                    
-                    
-            self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
+            resp = self.symbol_table.getItem(ctx.ID().getText(), current)
+
+            if resp[0] == True:
+                self.errores.append("Error: La función " + ctx.ID().getText() + " ya existe")
+                print("Error: La función " + ctx.ID().getText() + " ya existe")
+
+            else:
+                self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
+
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
             self.symbol_table.exit_scope()
             return temp
 
         else:
-            self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
+            current = self.symbol_table.getScopE()
+
+            resp = self.symbol_table.getItem(ctx.ID().getText(), current)
+
+            if resp[0] == True:
+                self.errores.append("Error: La función " + ctx.ID().getText() + " ya existe")
+                print("Error: La función " + ctx.ID().getText() + " ya existe")
+
+            else:
+
+                self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
 
             return None
     
@@ -129,9 +162,19 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         elif ctx.LET():
             for i in range(len(ctx.ID())):
-                self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
-                # for chil in ctx.getChildren():
-                #     print(chil.getText())
+
+                current = self.symbol_table.getScopE()
+
+                resp = self.symbol_table.getItem(ctx.ID()[i].getText(), current)
+
+                if resp[0] == True:
+                    self.errores.append("Error: La variable " + ctx.ID()[i].getText() + " ya existe")
+                    print("Error: La variable " + ctx.ID()[i].getText() + " ya existe")
+
+                else:
+
+                    self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
+
 
                 return self.visitChildren(ctx)
             #self.symbol_table.exit_scope()

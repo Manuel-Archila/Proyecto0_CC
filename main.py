@@ -38,27 +38,6 @@ def guardar_archivo():
     
     archivo_temporal.close()  # Cerrar el archivo después de escribir en él
 
-# def guardar_archivo():
-#     global archivo_temporal
-    
-#     # Read the content of fijos.txt
-#     with open("fijas.txt", "r") as fijos_file:
-#         fijos_content = fijos_file.read()
-    
-#     contenido = contenido_texto.get("1.0", tk.END)
-    
-#     if not archivo_temporal:
-#         archivo_temporal = tempfile.NamedTemporaryFile(delete=False)
-    
-#     # Combine fijos_content and contenido
-#     combined_content = fijos_content + "\n" + contenido
-    
-#     with open(archivo_temporal.name, 'wb') as archivo:
-#         archivo.write(combined_content.encode())
-    
-#     archivo_temporal.close()  # Cerrar el archivo después de escribir en él
-
-
 def cerrar_ventana():
     guardar_archivo()
     
