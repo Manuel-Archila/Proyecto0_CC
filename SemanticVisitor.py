@@ -338,39 +338,53 @@ class SemanticR(yaplVisitor):
 
                     if respuesta1[0] == False:
 
-                        seaClass = True
-
+                        inheri = False
                         parent_ctx = ctx
+
+                        seaClass = True
 
                         while seaClass:
                             parent_ctx = parent_ctx.parentCtx
                             if isinstance(parent_ctx, yaplParser.ClassContext):
 
-                                if parent_ctx.INHERITS():
-                                    hereda = parent_ctx.TYPE()[1].getText()
-                                    print(hereda)
+                                while not inheri:
+                                    input()
 
-                                    scopeH = self.symbol_table.getSpecificScope(hereda)
+                                    ## aqui es lo que hay que modificar para que en lugar de ver por herencia vaya a ver a la tabla de simbolos de quien hereda
+                                    if parent_ctx.INHERITS():
+                                        hereda = parent_ctx.TYPE()[1].getText()# esto esta bien pero en ligar de ser hereda en la posisicon 1 debe ser obtenido por la tabla
 
-                                    print(scopeH)
-                                    print(funtion)
+                                        print(hereda)
 
-                                    resp = self.symbol_table.getItem(funtion, scopeH)
+                                        scopeH = self.symbol_table.getSpecificScope(hereda)
 
-                                    
-                                    if resp[0] == True:
-                                        print(resp[1])
-                                        return resp[1]
-                                    else:
-                                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconoce  " + funtion
+                                        print(scopeH)
+                                        print(funtion)
+
+                                        resp = self.symbol_table.getItem(funtion, scopeH)
+
+                                        inheri = resp[0]
+
+                                        
+                                        if resp[0] == False:
+
+                                            inheri = resp[0]
+                                            parent_ctx = hereda
+
+                                        else:
+                                            print(resp[1])
+                                            return resp[1]
+                                        
+                                    elif parent_ctx.getText() == "Main":
+                                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                                         self.errores.append(error)
                                         print(error)
-                                        return "Bool"
+                                        return "Int"
 
-                                    
-                                else:
-                                    print("no hereda")
-                                    
+                                    else:
+
+                                        hereda = 'Object'
+                                        
 
                                 seaClass = False
                             
@@ -380,7 +394,7 @@ class SemanticR(yaplVisitor):
                             
                         
                     
-
+                    print("hola")
 
                     print(respuesta1)
 

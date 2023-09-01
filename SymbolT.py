@@ -89,12 +89,32 @@ class SymbolT:
             if result:
                 return result
         return None
+
         
     def getScope(self):
         name = self.current_scope2.name
         scope = self.visit_elements(self.root, name)
         return scope
 
+    # def getSpecificScope(self, name):
+    #     current_scope = self.current_scope
+    #     while current_scope:
+    #         if name in current_scope.symbols:
+    #             return current_scope
+
+    #         current_scope = current_scope.parent
+    #     return None
+    
+    # def getSpecific(self, name, scope, clase):
+    #     if name in scope.symbols:
+    #         return True, scope.symbols[name]
+    #     for child in scope.children:
+    #         print(child)
+    #         if name in child.symbols:
+    #             if clase in child.parent.symbols:
+    #                 pass
+    #                 #return True, child.symbols[name]
+            
     def getSpecificScope(self, name):
         current_scope = self.current_scope
         while current_scope:
@@ -106,11 +126,8 @@ class SymbolT:
                     if scope == name:
                         break
                 return current_scope.children[contador]
-
             current_scope = current_scope.parent
         return None
-        
-        
 
     def getItem(self, name, scope):
         current_scope = scope
@@ -151,92 +168,116 @@ class SymbolT:
         self.enter_scope()
         self.enter_scope2()
         self.put("abort", 0, "function", "Object", None)
-        self.put("type_name", 0, "function", "String", None)
-        self.put("copy", 0, "function", "Object", None)
-        self.exit_scope2()
-        self.exit_scope()
+        self.enter_scope()
+        self.enter_scope2()
         # Scope 2
-        self.enter_scope()
-        self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+        # Scope 1
+        self.put("type_name", 0, "function", "String", None)
+        self.enter_scope()
+        self.enter_scope2()
         # Scope 3
-        self.enter_scope()
-        self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+        # Scope 1
+        self.put("copy", 0, "function", "Object", None)
+        self.enter_scope()
+        self.enter_scope2()
         # Scope 4
-        self.enter_scope()
-        self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+        # Scope 1
+        self.exit_scope2()
+        self.exit_scope()
+        
+        
         # Scope 5
         self.enter_scope()
         self.enter_scope2()
         self.put("length", 0, "function", "Int", None)
-        self.put("concat", 0, "function", "String", None)
-        self.put("substr", 0, "function", "Int", None)
-        self.exit_scope()
-        self.exit_scope2()
+        self.enter_scope()
+        self.enter_scope2()
         # Scope 6
-        self.enter_scope()
-        self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+        
+        self.put("concat", 0, "function", "String", None)
+        self.enter_scope()
+        self.enter_scope2()
         # Scope 7
-        self.enter_scope()
-        self.enter_scope2()
         self.put("str", 0, "formal", "String", None)
+        
         self.exit_scope()
         self.exit_scope2()
-        # Scope 8
+
+        self.put("substr", 0, "function", "Int", None)
+
         self.enter_scope()
         self.enter_scope2()
+        # Scope 8
         self.put("i", 0, "formal", "Int", None)
         self.put("one", 0, "formal", "Int", None)
+
         self.exit_scope()
         self.exit_scope2()
+
+        self.exit_scope()
+        self.exit_scope2()
+
+
+
         # Scope 9
         self.enter_scope()
         self.enter_scope2()
+
         self.exit_scope()
         self.exit_scope2()
         # Scope 10
         self.enter_scope()
         self.enter_scope2()
+
         self.exit_scope()
         self.exit_scope2()
         # Scope 11
         self.enter_scope()
         self.enter_scope2()
         self.put("out_string", 0, "function", "String", None)
-        self.put("out_int", 0, "function", "Int", None)
-        self.put("in_string", 0, "function", "String", None)
-        self.put("in_int", 0, "function", "Int", None)
-        self.exit_scope()
-        self.exit_scope2()
-        # Scope 12
         self.enter_scope()
         self.enter_scope2()
+        # Scope 12
         self.put("str", 0, "formal", "String", None)
         self.exit_scope()
         self.exit_scope2()
+
+        self.put("out_int", 0, "function", "Int", None)
         # Scope 13
         self.enter_scope()
         self.enter_scope2()
         self.put("i", 0, "formal", "Int", None)
         self.exit_scope()
         self.exit_scope2()
+
+        self.put("in_string", 0, "function", "String", None)
         # Scope 14
         self.enter_scope()
         self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+
+        self.put("in_int", 0, "function", "Int", None)
         # Scope 15
         self.enter_scope()
         self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
+
+        self.exit_scope()
+        self.exit_scope2()
+        
+        
+        
+        
 
 
 

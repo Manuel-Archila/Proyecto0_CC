@@ -8,7 +8,15 @@ class Main {
 
 };
 
-class Uno {
+class Tres{
+
+   hola( initial : Int ) : Int {
+        0
+    };
+
+};
+
+class Uno inherits Tres{
 
    count( initial : Int ) : Int {
         0
@@ -19,6 +27,6 @@ class Uno {
 class Dos inherits Uno {
 
    constructor () : Dos {
-        out_string("Countdown: ")
+        hola("Countdown: ")
    };
 };
