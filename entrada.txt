@@ -8,18 +8,6 @@ class Main {
 
 };
 
-class Silly {
-    prueba() : Silly { self };
-};
-
-class Sally inherits Silly { };
-
-class Main {
-    x : Sally <- new Sally;
-    x : Sally;
-    main() : Sally { x };
-};
-
 class Tres{
 
    hola( initial : Int ) : Int {

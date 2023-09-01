@@ -10,6 +10,7 @@ class SemanticR(yaplVisitor):
         self.classes = []
         self.NOexiste= []
         self.circular = True
+        self.mmain2 = False
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         self.symbol_table.enter_scope2()
@@ -63,7 +64,13 @@ class SemanticR(yaplVisitor):
     def visitFeature(self, ctx:yaplParser.FeatureContext):
 
         if ctx.LPAR():
-            #print("Enter")
+
+            if ctx.ID().getText() == "main":
+                parent_ctx = ctx.parentCtx
+                if parent_ctx.TYPE()[0].getText() == "Main":
+                    self.mmain2 = True
+
+            
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
             #print("Exit")
@@ -475,3 +482,8 @@ class SemanticR(yaplVisitor):
             return node.start.line
         else:
             return None
+        
+    def error_mmain2(self):
+        if self.mmain2 == False:
+            self.errores.append("Error: No hay metodo main")
+            print("Error: No hay metodo main")

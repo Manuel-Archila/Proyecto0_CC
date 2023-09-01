@@ -159,7 +159,6 @@ class SymbolT:
         return recurse(self.root)
     
     def build_natives(self):
-        print("Building natives")
         # Scope 0
         self.enter_scope()
         self.enter_scope2()

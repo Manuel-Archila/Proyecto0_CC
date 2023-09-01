@@ -71,7 +71,7 @@ def cerrar_ventana():
         try:
             semantic_visitor.visit_program(tree)
             semantic_visitor.error_mmain()
-            semantic_visitor.error_mmain2()
+            #semantic_visitor.error_mmain2()
 
             print(semantic_visitor.errores)
         except:
@@ -84,7 +84,7 @@ def cerrar_ventana():
         semanticR = SemanticR(symbol_table)
 
         semanticR.visit_program(tree)
-
+        semanticR.error_mmain2()
         
         errores_sintacticos = parserErrorListener.errores
         errores_lexicos = lexer.errors  

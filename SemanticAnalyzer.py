@@ -44,7 +44,6 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         
         if hereda is None:
-            print("No hereda")
             if ctx.TYPE()[0].getText() == "Main" or ctx.TYPE()[0].getText() == "Object":
                 hereda = None
             else:
@@ -74,6 +73,8 @@ class SemanticAnalyzerMio(yaplVisitor):
 
             if ctx.ID().getText() == "main":
                 self.mmain2 = True
+                
+            
 
                 if ctx.formal():
                     self.errores.append("Error: La funcion main no debe poseer parametros")
@@ -112,7 +113,6 @@ class SemanticAnalyzerMio(yaplVisitor):
                 parent_ctx = parent_ctx.parentCtx
                 if isinstance(parent_ctx, yaplParser.ClassContext):
 
-                    print("parent_ctx: ", parent_ctx.TYPE()[0].getText())
 
                     parent_ctx = parent_ctx.TYPE()[0].getText()
 
@@ -123,7 +123,8 @@ class SemanticAnalyzerMio(yaplVisitor):
                         r = self.symbol_table.getSymbol(parent_ctx, sco)
 
 
-                        if r.hereda is not None:
+
+                        if r.name != "Main" and r.hereda is not None:
                             hereda = r.hereda
 
 
@@ -139,12 +140,12 @@ class SemanticAnalyzerMio(yaplVisitor):
                                 parent_ctx = hereda
 
                             else:
-                                print(resp[1])
+                                self.errores.append("Error: El atributo " + name + " ya existe en clase padre")
+                                print("Error: El atributo " + name + " ya existe en clase padre")
+                                inheri = True
 
                         else:
                             inheri = True
-
-                    print("sco: ", sco)
 
                     seaClass = False
 
