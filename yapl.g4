@@ -71,8 +71,6 @@ LSQUARE: '[';
 RSQUARE: ']';
 
 // Identificadores especiales
-SELF: 'self';
-SELF_TYPE: 'SELF_TYPE';
 
 // Palabras reservadas
 FALSE: 'false';

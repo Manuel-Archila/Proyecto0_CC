@@ -33,8 +33,10 @@ class SemanticAnalyzerMio(yaplVisitor):
             if ctx.TYPE()[1].getText() == "String" or ctx.TYPE()[1].getText() == "Int" or ctx.TYPE()[1].getText() == "Bool":
                 self.errores.append("Error: No se puede heredar de clases nativas")
                 print("Error: No se puede heredar de clases nativas")
-            
-                
+        
+        if ctx.TYPE()[0].getText() == "SELF_TYPE":
+            self.errores.append("Error: La clase no se puede llamar SELF_TYPE")
+            print("Error: La clase no se puede llamar SELF_TYPE")
         
         
         if ctx.TYPE()[0].getText() == "Main":
@@ -76,6 +78,10 @@ class SemanticAnalyzerMio(yaplVisitor):
                 if ctx.formal():
                     self.errores.append("Error: La funcion main no debe poseer parametros")
                     print("Error: La funcion main no debe poseer parametros")
+            
+            if ctx.ID().getText() == "self":
+                self.errores.append("Error: La funcion no puede llamarse self")
+                print("Error: La funcion no puede llamarse self")
 
             
             current = self.symbol_table.getScopE()
@@ -95,8 +101,55 @@ class SemanticAnalyzerMio(yaplVisitor):
             return temp
 
         else:
-            current = self.symbol_table.getScopE()
+            name = ctx.ID().getText()
 
+            inheri = False
+            parent_ctx = ctx
+
+            seaClass = True
+
+            while seaClass:
+                parent_ctx = parent_ctx.parentCtx
+                if isinstance(parent_ctx, yaplParser.ClassContext):
+
+                    print("parent_ctx: ", parent_ctx.TYPE()[0].getText())
+
+                    parent_ctx = parent_ctx.TYPE()[0].getText()
+
+                    while not inheri:
+
+
+                        sco = self.symbol_table.getSpecific(parent_ctx)
+                        r = self.symbol_table.getSymbol(parent_ctx, sco)
+
+
+                        if r.hereda is not None:
+                            hereda = r.hereda
+
+
+                            scopeH = self.symbol_table.getSpecificScope(hereda)
+
+
+                            resp = self.symbol_table.getItem(name, scopeH)
+
+                            inheri = resp[0]
+
+                            if resp[0] == False:
+                                inheri = resp[0]
+                                parent_ctx = hereda
+
+                            else:
+                                print(resp[1])
+
+                        else:
+                            inheri = True
+
+                    print("sco: ", sco)
+
+                    seaClass = False
+
+            current = self.symbol_table.getScopE()
+            
             resp = self.symbol_table.getItem(ctx.ID().getText(), current)
 
             if resp[0] == True:
@@ -105,7 +158,12 @@ class SemanticAnalyzerMio(yaplVisitor):
 
             else:
 
-                self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
+                if ctx.ID().getText() == "self":
+                    self.errores.append("Error: El atributo no puede llamarse self")
+                    print("Error: El atributo no puede llamarse self")
+
+                else:
+                    self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
 
             return None
     
@@ -172,8 +230,13 @@ class SemanticAnalyzerMio(yaplVisitor):
                     print("Error: La variable " + ctx.ID()[i].getText() + " ya existe")
 
                 else:
-
-                    self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
+                    
+                    if ctx.ID()[i].getText() == "self":
+                        self.errores.append("Error: La variable no puede llamarse self")
+                        print("Error: La variable no puede llamarse self")
+                        
+                    else:
+                        self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
 
 
                 return self.visitChildren(ctx)

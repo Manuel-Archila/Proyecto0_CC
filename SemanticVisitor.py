@@ -76,6 +76,7 @@ class SemanticR(yaplVisitor):
         else:
             #print("Enter")
             self.symbol_table.enter_scope2()
+            
             temp = self.visitChildren(ctx)
             #print("Exit")
             self.symbol_table.exit_scope2()
