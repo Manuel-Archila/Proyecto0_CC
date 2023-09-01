@@ -145,6 +145,10 @@ class SemanticR(yaplVisitor):
                 return "Int"
             elif first_child == "String" and second_child == "String":
                 return "String"
+            elif first_child == "Int" and second_child == "Bool":
+                return "Int"
+            elif first_child == "Bool" and second_child == "Int":
+                return "Int"
             else:
                 mensaje ="Error en linea" + str(self.get_line(ctx)) + ": No se puede sumar " + first_child + " con " + second_child
                 self.errores.append(mensaje)
@@ -172,6 +176,10 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
+                return "Int"
+            elif first_child == "Int" and second_child == "Bool":
+                return "Int"
+            elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede restar " + first_child + " con " + second_child
@@ -201,6 +209,10 @@ class SemanticR(yaplVisitor):
 
             if first_child == "Int" and second_child == "Int":
                 return "Int"
+            elif first_child == "Int" and second_child == "Bool":
+                return "Int"
+            elif first_child == "Bool" and second_child == "Int":
+                return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede multiplicar " + first_child + " con " + second_child
                 self.errores.append(mensaje)
@@ -228,6 +240,10 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
+                return "Int"
+            elif first_child == "Int" and second_child == "Bool":
+                return "Int"
+            elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
                 mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede dividir " + first_child + " con " + second_child
@@ -257,6 +273,10 @@ class SemanticR(yaplVisitor):
 
 
             if first_child == "Int" and second_child == "Int":
+                return "Bool"
+            elif first_child == "Int" and second_child == "Bool":
+                return "Bool"
+            elif first_child == "Bool" and second_child == "Int":
                 return "Bool"
 
             else:
@@ -306,7 +326,6 @@ class SemanticR(yaplVisitor):
                 self.errores.append(error)
                 print(error)
                 return "Int"
-
 
         elif ctx.ISVOID():
             first_child = self.visit(ctx.getChild(1))

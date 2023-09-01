@@ -41,131 +41,165 @@ digraph {
 	18 -> 20
 	20 [label=Tres]
 	18 -> 21
-	21 [label="{"]
+	21 [label=inherits]
 	18 -> 22
-	22 [label=Feature]
-	22 -> 23
-	23 [label=hola]
-	22 -> 24
-	24 [label="("]
-	22 -> 25
-	25 [label=Formal]
-	25 -> 26
-	26 [label=initial]
-	25 -> 27
-	27 [label=":"]
-	25 -> 28
-	28 [label=Int]
-	22 -> 29
-	29 [label=")"]
-	22 -> 30
-	30 [label=":"]
-	22 -> 31
-	31 [label=String]
-	22 -> 32
-	32 [label="{"]
-	22 -> 33
-	33 [label=Expr]
-	33 -> 34
-	34 [label=0]
-	22 -> 35
-	35 [label="}"]
-	18 -> 36
-	36 [label=";"]
-	18 -> 37
+	22 [label=Dos]
+	18 -> 23
+	23 [label="{"]
+	18 -> 24
+	24 [label=Feature]
+	24 -> 25
+	25 [label=hola]
+	24 -> 26
+	26 [label="("]
+	24 -> 27
+	27 [label=Formal]
+	27 -> 28
+	28 [label=initial]
+	27 -> 29
+	29 [label=":"]
+	27 -> 30
+	30 [label=Int]
+	24 -> 31
+	31 [label=")"]
+	24 -> 32
+	32 [label=":"]
+	24 -> 33
+	33 [label=Int]
+	24 -> 34
+	34 [label="{"]
+	24 -> 35
+	35 [label=Expr]
+	35 -> 36
+	36 [label=0]
+	24 -> 37
 	37 [label="}"]
-	0 -> 38
+	18 -> 38
 	38 [label=";"]
-	0 -> 39
-	39 [label=Class]
+	18 -> 39
+	39 [label=Feature]
 	39 -> 40
-	40 [label=class]
+	40 [label=constructor]
 	39 -> 41
-	41 [label=Uno]
+	41 [label="("]
 	39 -> 42
-	42 [label=inherits]
+	42 [label=")"]
 	39 -> 43
-	43 [label=Tres]
+	43 [label=":"]
 	39 -> 44
-	44 [label="{"]
+	44 [label=Dos]
 	39 -> 45
-	45 [label=Feature]
-	45 -> 46
-	46 [label=count]
-	45 -> 47
-	47 [label="("]
-	45 -> 48
-	48 [label=Formal]
-	48 -> 49
-	49 [label=initial]
-	48 -> 50
-	50 [label=":"]
-	48 -> 51
-	51 [label=Int]
-	45 -> 52
-	52 [label=")"]
-	45 -> 53
-	53 [label=":"]
-	45 -> 54
-	54 [label=Int]
-	45 -> 55
-	55 [label="{"]
-	45 -> 56
-	56 [label=Expr]
+	45 [label="{"]
+	39 -> 46
+	46 [label=Expr]
+	46 -> 47
+	47 [label=hola]
+	46 -> 48
+	48 [label="("]
+	46 -> 49
+	49 [label=Expr]
+	49 -> 50
+	50 [label="\"Countdown: \""]
+	46 -> 51
+	51 [label=")"]
+	39 -> 52
+	52 [label="}"]
+	18 -> 53
+	53 [label=";"]
+	18 -> 54
+	54 [label="}"]
+	0 -> 55
+	55 [label=";"]
+	0 -> 56
+	56 [label=Class]
 	56 -> 57
-	57 [label=0]
-	45 -> 58
-	58 [label="}"]
-	39 -> 59
-	59 [label=";"]
-	39 -> 60
-	60 [label="}"]
-	0 -> 61
-	61 [label=";"]
-	0 -> 62
-	62 [label=Class]
+	57 [label=class]
+	56 -> 58
+	58 [label=Uno]
+	56 -> 59
+	59 [label=inherits]
+	56 -> 60
+	60 [label=Tres]
+	56 -> 61
+	61 [label="{"]
+	56 -> 62
+	62 [label=Feature]
 	62 -> 63
-	63 [label=class]
+	63 [label=count]
 	62 -> 64
-	64 [label=Dos]
+	64 [label="("]
 	62 -> 65
-	65 [label=inherits]
-	62 -> 66
-	66 [label=Uno]
-	62 -> 67
-	67 [label="{"]
-	62 -> 68
-	68 [label=Feature]
-	68 -> 69
-	69 [label=constructor]
-	68 -> 70
-	70 [label="("]
-	68 -> 71
-	71 [label=")"]
-	68 -> 72
-	72 [label=":"]
-	68 -> 73
-	73 [label=Dos]
-	68 -> 74
-	74 [label="{"]
-	68 -> 75
-	75 [label=Expr]
-	75 -> 76
-	76 [label=abort]
-	75 -> 77
-	77 [label="("]
-	75 -> 78
-	78 [label=Expr]
-	78 -> 79
-	79 [label="\"Countdown: \""]
-	75 -> 80
-	80 [label=")"]
-	68 -> 81
-	81 [label="}"]
-	62 -> 82
-	82 [label=";"]
-	62 -> 83
-	83 [label="}"]
-	0 -> 84
-	84 [label=";"]
+	65 [label=Formal]
+	65 -> 66
+	66 [label=initial]
+	65 -> 67
+	67 [label=":"]
+	65 -> 68
+	68 [label=Int]
+	62 -> 69
+	69 [label=")"]
+	62 -> 70
+	70 [label=":"]
+	62 -> 71
+	71 [label=Int]
+	62 -> 72
+	72 [label="{"]
+	62 -> 73
+	73 [label=Expr]
+	73 -> 74
+	74 [label=0]
+	62 -> 75
+	75 [label="}"]
+	56 -> 76
+	76 [label=";"]
+	56 -> 77
+	77 [label="}"]
+	0 -> 78
+	78 [label=";"]
+	0 -> 79
+	79 [label=Class]
+	79 -> 80
+	80 [label=class]
+	79 -> 81
+	81 [label=Dos]
+	79 -> 82
+	82 [label=inherits]
+	79 -> 83
+	83 [label=Uno]
+	79 -> 84
+	84 [label="{"]
+	79 -> 85
+	85 [label=Feature]
+	85 -> 86
+	86 [label=constructor]
+	85 -> 87
+	87 [label="("]
+	85 -> 88
+	88 [label=")"]
+	85 -> 89
+	89 [label=":"]
+	85 -> 90
+	90 [label=Dos]
+	85 -> 91
+	91 [label="{"]
+	85 -> 92
+	92 [label=Expr]
+	92 -> 93
+	93 [label=hola]
+	92 -> 94
+	94 [label="("]
+	92 -> 95
+	95 [label=Expr]
+	95 -> 96
+	96 [label="\"Countdown: \""]
+	92 -> 97
+	97 [label=")"]
+	85 -> 98
+	98 [label="}"]
+	79 -> 99
+	99 [label=";"]
+	79 -> 100
+	100 [label="}"]
+	0 -> 101
+	101 [label=";"]
 }
