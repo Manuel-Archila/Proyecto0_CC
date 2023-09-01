@@ -111,7 +111,6 @@ class SymbolT:
     #     return None
     
     def getSpecific(self, name):
-        print("Buscando", name)
         current_scope = self.current_scope
         while current_scope:
             if name in current_scope.symbols:

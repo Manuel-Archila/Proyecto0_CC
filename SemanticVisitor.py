@@ -364,8 +364,8 @@ class SemanticR(yaplVisitor):
 
                     funtion = ctx.ID()[0].getText()
                     current_scope = self.symbol_table.getScope()
-                    print(current_scope)
-                    print("simon si si si s")
+                    # print(current_scope)
+                    # print("simon si si si s")
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
 
@@ -387,19 +387,14 @@ class SemanticR(yaplVisitor):
                                     
                                     r = self.symbol_table.getSymbol(parent_ctx, sco)
 
-                                    print(r)
 
 
-                                    if r.hereda != "None":
+                                    if r.hereda is not None:
                                         hereda = r.hereda
 
 
-                                        print(hereda)
-
                                         scopeH = self.symbol_table.getSpecificScope(hereda)
 
-                                        print(scopeH)
-                                        print(funtion)
 
                                         resp = self.symbol_table.getItem(funtion, scopeH)
 
@@ -423,7 +418,7 @@ class SemanticR(yaplVisitor):
 
                                     else:
 
-                                        hereda = 'Object'
+                                        inheri = True
                                         
 
                                 seaClass = False
@@ -434,9 +429,13 @@ class SemanticR(yaplVisitor):
                             
                         
                     
-                    print("adios")
-
-                    print(respuesta1)
+                    if respuesta1[0] == False:
+                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                        self.errores.append(error)
+                        print(error)
+                        return "Int"
+                    
+                    print(respuesta1[1])
 
                     return respuesta1[1]
             else:
