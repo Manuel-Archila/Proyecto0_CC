@@ -38,7 +38,7 @@ class SemanticR(yaplVisitor):
                             mensaje = "Error: La clase " + hereda2 + " no existe"
                             self.NOexiste.append(hereda2)
                             self.errores.append(mensaje)
-                            print(mensaje)
+                            # print(mensaje)
                         salmon = False
                     else:
 
@@ -49,14 +49,14 @@ class SemanticR(yaplVisitor):
                         salmon = False
                 else:
                     if self.circular:
-                        mensaje = "Error en linea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " causa un ciclo de herencia"
+                        mensaje = "Error en línea " + str(self.get_line(ctx)) + ": La clase " + hereda2 + " causa un ciclo de herencia"
                         self.errores.append(mensaje)
-                        print(mensaje)
+                        # print(mensaje)
                         self.circular = False
                     salmon = False
             self.classes = []
  
-        #print(ctx.TYPE()[0].getText())
+        ## print(ctx.TYPE()[0].getText())
         self.symbol_table.enter_scope2()
         temp = self.visitChildren(ctx)
         self.symbol_table.exit_scope2()
@@ -74,9 +74,9 @@ class SemanticR(yaplVisitor):
                
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
-            #print("Exit")
+            ## print("Exit")
             self.symbol_table.exit_scope2()
-            # #print("Exit")
+            # ## print("Exit")
             # self.symbol_table.exit_scope2()
             # self.symbol_table.exit_scope2()
             return temp
@@ -94,9 +94,9 @@ class SemanticR(yaplVisitor):
                     tipo2 = tipo2[indice + len("new"):]
 
                 if tipo != tipo2:
-                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
+                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
                     self.errores.append(mensaje)
-                    print(mensaje)
+                    # print(mensaje)
 
 
             parent_ctx = ctx
@@ -114,52 +114,52 @@ class SemanticR(yaplVisitor):
 
                     if r[0] == False:
                         if tipo not in self.originales:
-                            mensaje = "Error en linea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
+                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
                             self.errores.append(mensaje)
-                            print(mensaje)
+                            # print(mensaje)
 
                     seaClass = False
-            #print("Enter")
+            ## print("Enter")
             self.symbol_table.enter_scope2()
             
             temp = self.visitChildren(ctx)
-            #print("Exit")
+            ## print("Exit")
             self.symbol_table.exit_scope2()
             return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
         pass
-        # #print("Exit")
+        # ## print("Exit")
         # self.symbol_table.exit_scope2()
 
         return None
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
-        # print("Llamada a Expr")
+        # # print("Llamada a Expr")
         new_scope_required = ctx.IF()
 
         if new_scope_required:
-            #print("Enter")
+            ## print("Enter")
             self.symbol_table.enter_scope2()
         # ARREGLAR IF Y ELSE DESPUES DE HACER EL RESTO
         if ctx.IF():
-            #print("Enter")
+            ## print("Enter")
             self.symbol_table.enter_scope2()
 
             if ctx.ELSE():
-                # print("ctx trae un else")
+                # # print("ctx trae un else")
                 # self.symbol_table.exit_scope2()
-                # print("Entro al else")
-                #print("Enter")
+                # # print("Entro al else")
+                ## print("Enter")
                 self.symbol_table.enter_scope2()
                 # temp = self.visitChildren(ctx)
-                #print("Exit")
+                ## print("Exit")
                 self.symbol_table.exit_scope2()
             # else:
             #     temp = self.visitChildren(ctx)
 
             temp = self.visitChildren(ctx)
-            #print("Exit")
+            ## print("Exit")
             self.symbol_table.exit_scope2()
             # self.symbol_table.exit_scope2()
 
@@ -194,9 +194,9 @@ class SemanticR(yaplVisitor):
             elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
-                mensaje ="Error en linea" + str(self.get_line(ctx)) + ": No se puede sumar " + first_child + " con " + second_child
+                mensaje ="Error en línea" + str(self.get_line(ctx)) + ": No se puede sumar " + first_child + " con " + second_child
                 self.errores.append(mensaje)
-                print(mensaje)
+                # print(mensaje)
                 return "Int"
 
         elif ctx.MINUS():
@@ -226,9 +226,9 @@ class SemanticR(yaplVisitor):
             elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
-                mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede restar " + first_child + " con " + second_child
+                mensaje ="Error en línea " + str(self.get_line(ctx)) + ": No se puede restar " + first_child + " con " + second_child
                 self.errores.append(mensaje)
-                print(mensaje)
+                # print(mensaje)
                 return "Int"
 
         elif ctx.TIMES():
@@ -258,9 +258,9 @@ class SemanticR(yaplVisitor):
             elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
-                mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede multiplicar " + first_child + " con " + second_child
+                mensaje ="Error en línea " + str(self.get_line(ctx)) + ": No se puede multiplicar " + first_child + " con " + second_child
                 self.errores.append(mensaje)
-                print(mensaje)
+                # print(mensaje)
                 return "Int"
 
         elif ctx.DIVIDE():
@@ -290,9 +290,9 @@ class SemanticR(yaplVisitor):
             elif first_child == "Bool" and second_child == "Int":
                 return "Int"
             else:
-                mensaje ="Error en linea " + str(self.get_line(ctx)) + ": No se puede dividir " + first_child + " con " + second_child
+                mensaje ="Error en línea " + str(self.get_line(ctx)) + ": No se puede dividir " + first_child + " con " + second_child
                 self.errores.append(mensaje)
-                print(mensaje)
+                # print(mensaje)
                 return "Int"
 
         elif ctx.LT() or ctx.RT() or ctx.RE() or ctx.LE() or ctx.EQUALS():
@@ -300,7 +300,7 @@ class SemanticR(yaplVisitor):
             second_child = self.visit(ctx.getChild(2))
 
             current_scope = self.symbol_table.getScope()
-            print(current_scope)
+            # print(current_scope)
 
             respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
             respuesta2 = self.symbol_table.getItem(ctx.getChild(2).getText(), current_scope)
@@ -324,9 +324,9 @@ class SemanticR(yaplVisitor):
                 return "Bool"
 
             else:
-                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede comparar " + first_child + " con " + second_child
+                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede comparar " + first_child + " con " + second_child
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Bool"
         
         elif ctx.NOT():
@@ -345,9 +345,9 @@ class SemanticR(yaplVisitor):
             if first_child == "Bool" or first_child == "Int":
                 return "Bool"
             else:
-                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede negar " + first_child
+                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede negar " + first_child
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Bool"
             
         elif ctx.DIAC():
@@ -366,9 +366,9 @@ class SemanticR(yaplVisitor):
             if first_child == "Bool" or first_child == "Int":
                 return "Int"
             else:
-                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede hacer el complemento de " + first_child
+                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede hacer el complemento de " + first_child
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Int"
 
         elif ctx.ISVOID():
@@ -387,24 +387,24 @@ class SemanticR(yaplVisitor):
             if first_child == "String" or first_child == "Int":
                 return "Bool"
             else:
-                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede validar a nulabilidad de  " + first_child
+                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede validar a nulabilidad de  " + first_child
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Bool"
 
         elif ctx.WHILE():
-            #print("entre a while")
-            #print("Enter")
+            ## print("entre a while")
+            ## print("Enter")
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
-            #print("Exit")
+            ## print("Exit")
             self.symbol_table.exit_scope2()
             return temp
 
         elif ctx.LET():
             for i in range(len(ctx.ID())):
                 # for chil in ctx.getChildren():
-                #     print(chil.getText())
+                #     # print(chil.getText())
 
                 return self.visitChildren(ctx)
         
@@ -430,10 +430,10 @@ class SemanticR(yaplVisitor):
                         contenido_actual.append((elemento.getText(), self.visit(elemento)))
             argumentoss = argumentoss[0]
 
-            print(argumentoss)
+            # print(argumentoss)
 
             funtion = ctx.ID()[0].getText()
-            print(funtion)
+            # print(funtion)
             current_scope = self.symbol_table.getScope()
 
             respuesta1 = self.symbol_table.getItem(funtion, current_scope)
@@ -487,28 +487,28 @@ class SemanticR(yaplVisitor):
 
                                 else:
 
-                                    print(argument)
-                                    print(argumentoss)
+                                    # print(argument)
+                                    # print(argumentoss)
 
                                     if len(argument) != len(argumentoss):
-                                        error = "Error en linea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                                        error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                                         self.errores.append(error)
-                                        print(error)
+                                        # print(error)
                                         return "Int"
                                     else:
                                         for argumento, parametro in zip(argumentoss, argument):
                                             if argumento[1] != parametro[1]:
-                                                error = "Error en linea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
+                                                error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
                                                 self.errores.append(error)
-                                                print(error)
+                                                # print(error)
                                                 return "Int"
                                     
                                     return resp[1]
                                 
                             elif r.hereda == "Main":
-                                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                                 self.errores.append(error)
-                                print(error)
+                                # print(error)
                                 return "Int"
 
                             else:
@@ -519,33 +519,35 @@ class SemanticR(yaplVisitor):
                         seaClass = False
                     
             if respuesta1[0] == False:
-                error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Int"
 
             if len(argument) != len(argumentoss):
-                error = "Error en linea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                 self.errores.append(error)
-                print(error)
+                # print(error)
                 return "Int"
             else:
                 for argumento, parametro in zip(argumentoss, argument):
                     if argumento[1] != parametro[1]:
-                        error = "Error en linea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
                         self.errores.append(error)
-                        print(error)
+                        # print(error)
                         return "Int"
 
             return respuesta1[1]
         
         elif ctx.ID():
-            print("entre a id")
-            print(ctx.getText())
+            # print("entre a id")
+            # print(ctx.getText())
             if ctx.ID()[0].getText() == "self":
-                print("entre a self")
+                # print("entre a self")
                 if ctx.DOT():
-                    print("Error en linea " + str(self.get_line(ctx)) + ": No se puede usar self en una llamada a metodo")
+                    # print("Error en línea " + str(self.get_line(ctx)) + ": No se puede usar self en una llamada a metodo")
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede usar self en una llamada a metodo"
+                    self.errores.append(error)
 
             if ctx.getChildCount() > 0:
 
@@ -625,28 +627,28 @@ class SemanticR(yaplVisitor):
 
                                         else:
 
-                                            print(argument)
-                                            print(argumentoss)
+                                            # print(argument)
+                                            # print(argumentoss)
 
                                             if len(argument) != len(argumentoss):
-                                                error = "Error en linea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                                                error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                                                 self.errores.append(error)
-                                                print(error)
+                                                # print(error)
                                                 return "Int"
                                             else:
                                                 for argumento, parametro in zip(argumentoss, argument):
                                                     if argumento[1] != parametro[1]:
-                                                        error = "Error en linea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
+                                                        error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
                                                         self.errores.append(error)
-                                                        print(error)
+                                                        # print(error)
                                                         return "Int"
                                             
                                             return resp[1]
                                         
                                     elif r.hereda == "Main":
-                                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                                         self.errores.append(error)
-                                        print(error)
+                                        # print(error)
                                         return "Int"
 
                                     else:
@@ -657,22 +659,22 @@ class SemanticR(yaplVisitor):
                                 seaClass = False
                             
                     if respuesta1[0] == False:
-                        error = "Error en linea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                         self.errores.append(error)
-                        print(error)
+                        # print(error)
                         return "Int"
 
                     if len(argument) != len(argumentoss):
-                        error = "Error en linea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                         self.errores.append(error)
-                        print(error)
+                        # print(error)
                         return "Int"
                     else:
                         for argumento, parametro in zip(argumentoss, argument):
                             if argumento[1] != parametro[1]:
-                                error = "Error en linea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
+                                error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
                                 self.errores.append(error)
-                                print(error)
+                                # print(error)
                                 return "Int"
 
                     return respuesta1[1]
@@ -697,4 +699,4 @@ class SemanticR(yaplVisitor):
     def error_mmain2(self):
         if self.mmain2 == False:
             self.errores.append("Error: No hay metodo main")
-            print("Error: No hay metodo main")
+            # print("Error: No hay metodo main")
