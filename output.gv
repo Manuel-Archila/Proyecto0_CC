@@ -197,27 +197,21 @@ digraph {
 	91 -> 98
 	98 [label=Expr]
 	98 -> 99
-	99 [label=Expr]
-	99 -> 100
-	100 [label=self]
+	99 [label=hola]
+	98 -> 100
+	100 [label="("]
 	98 -> 101
-	101 [label="."]
-	98 -> 102
-	102 [label=hola]
+	101 [label=Expr]
+	101 -> 102
+	102 [label="\"Countdown:\""]
 	98 -> 103
-	103 [label="("]
-	98 -> 104
-	104 [label=Expr]
-	104 -> 105
-	105 [label="\"Countdown: \""]
-	98 -> 106
-	106 [label=")"]
-	91 -> 107
-	107 [label="}"]
-	76 -> 108
-	108 [label=";"]
-	76 -> 109
-	109 [label="}"]
-	0 -> 110
-	110 [label=";"]
+	103 [label=")"]
+	91 -> 104
+	104 [label="}"]
+	76 -> 105
+	105 [label=";"]
+	76 -> 106
+	106 [label="}"]
+	0 -> 107
+	107 [label=";"]
 }

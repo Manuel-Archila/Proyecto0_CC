@@ -85,6 +85,17 @@ def cerrar_ventana():
 
         semanticR.visit_program(tree)
         semanticR.error_mmain2()
+
+        if len(semantic_visitor.errores) > 0 or len(semanticR.errores) > 0:
+
+            mensaje = "Se encontraron errores semánticos:\n\n"
+            mensaje += "Errores semánticos:\n"
+            for error in semantic_visitor.errores:
+                mensaje += f"- {error}\n"
+            for error in semanticR.errores:
+                mensaje += f"- {error}\n"
+
+            messagebox.showerror("Errores Semánticos", mensaje)
         
         errores_sintacticos = parserErrorListener.errores
         errores_lexicos = lexer.errors  
