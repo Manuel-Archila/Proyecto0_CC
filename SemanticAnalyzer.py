@@ -70,6 +70,11 @@ class SemanticAnalyzerMio(yaplVisitor):
         #print("Llamada a feature")
 
         if ctx.LPAR():
+            
+            #AQUI ME QUEDE
+            if ctx.formal():
+                for por in ctx.formal():
+                    print(por.getText())
 
             if ctx.ID().getText() == "main":
                 self.mmain2 = True

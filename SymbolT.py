@@ -1,13 +1,14 @@
 class Symbol:
-    def __init__(self, name, line, symbol_type, scope, data_type=None, hereda=None):
+    def __init__(self, name, line, symbol_type, scope, data_type=None, hereda=None, params=None):
         self.name = name  
         self.line = line  
         self.symbol_type = symbol_type  
         self.data_type = data_type  
         self.scope = scope  
         self.hereda = hereda
+        self.params = params
     def __repr__(self):
-        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda)
+        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda) + " " + str(self.params)
 
 class Scope:
     def __init__(self, name, parent=None):
@@ -57,8 +58,8 @@ class SymbolT:
             #print("Saliendo del scope", self.current_scope.name)
             self.current_scope = self.current_scope.parent
     
-    def put(self, name, line, symbol_type, data_type=None, hereda=None):
-        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda)
+    def put(self, name, line, symbol_type, data_type=None, hereda=None, params=None):
+        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda, params)
         self.current_scope.put(symbol)
     
     def enter_scope2(self):
@@ -76,9 +77,6 @@ class SymbolT:
         if self.current_scope2.parent:
             self.current_scope2 = self.current_scope2.parent
     
-    def put2(self, name, line, symbol_type, data_type=None):
-        symbol = Symbol(name, line, symbol_type, self.current_scope2.name, data_type)
-        self.current_scope2.put(symbol)
     
     def visit_elements(self, scope, name):
     # Check if the current scope has the desired name

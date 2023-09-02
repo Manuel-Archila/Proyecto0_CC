@@ -11,6 +11,7 @@ class SemanticR(yaplVisitor):
         self.NOexiste= []
         self.circular = True
         self.mmain2 = False
+        self.originales = ["Int", "String", "Bool", "IO", "Object"]
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         self.symbol_table.enter_scope2()
@@ -81,6 +82,43 @@ class SemanticR(yaplVisitor):
             return temp
 
         else:
+
+            tipo = ctx.TYPE().getText()
+
+            if ctx.ASSIGN():
+
+                tipo2 = ctx.getChild(4).getText()
+
+                indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
+                if indice != -1:
+                    tipo2 = tipo2[indice + len("new"):]
+
+                if tipo != tipo2:
+                    mensaje = "Error en linea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
+                    self.errores.append(mensaje)
+                    print(mensaje)
+
+
+            parent_ctx = ctx
+
+            seaClass = True
+
+            while seaClass:
+                parent_ctx = parent_ctx.parentCtx
+                if isinstance(parent_ctx, yaplParser.ClassContext):
+                    parent_ctx = parent_ctx.TYPE()[0].getText()
+
+                    sco = self.symbol_table.getSpecific(ctx)
+
+                    r = self.symbol_table.getItem(tipo, sco)
+
+                    if r[0] == False:
+                        if tipo not in self.originales:
+                            mensaje = "Error en linea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
+                            self.errores.append(mensaje)
+                            print(mensaje)
+
+                    seaClass = False
             #print("Enter")
             self.symbol_table.enter_scope2()
             
@@ -107,7 +145,6 @@ class SemanticR(yaplVisitor):
         if ctx.IF():
             #print("Enter")
             self.symbol_table.enter_scope2()
-            self.symbol_table.put2(ctx.getText(), ctx.start.line, "if")
 
             if ctx.ELSE():
                 # print("ctx trae un else")
@@ -115,7 +152,6 @@ class SemanticR(yaplVisitor):
                 # print("Entro al else")
                 #print("Enter")
                 self.symbol_table.enter_scope2()
-                self.symbol_table.put2(ctx.getText(), ctx.start.line, "else")
                 # temp = self.visitChildren(ctx)
                 #print("Exit")
                 self.symbol_table.exit_scope2()
@@ -360,7 +396,6 @@ class SemanticR(yaplVisitor):
             #print("entre a while")
             #print("Enter")
             self.symbol_table.enter_scope2()
-            self.symbol_table.put2('ctx.getText()', ctx.start.line, "while")
             temp = self.visitChildren(ctx)
             #print("Exit")
             self.symbol_table.exit_scope2()
@@ -368,7 +403,6 @@ class SemanticR(yaplVisitor):
 
         elif ctx.LET():
             for i in range(len(ctx.ID())):
-                self.symbol_table.put2(ctx.ID()[i], self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
                 # for chil in ctx.getChildren():
                 #     print(chil.getText())
 
