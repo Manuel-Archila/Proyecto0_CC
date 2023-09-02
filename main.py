@@ -124,13 +124,17 @@ def resetear_todo():
     contenido_texto.delete("1.0", tk.END)  # Borrar el contenido del área de edición
     actualizar_numeros_de_linea()  # Actualizar los números de línea si es necesario
 
+def update_line_numbers_view(nose = None):
+    text_yview = contenido_texto.yview()
+    numeros_linea_widget.yview_moveto(text_yview[0])
+
 def actualizar_numeros_de_linea(event=None):
-    contenido = contenido_texto.get("1.0", tk.END).splitlines()
-    numeros_linea = "\n".join(str(i) for i in range(1, len(contenido) + 1))
+    numeros_linea = "\n".join(str(i) for i in range(1, int(contenido_texto.index(tk.END).split('.')[0])))
     numeros_linea_widget.config(state=tk.NORMAL)
     numeros_linea_widget.delete("1.0", tk.END)
-    numeros_linea_widget.insert(tk.END, numeros_linea)
+    numeros_linea_widget.insert("1.0", numeros_linea)
     numeros_linea_widget.config(state=tk.DISABLED)
+    update_line_numbers_view()
 
 ventana = tk.Tk()
 ventana.title("Editor de Archivos")
@@ -150,11 +154,14 @@ boton_resetear.pack(side=tk.LEFT, padx=5, pady=5)
 contenido_frame = tk.Frame(ventana)
 contenido_frame.pack(fill=tk.BOTH, expand=True)
 
-numeros_linea_widget = tk.Text(contenido_frame, width=4, padx=4, takefocus=0, border=0, background="#f0f0f0", state=tk.DISABLED)
+numeros_linea_widget = tk.Text(contenido_frame, width=4, bg="#f0f0f0", state=tk.DISABLED)
 numeros_linea_widget.pack(side=tk.LEFT, fill=tk.Y)
 contenido_texto = tk.Text(contenido_frame, wrap=tk.NONE)
-contenido_texto.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-contenido_texto.bind("<Configure>", actualizar_numeros_de_linea)
-contenido_texto.bind("<Key>", actualizar_numeros_de_linea)
+contenido_texto.pack(side=tk.LEFT, fill=tk.Y)
+contenido_texto.bind("<Return>", actualizar_numeros_de_linea)
+contenido_texto.bind("<BackSpace>", actualizar_numeros_de_linea)
+contenido_texto.bind("<KeyRelease>", actualizar_numeros_de_linea)
+contenido_texto.bind("<MouseWheel>", actualizar_numeros_de_linea)
+contenido_texto.bind("<Configure>", update_line_numbers_view)
 
 ventana.mainloop()
