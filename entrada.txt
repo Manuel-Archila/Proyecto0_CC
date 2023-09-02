@@ -11,7 +11,7 @@ class Main {
 class Tres{
 
    hola( initial : Int ) : Int {
-        0
+        self.hola(1)
     };
 
 };
@@ -24,9 +24,10 @@ class Uno{
 
 };
 
-class Dos inherits Uno {
+class Dos inherits Tres{
    x : Sally <- new Sally;
    constructor () : Dos {
-        hola("Countdown: ")
+
+        hola("Countdown:")
    };
 };

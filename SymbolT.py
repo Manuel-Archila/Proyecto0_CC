@@ -168,21 +168,21 @@ class SymbolT:
         # Scope 1
         self.enter_scope()
         self.enter_scope2()
-        self.put("abort", 0, "function", "Object", None)
+        self.put("abort", 0, "function", "Object", None, [])
         self.enter_scope()
         self.enter_scope2()
         # Scope 2
         self.exit_scope()
         self.exit_scope2()
         # Scope 1
-        self.put("type_name", 0, "function", "String", None)
+        self.put("type_name", 0, "function", "String", None, [])
         self.enter_scope()
         self.enter_scope2()
         # Scope 3
         self.exit_scope()
         self.exit_scope2()
         # Scope 1
-        self.put("copy", 0, "function", "Object", None)
+        self.put("copy", 0, "function", "Object", None, [])
         self.enter_scope()
         self.enter_scope2()
         # Scope 4
@@ -196,29 +196,29 @@ class SymbolT:
         # Scope 5
         self.enter_scope()
         self.enter_scope2()
-        self.put("length", 0, "function", "Int", None)
+        self.put("length", 0, "function", "Int", None, [])
         self.enter_scope()
         self.enter_scope2()
         # Scope 6
         self.exit_scope()
         self.exit_scope2()
         
-        self.put("concat", 0, "function", "String", None)
+        self.put("concat", 0, "function", "String", None, [("str", "String")])
         self.enter_scope()
         self.enter_scope2()
         # Scope 7
-        self.put("str", 0, "formal", "String", None)
+        self.put("str", 0, "formal", "String", None, None)
         
         self.exit_scope()
         self.exit_scope2()
 
-        self.put("substr", 0, "function", "Int", None)
+        self.put("substr", 0, "function", "Int", None, [("index1", "Int"), ("index2", "Int")])
 
         self.enter_scope()
         self.enter_scope2()
         # Scope 8
-        self.put("i", 0, "formal", "Int", None)
-        self.put("one", 0, "formal", "Int", None)
+        self.put("i", 0, "formal", "Int", None, None)
+        self.put("one", 0, "formal", "Int", None, None)
 
         self.exit_scope()
         self.exit_scope2()
@@ -243,30 +243,30 @@ class SymbolT:
         # Scope 11
         self.enter_scope()
         self.enter_scope2()
-        self.put("out_string", 0, "function", "String", None)
+        self.put("out_string", 0, "function", "String", None, [("str", "String")])
         self.enter_scope()
         self.enter_scope2()
         # Scope 12
-        self.put("str", 0, "formal", "String", None)
+        self.put("str", 0, "formal", "String", None, None)
         self.exit_scope()
         self.exit_scope2()
 
-        self.put("out_int", 0, "function", "Int", None)
+        self.put("out_int", 0, "function", "Int", None, [("i", "Int")])
         # Scope 13
         self.enter_scope()
         self.enter_scope2()
-        self.put("i", 0, "formal", "Int", None)
+        self.put("i", 0, "formal", "Int", None, None)
         self.exit_scope()
         self.exit_scope2()
 
-        self.put("in_string", 0, "function", "String", None)
+        self.put("in_string", 0, "function", "String", None, [])
         # Scope 14
         self.enter_scope()
         self.enter_scope2()
         self.exit_scope()
         self.exit_scope2()
 
-        self.put("in_int", 0, "function", "Int", None)
+        self.put("in_int", 0, "function", "Int", None, [])
         # Scope 15
         self.enter_scope()
         self.enter_scope2()

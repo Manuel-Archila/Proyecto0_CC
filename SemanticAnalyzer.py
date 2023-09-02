@@ -71,10 +71,23 @@ class SemanticAnalyzerMio(yaplVisitor):
 
         if ctx.LPAR():
             
-            #AQUI ME QUEDE
+            params = []
             if ctx.formal():
                 for por in ctx.formal():
-                    print(por.getText())
+                    string = por.getText()
+                    string = string.split(":")
+                    params.append((string[0], string[1]))
+                    
+            valores_vistos = set()
+            repetidos = False
+            for tupla in params:
+                if tupla[0] in valores_vistos:
+                    repetidos = True  
+                valores_vistos.add(tupla[0])
+
+            if repetidos:
+                self.errores.append("Error en la linea " + str(self.get_line(ctx)) +": La función " + ctx.ID().getText() + " tiene parametros repetidos")
+                print("Error en la linea " + str(self.get_line(ctx)) +": La función " + ctx.ID().getText() + " tiene parametros repetidos")
 
             if ctx.ID().getText() == "main":
                 self.mmain2 = True
@@ -99,7 +112,7 @@ class SemanticAnalyzerMio(yaplVisitor):
                 print("Error: La función " + ctx.ID().getText() + " ya existe")
 
             else:
-                self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText())
+                self.symbol_table.put(ctx.ID().getText(), ctx.start.line, "function", ctx.TYPE().getText(), None, params)
 
             self.symbol_table.enter_scope()
             temp = self.visitChildren(ctx)
@@ -225,6 +238,15 @@ class SemanticAnalyzerMio(yaplVisitor):
 
 
         elif ctx.LET():
+
+            identificadores = ctx.ID()
+
+            for i in range(len(identificadores)):
+                for j in range(i + 1, len(identificadores)):  # Compara con los identificadores restantes
+                    if identificadores[i].getText() == identificadores[j].getText():
+                        self.errores.append("Error: La variable " + identificadores[i].getText() + " se esta definiendo dos veces en el mismo bloque")
+                        print("Error: La variable " + identificadores[i].getText() + " se esta definiendo dos veces en el mismo bloque")
+
             for i in range(len(ctx.ID())):
 
                 current = self.symbol_table.getScopE()
