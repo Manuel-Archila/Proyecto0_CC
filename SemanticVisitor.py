@@ -144,20 +144,37 @@ class SemanticR(yaplVisitor):
         if ctx.IF():
             ## print("Enter")
 
+            print(ctx.expr()[0].getText())
+            print(ctx.expr()[1].getText())
+            print(ctx.expr()[2].getText())
+
             self.symbol_table.enter_scope2()
-            temp = self.visitChildren(ctx.expr()[0])
+            temp = self.visit(ctx.expr()[0])
+            self.symbol_table.exit_scope2()
+
+            if temp != "Bool":
+                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": La condición del if no es de tipo Bool"
+                self.errores.append(mensaje)
+
+            self.symbol_table.enter_scope2()
+            temp1 = self.visit(ctx.expr()[1])
             self.symbol_table.exit_scope2()
 
             self.symbol_table.enter_scope2()
-            temp1 = self.visitChildren(ctx.expr()[1])
-            self.symbol_table.exit_scope2()
-
-            self.symbol_table.enter_scope2()
-            temp2 = self.visitChildren(ctx.expr()[2])
+            temp2 = self.visit(ctx.expr()[2])
             self.symbol_table.exit_scope2()
 
 
-            return temp
+            if temp1 != temp2:
+                if temp1 in self.originales and temp2 in self.originales:
+                    return "Object"
+                else:
+                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": Los tipos de retorno del if no coinciden"
+                    self.errores.append(mensaje)
+                    return "Object"
+                
+            else:
+                return temp1
 
         elif ctx.PLUS():
             first_child = self.visit(ctx.getChild(0))
@@ -407,9 +424,6 @@ class SemanticR(yaplVisitor):
             self.symbol_table.exit_scope2()
 
             return temp
-        
-        elif ctx.DIGIT():
-            return "Int"
 
         elif ctx.STRING():
             return "String"
@@ -721,6 +735,9 @@ class SemanticR(yaplVisitor):
         
         elif ctx.TRUE() or ctx.FALSE():
             return "Bool"
+
+        elif ctx.DIGIT():
+            return "Int"
 
         else:
             temp = self.visitChildren(ctx)
