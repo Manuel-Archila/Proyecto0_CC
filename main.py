@@ -89,10 +89,9 @@ def cerrar_ventana():
         if len(semantic_visitor.errores) > 0 or len(semanticR.errores) > 0:
 
             mensaje = "Se encontraron errores semánticos:\n\n"
-            mensaje += "Errores semánticos:\n"
-            for error in semantic_visitor.errores:
+            for error in list(set(semantic_visitor.errores)):
                 mensaje += f"- {error}\n"
-            for error in semanticR.errores:
+            for error in list(set(semanticR.errores)):
                 mensaje += f"- {error}\n"
 
             messagebox.showerror("Errores Semánticos", mensaje)

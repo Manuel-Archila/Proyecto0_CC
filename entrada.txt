@@ -25,8 +25,8 @@ class Uno{
 };
 
 class Dos inherits Tres{
-   x : Sally <- new Sally;
+   x : Tres <- new Tres;
    constructor () : Dos {
-        hola("Countdown:")
+        x @ Tres.count()
    };
 };

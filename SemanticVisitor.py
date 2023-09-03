@@ -71,14 +71,22 @@ class SemanticR(yaplVisitor):
                 parent_ctx = ctx.parentCtx
                 if parent_ctx.TYPE()[0].getText() == "Main":
                     self.mmain2 = True
+
+
+            if ctx.expr():
+                type2 = self.visit(ctx.expr())
+
+                ty = ctx.TYPE().getText()
+
+                if ty != type2:
+                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
+                    self.errores.append(mensaje)
+
+
                
             self.symbol_table.enter_scope2()
             temp = self.visitChildren(ctx)
-            ## print("Exit")
             self.symbol_table.exit_scope2()
-            # ## print("Exit")
-            # self.symbol_table.exit_scope2()
-            # self.symbol_table.exit_scope2()
             return temp
 
         else:
@@ -108,7 +116,7 @@ class SemanticR(yaplVisitor):
                 if isinstance(parent_ctx, yaplParser.ClassContext):
                     parent_ctx = parent_ctx.TYPE()[0].getText()
 
-                    sco = self.symbol_table.getSpecific(ctx)
+                    sco = self.symbol_table.getSpecific(parent_ctx)
 
                     r = self.symbol_table.getItem(tipo, sco)
 
@@ -119,12 +127,8 @@ class SemanticR(yaplVisitor):
                             # print(mensaje)
 
                     seaClass = False
-            ## print("Enter")
-            self.symbol_table.enter_scope2()
-            
+           
             temp = self.visitChildren(ctx)
-            ## print("Exit")
-            self.symbol_table.exit_scope2()
             return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
@@ -413,8 +417,9 @@ class SemanticR(yaplVisitor):
 
         elif ctx.STRING():
             return "String"
-        
+
         elif ctx.DOT():
+
             argumentoss = []
             contenido_actual = None
 
@@ -430,122 +435,159 @@ class SemanticR(yaplVisitor):
                         contenido_actual.append((elemento.getText(), self.visit(elemento)))
             argumentoss = argumentoss[0]
 
-            # print(argumentoss)
+            if ctx.AT():
+                
+                padre = ctx.TYPE()[0].getText()
 
-            funtion = ctx.ID()[0].getText()
-            # print(funtion)
-            current_scope = self.symbol_table.getScope()
+                funtion = ctx.ID()[0].getText()
 
-            respuesta1 = self.symbol_table.getItem(funtion, current_scope)
+                scopeH = self.symbol_table.getSpecificScope(padre)
 
-            argumentTemp = self.symbol_table.getSymbol(funtion, current_scope)
 
-            if argumentTemp is not None:
-                argument = argumentTemp.params
+                resp = self.symbol_table.getItem(funtion, scopeH)
 
-            if respuesta1[0] == False:
+                argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
 
-                inheri = False
-                parent_ctx = ctx
+                if argumentTemp is not None:
+                    argument = argumentTemp.params
 
-                seaClass = True
 
-                while seaClass:
-                    parent_ctx = parent_ctx.parentCtx
-                    if isinstance(parent_ctx, yaplParser.ClassContext):
-                        parent_ctx = parent_ctx.TYPE()[0].getText()
+                if resp[0] == False:
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                    self.errores.append(error)
+                    return "Indefinido"
+                else:
 
-                        while not inheri:
-
-                            sco = self.symbol_table.getSpecific(parent_ctx)
+                    if len(argument) != len(argumentoss):
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                        self.errores.append(error)
+                        # print(error)
+                        return "Indefinido"
+                    else:
+                        for argumento, parametro in zip(argumentoss, argument):
+                            if argumento[1] != parametro[1]:
+                                error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
+                                self.errores.append(error)
+                                # print(error)
+                                return "Indefinido"
                             
-                            r = self.symbol_table.getSymbol(parent_ctx, sco)
+                    
+                    return resp[1]
 
 
+            else:
+                # print(argumentoss)
 
-                            if r.hereda is not None:
-                                hereda = r.hereda
+                funtion = ctx.ID()[0].getText()
+                # print(funtion)
+                current_scope = self.symbol_table.getScope()
 
+                respuesta1 = self.symbol_table.getItem(funtion, current_scope)
 
-                                scopeH = self.symbol_table.getSpecificScope(hereda)
+                argumentTemp = self.symbol_table.getSymbol(funtion, current_scope)
 
+                if argumentTemp is not None:
+                    argument = argumentTemp.params
 
-                                resp = self.symbol_table.getItem(funtion, scopeH)
+                if respuesta1[0] == False:
 
-                                argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
+                    inheri = False
+                    parent_ctx = ctx
 
-                                if argumentTemp is not None:
-                                    argument = argumentTemp.params
+                    seaClass = True
 
-                                inheri = resp[0]
+                    while seaClass:
+                        parent_ctx = parent_ctx.parentCtx
+                        if isinstance(parent_ctx, yaplParser.ClassContext):
+                            parent_ctx = parent_ctx.TYPE()[0].getText()
 
+                            while not inheri:
+
+                                sco = self.symbol_table.getSpecific(parent_ctx)
                                 
-                                if resp[0] == False:
+                                r = self.symbol_table.getSymbol(parent_ctx, sco)
+
+
+
+                                if r.hereda is not None:
+                                    hereda = r.hereda
+
+
+                                    scopeH = self.symbol_table.getSpecificScope(hereda)
+
+
+                                    resp = self.symbol_table.getItem(funtion, scopeH)
+
+                                    argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
+
+                                    if argumentTemp is not None:
+                                        argument = argumentTemp.params
 
                                     inheri = resp[0]
-                                    parent_ctx = hereda
+
+                                    
+                                    if resp[0] == False:
+
+                                        inheri = resp[0]
+                                        parent_ctx = hereda
+
+                                    else:
+
+                                        # print(argument)
+                                        # print(argumentoss)
+
+                                        if len(argument) != len(argumentoss):
+                                            error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                                            self.errores.append(error)
+                                            # print(error)
+                                            return "Indefinido"
+                                        else:
+                                            for argumento, parametro in zip(argumentoss, argument):
+                                                if argumento[1] != parametro[1]:
+                                                    error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
+                                                    self.errores.append(error)
+                                                    # print(error)
+                                                    return "Indefinido"
+                                        
+                                        return resp[1]
+                                    
+                                elif r.hereda == "Main":
+                                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                                    self.errores.append(error)
+                                    # print(error)
+                                    return "Indefinido"
 
                                 else:
 
-                                    # print(argument)
-                                    # print(argumentoss)
-
-                                    if len(argument) != len(argumentoss):
-                                        error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
-                                        self.errores.append(error)
-                                        # print(error)
-                                        return "Int"
-                                    else:
-                                        for argumento, parametro in zip(argumentoss, argument):
-                                            if argumento[1] != parametro[1]:
-                                                error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
-                                                self.errores.append(error)
-                                                # print(error)
-                                                return "Int"
+                                    inheri = True
                                     
-                                    return resp[1]
-                                
-                            elif r.hereda == "Main":
-                                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
-                                self.errores.append(error)
-                                # print(error)
-                                return "Int"
 
-                            else:
+                            seaClass = False
+                        
+                if respuesta1[0] == False:
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                    self.errores.append(error)
+                    # print(error)
+                    return "Indefinido"
 
-                                inheri = True
-                                
+                if len(argument) != len(argumentoss):
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                    self.errores.append(error)
+                    # print(error)
+                    return "Indefinido"
+                else:
+                    for argumento, parametro in zip(argumentoss, argument):
+                        if argumento[1] != parametro[1]:
+                            error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
+                            self.errores.append(error)
+                            # print(error)
+                            return "Indefinido"
 
-                        seaClass = False
-                    
-            if respuesta1[0] == False:
-                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
-                self.errores.append(error)
-                # print(error)
-                return "Int"
-
-            if len(argument) != len(argumentoss):
-                error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
-                self.errores.append(error)
-                # print(error)
-                return "Int"
-            else:
-                for argumento, parametro in zip(argumentoss, argument):
-                    if argumento[1] != parametro[1]:
-                        error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
-                        self.errores.append(error)
-                        # print(error)
-                        return "Int"
-
-            return respuesta1[1]
+                return respuesta1[1]
         
         elif ctx.ID():
-            # print("entre a id")
-            # print(ctx.getText())
             if ctx.ID()[0].getText() == "self":
-                # print("entre a self")
                 if ctx.DOT():
-                    # print("Error en línea " + str(self.get_line(ctx)) + ": No se puede usar self en una llamada a metodo")
                     error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede usar self en una llamada a metodo"
                     self.errores.append(error)
 
@@ -634,14 +676,14 @@ class SemanticR(yaplVisitor):
                                                 error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                                                 self.errores.append(error)
                                                 # print(error)
-                                                return "Int"
+                                                return "Indefinido"
                                             else:
                                                 for argumento, parametro in zip(argumentoss, argument):
                                                     if argumento[1] != parametro[1]:
                                                         error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
                                                         self.errores.append(error)
                                                         # print(error)
-                                                        return "Int"
+                                                        return "Indefinido"
                                             
                                             return resp[1]
                                         
@@ -649,7 +691,7 @@ class SemanticR(yaplVisitor):
                                         error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                                         self.errores.append(error)
                                         # print(error)
-                                        return "Int"
+                                        return "Indefinido"
 
                                     else:
 
@@ -662,20 +704,20 @@ class SemanticR(yaplVisitor):
                         error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
                         self.errores.append(error)
                         # print(error)
-                        return "Int"
+                        return "Indefinido"
 
                     if len(argument) != len(argumentoss):
                         error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
                         self.errores.append(error)
                         # print(error)
-                        return "Int"
+                        return "Indefinido"
                     else:
                         for argumento, parametro in zip(argumentoss, argument):
                             if argumento[1] != parametro[1]:
                                 error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
                                 self.errores.append(error)
                                 # print(error)
-                                return "Int"
+                                return "Indefinido"
 
                     return respuesta1[1]
             else:
