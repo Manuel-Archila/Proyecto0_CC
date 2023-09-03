@@ -140,32 +140,22 @@ class SemanticR(yaplVisitor):
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
         # # print("Llamada a Expr")
-        new_scope_required = ctx.IF()
-
-        if new_scope_required:
-            ## print("Enter")
-            self.symbol_table.enter_scope2()
         # ARREGLAR IF Y ELSE DESPUES DE HACER EL RESTO
         if ctx.IF():
             ## print("Enter")
+
             self.symbol_table.enter_scope2()
-
-            if ctx.ELSE():
-                # # print("ctx trae un else")
-                # self.symbol_table.exit_scope2()
-                # # print("Entro al else")
-                ## print("Enter")
-                self.symbol_table.enter_scope2()
-                # temp = self.visitChildren(ctx)
-                ## print("Exit")
-                self.symbol_table.exit_scope2()
-            # else:
-            #     temp = self.visitChildren(ctx)
-
-            temp = self.visitChildren(ctx)
-            ## print("Exit")
+            temp = self.visitChildren(ctx.expr()[0])
             self.symbol_table.exit_scope2()
-            # self.symbol_table.exit_scope2()
+
+            self.symbol_table.enter_scope2()
+            temp1 = self.visitChildren(ctx.expr()[1])
+            self.symbol_table.exit_scope2()
+
+            self.symbol_table.enter_scope2()
+            temp2 = self.visitChildren(ctx.expr()[2])
+            self.symbol_table.exit_scope2()
+
 
             return temp
 
@@ -397,20 +387,26 @@ class SemanticR(yaplVisitor):
                 return "Bool"
 
         elif ctx.WHILE():
-            ## print("entre a while")
-            ## print("Enter")
+
             self.symbol_table.enter_scope2()
-            temp = self.visitChildren(ctx)
-            ## print("Exit")
+            temp = self.visitChildren(ctx.expr()[0])
             self.symbol_table.exit_scope2()
+
+            self.symbol_table.enter_scope2()
+            temp1 = self.visitChildren(ctx.expr()[1])
+            self.symbol_table.exit_scope2()
+
+
             return temp
 
         elif ctx.LET():
-            for i in range(len(ctx.ID())):
-                # for chil in ctx.getChildren():
-                #     # print(chil.getText())
 
-                return self.visitChildren(ctx)
+
+            self.symbol_table.enter_scope2()
+            temp = self.visitChildren(ctx)
+            self.symbol_table.exit_scope2()
+
+            return temp
         
         elif ctx.DIGIT():
             return "Int"

@@ -194,45 +194,33 @@ class SemanticAnalyzerMio(yaplVisitor):
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
         # # print("Llamada a Expr")
-        new_scope_required = ctx.IF()
 
-        if new_scope_required:
-            ## print("Enter")
-            self.symbol_table.enter_scope()
         # ARREGLAR IF Y ELSE DESPUES DE HACER EL RESTO
         if ctx.IF():
-            ## print("Enter")
+
             self.symbol_table.enter_scope()
-            self.symbol_table.put(ctx.getText(), ctx.start.line, "if")
-
-            if ctx.ELSE():
-                # # print("ctx trae un else")
-                # self.symbol_table.exit_scope()
-                # # print("Entro al else")
-                ## print("Enter")
-                self.symbol_table.enter_scope()
-                self.symbol_table.put(ctx.getText(), ctx.start.line, "else")
-                # temp = self.visitChildren(ctx)
-                ## print("Exit")
-                self.symbol_table.exit_scope()
-            # else:
-            #     temp = self.visitChildren(ctx)
-
-            temp = self.visitChildren(ctx)
-            ## print("Exit")
+            temp = self.visitChildren(ctx.expr()[0])
             self.symbol_table.exit_scope()
-            # self.symbol_table.exit_scope()
+
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx.expr()[1])
+            self.symbol_table.exit_scope()
+
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx.expr()[2])
+            self.symbol_table.exit_scope()
+
 
             return temp
 
 
         elif ctx.WHILE():
-            ## print("entre a while")
-            ## print("Enter")
             self.symbol_table.enter_scope()
-            self.symbol_table.put('ctx.getText()', ctx.start.line, "while")
-            temp = self.visitChildren(ctx)
-            ## print("Exit")
+            temp = self.visitChildren(ctx.expr()[0])
+            self.symbol_table.exit_scope()
+
+            self.symbol_table.enter_scope()
+            temp = self.visitChildren(ctx.expr()[1])
             self.symbol_table.exit_scope()
             return temp
 
@@ -264,10 +252,15 @@ class SemanticAnalyzerMio(yaplVisitor):
                         # print("Error: La variable no puede llamarse self")
                         
                     else:
+                        
                         self.symbol_table.put(ctx.ID()[i].getText(), self.get_line(ctx), "variable",ctx.TYPE()[i].getText())
 
+                self.symbol_table.enter_scope()
+                temp = self.visitChildren(ctx)
+                self.symbol_table.exit_scope()
 
-                return self.visitChildren(ctx)
+                return temp
+
             #self.symbol_table.exit_scope()
         else:
             #self.symbol_table.put("ctx.ID()[i]", self.get_line(ctx), "variable","ctx.TYPE()[i].getText()")
