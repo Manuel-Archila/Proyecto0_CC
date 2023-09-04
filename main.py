@@ -8,6 +8,7 @@ from SymbolTable import *
 from SymbolT import *
 from SemanticVisitor import SemanticR
 from SemanticAnalyzer import SemanticAnalyzerMio
+from SemanticVisitor2 import SemanticV2
 import tempfile
 
 import tkinter as tk
@@ -86,12 +87,18 @@ def cerrar_ventana():
         semanticR.visit_program(tree)
         semanticR.error_mmain2()
 
-        if len(semantic_visitor.errores) > 0 or len(semanticR.errores) > 0:
+        semanticV = SemanticV2(symbol_table)
+        semanticV.visit_program(tree)
+
+
+        if len(semantic_visitor.errores) > 0 or len(semanticR.errores) > 0 or len(semanticV.errores) > 0:
 
             mensaje = "Se encontraron errores semánticos:\n\n"
             for error in list(set(semantic_visitor.errores)):
                 mensaje += f"- {error}\n"
             for error in list(set(semanticR.errores)):
+                mensaje += f"- {error}\n"
+            for error in list(set(semanticV.errores)):
                 mensaje += f"- {error}\n"
 
             messagebox.showerror("Errores Semánticos", mensaje)

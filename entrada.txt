@@ -1,8 +1,8 @@
 (* Comentario *)
 class Main { 
 
-   main() : Object {
-        pass
+   main() : String {
+        "pass"
         
     };
 
@@ -10,23 +10,26 @@ class Main {
 
 class Tres{
 
-   hola( initial : Int ) : Int {
-        self.hola(1)
+    hola( initial : Int ) : Int {
+        1 + 1
     };
 
 };
 
 class Uno{
-   x : Sally <- new Sally;
-   count( initial : Int ) : Int {
+    x : Uno <- new Uno;
+
+    count( initial : Int ) : Int {
         0
     };
 
 };
 
 class Dos inherits Tres{
-   x : Tres <- new Tres;
-   constructor () : Dos {
-        x @ Tres.count()
-   };
+    x : Tres <- new Tres;
+
+    constructor () : Int {
+        x @ Tres.hola(1)
+    };
+
 };

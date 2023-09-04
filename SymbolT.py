@@ -41,6 +41,9 @@ class SymbolT:
 
         self.current_scope2 = None
         self.scope_counter2 = 0
+
+        self.current_scope3 = None
+        self.scope_counter3 = 0
     
     def enter_scope(self):
         if self.scope_counter == 0:
@@ -76,6 +79,22 @@ class SymbolT:
     def exit_scope2(self):
         if self.current_scope2.parent:
             self.current_scope2 = self.current_scope2.parent
+
+    
+    def enter_scope3(self):
+        if self.scope_counter3 == 0:
+            self.root3 = Scope(str(self.scope_counter3))
+            self.current_scope3 = self.root3
+            self.scope_counter3 += 1
+        else:
+            new_scope = Scope(str(self.scope_counter3), self.current_scope3)
+            self.current_scope3.add_child(new_scope)
+            self.current_scope3 = new_scope
+            self.scope_counter3 += 1
+    
+    def exit_scope3(self):
+        if self.current_scope3.parent:
+            self.current_scope3 = self.current_scope3.parent
     
     
     def visit_elements(self, scope, name):
@@ -91,6 +110,11 @@ class SymbolT:
         
     def getScope(self):
         name = self.current_scope2.name
+        scope = self.visit_elements(self.root, name)
+        return scope
+
+    def getScope2(self):
+        name = self.current_scope3.name
         scope = self.visit_elements(self.root, name)
         return scope
     

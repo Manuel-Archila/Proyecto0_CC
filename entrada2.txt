@@ -1,12 +1,11 @@
 (* COMENTARIO *)
-class Main inherits IO {
+class Main {
     main() : Object {
-        let x : Int <- 5 in
-        {
-            while x > 0 loop
-                out_string("Countdown: ")
-            pool ;
-        }
+        if 5 < 10 then
+            "hola"
+        else
+            1 + 2
+        fi 
     };
 
     count( initial : Int ) : Int {
