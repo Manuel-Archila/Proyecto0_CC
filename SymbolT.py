@@ -140,6 +140,29 @@ class SymbolT:
 
             current_scope = current_scope.parent
         return None
+    
+    def getSpecific2(self, name):
+        current_scope = self.current_scope
+        while current_scope:
+            if name in current_scope.symbols:
+                return current_scope
+
+            for child in current_scope.children:
+                result = self.recurs(child, name)
+                if result:
+                    return result 
+        return None
+    
+    def recurs(self, scope, name):
+        if name in scope.symbols:
+            return scope
+        
+        for child in scope.children:
+            result = self.recurs(child, name)
+            if result:
+                return result
+        return None
+
             
     def getSpecificScope(self, name):
         current_scope = self.current_scope

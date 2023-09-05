@@ -673,7 +673,6 @@ class SemanticR(yaplVisitor):
                                     r = self.symbol_table.getSymbol(parent_ctx, sco)
 
 
-
                                     if r.hereda is not None:
                                         hereda = r.hereda
 

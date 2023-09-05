@@ -65,6 +65,8 @@ class SemanticV2(yaplVisitor):
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
 
+        tipo = ctx.TYPE().getText()
+
         if ctx.LPAR():
 
             if ctx.ID().getText() == "main":
@@ -79,58 +81,62 @@ class SemanticV2(yaplVisitor):
 
             if ctx.expr():
 
-                if ctx.expr().LPAR():
+                if ctx.expr().DOT():
 
-                    argumentoss = []
-                    contenido_actual = None
+                    if ctx.expr().AT():
 
-                    for elemento in ctx.expr().getChildren():
-                        if elemento.getText() == '(':
-                            contenido_actual = []
-                        elif elemento.getText() == ')':
-                            if contenido_actual is not None:
-                                argumentoss.append(contenido_actual)
-                                contenido_actual = None
-                        elif contenido_actual is not None:
-                            if ',' not in elemento.getText():
-                                contenido_actual.append((elemento.getText(), self.visit(elemento)))
-                    argumentoss = argumentoss[0]
+                        padre = ctx.expr().TYPE()[0].getText()
 
+                        fun2 = ctx.expr().ID()[0].getText()
 
+                        scopeH = self.symbol_table.getSpecificScope(padre)
 
-                    for elemento in ctx.expr().getChildren():
-                        funtion = elemento.getText()
-                        break
+                        resp = self.symbol_table.getItem(fun2, scopeH)
 
-                    current_scope = self.symbol_table.getScope2()
+                        if resp[0] == False:
+                            error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + fun2
+                            self.errores.append(error)
+                            return "Indefinido"
+                        
+                        else:
 
-                    respuesta1 = self.symbol_table.getItem(funtion, current_scope)
+                            type2 = resp[1]
 
-                    argumentTemp = self.symbol_table.getSymbol(funtion, current_scope)
-
-                    if argumentTemp is not None:
-                        argument = argumentTemp.params
-
-                    if respuesta1[0] == False:
-
-                        inheri = False
-                        parent_ctx = ctx
-
-                        seaClass = True
-
-                        while seaClass:
-                            parent_ctx = parent_ctx.parentCtx
-                            if isinstance(parent_ctx, yaplParser.ClassContext):
-                                parent_ctx = parent_ctx.TYPE()[0].getText()
-
-                                while not inheri:
-
-                                    sco = self.symbol_table.getSpecific(parent_ctx)
-                                    
-                                    r = self.symbol_table.getSymbol(parent_ctx, sco)
+                            if tipo != type2:
+                                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
+                                self.errores.append(mensaje)
 
 
-                                    if r is not None:
+                            return type2
+
+                    else:
+
+                        fun2 = ctx.expr().ID()[0].getText()
+
+                        current = self.symbol_table.getSpecific2(fun2)
+
+                        resp = self.symbol_table.getItem(fun2, current)
+
+                        if resp[0] == False:
+                            
+                            inheri = False
+                            parent_ctx = ctx
+
+                            seaClass = True
+
+                            while seaClass:
+                                #print("Chequeo si existe y argumentos 2")
+                                parent_ctx = parent_ctx.parentCtx
+                                if isinstance(parent_ctx, yaplParser.ClassContext):
+                                    parent_ctx = parent_ctx.TYPE()[0].getText()
+
+                                    while not inheri:
+                                        #print("Inheri de Chequeo si existe y argumentos 2")
+
+                                        sco = self.symbol_table.getSpecific(parent_ctx)
+                                        
+                                        r = self.symbol_table.getSymbol(parent_ctx, sco)
+
 
                                         if r.hereda is not None:
                                             hereda = r.hereda
@@ -139,14 +145,8 @@ class SemanticV2(yaplVisitor):
                                             scopeH = self.symbol_table.getSpecificScope(hereda)
 
 
-                                            resp = self.symbol_table.getItem(funtion, scopeH)
+                                            resp = self.symbol_table.getItem(fun2, scopeH)
 
-                                            argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
-
-                                            if argumentTemp is not None:
-                                                argument = argumentTemp.params
-
-                                            inheri = resp[0]
 
                                             
                                             if resp[0] == False:
@@ -155,32 +155,93 @@ class SemanticV2(yaplVisitor):
                                                 parent_ctx = hereda
 
                                             else:
-
-                                                # #print(argument)
-                                                # #print(argumentoss)
-
-                                                if len(argument) != len(argumentoss):
-                                                    error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
-                                                    #self.errores.append(error)
-                                                    # #print(error)
-                                                    return "Indefinido"
-                                                else:
-                                                    for argumento, parametro in zip(argumentoss, argument):
-                                                        if argumento[1] != parametro[1]:
-                                                            error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
-                                                            #self.errores.append(error)
-                                                            # #print(error)
-                                                            return "Indefinido"
                                                 
-                                                return resp[1]
-                                            
-                                        elif r.hereda == "Main":
-                                            error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
-                                            #self.errores.append(error)
-                                            # #print(error)
-                                            return "Indefinido"
+
+                                                type2 = resp[1]
+
+                                                if tipo != type2:
+                                                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
+                                                    self.errores.append(mensaje)
+
+                                                    inheri = True
+
 
                                         else:
+
+                                            inheri = True
+                                        
+
+                                    seaClass = False
+                        
+                        else:
+
+                            type2 = resp[1]
+
+                            if tipo != type2:
+                                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
+                                self.errores.append(mensaje)
+                        
+
+
+
+                if ctx.expr().LPAR():
+
+                    fun = ctx.ID().getText()
+
+                    current = self.symbol_table.getSpecific2(fun)
+
+                    fun2 = ctx.expr().getChild(0).getText()
+
+                    resp = self.symbol_table.getItem(fun2, current)
+
+
+                    if resp[0] == False:
+                        
+                        inheri = False
+                        parent_ctx = ctx
+
+                        seaClass = True
+
+                        while seaClass:
+                            #print("Chequeo si existe y argumentos 2")
+                            parent_ctx = parent_ctx.parentCtx
+                            if isinstance(parent_ctx, yaplParser.ClassContext):
+                                parent_ctx = parent_ctx.TYPE()[0].getText()
+
+                                while not inheri:
+                                    #print("Inheri de Chequeo si existe y argumentos 2")
+
+                                    sco = self.symbol_table.getSpecific(parent_ctx)
+                                    
+                                    r = self.symbol_table.getSymbol(parent_ctx, sco)
+
+
+                                    if r.hereda is not None:
+                                        hereda = r.hereda
+
+
+                                        scopeH = self.symbol_table.getSpecificScope(hereda)
+
+
+                                        resp = self.symbol_table.getItem(fun2, scopeH)
+
+
+                                        
+                                        if resp[0] == False:
+
+                                            inheri = resp[0]
+                                            parent_ctx = hereda
+
+                                        else:
+                                            
+
+                                            type2 = resp[1]
+
+                                            if tipo != type2:
+                                                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
+                                                self.errores.append(mensaje)
+
+                                                inheri = True
 
                                             inheri = True
 
@@ -189,36 +250,20 @@ class SemanticV2(yaplVisitor):
                                     
 
                                 seaClass = False
-                            
-                    if respuesta1[0] == False:
-                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
-                        #self.errores.append(error)
-                        # #print(error)
-                        return "Indefinido"
-
-                    if len(argument) != len(argumentoss):
-                        error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
-                        #self.errores.append(error)
-                        # #print(error)
-                        return "Indefinido"
-                    else:
-                        for argumento, parametro in zip(argumentoss, argument):
-                            if argumento[1] != parametro[1]:
-                                error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento " + str(argumento[0])+ " no es de tipo " + str(parametro[1])
-                                #self.errores.append(error)
-                                # #print(error)
-                                return "Indefinido"
-
-                    return respuesta1[1]
-            
-
                     
+                    else:
+
+                        type2 = resp[1]
+
+                        if tipo != type2:
+                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
+                            self.errores.append(mensaje)
+                   
                 else:
+
                     type2 = self.visit(ctx.expr())
-                    #print(type2)
 
                     ty = ctx.TYPE().getText()
-                    #print(ty)
 
                     if ty != type2:
                         mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
@@ -227,8 +272,6 @@ class SemanticV2(yaplVisitor):
             return temp
 
         else:
-
-            tipo = ctx.TYPE().getText()
 
             if ctx.ASSIGN():
 
