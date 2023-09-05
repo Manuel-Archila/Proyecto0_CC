@@ -171,7 +171,7 @@ digraph {
 	84 -> 85
 	85 [label=new]
 	84 -> 86
-	86 [label=Tres]
+	86 [label=Dos]
 	73 -> 87
 	87 [label=";"]
 	73 -> 88

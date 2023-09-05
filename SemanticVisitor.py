@@ -102,9 +102,16 @@ class SemanticR(yaplVisitor):
                 indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
                 if indice != -1:
                     tipo2 = tipo2[indice + len("new"):]
+                
+                definido = False
+                tipo_total = self.visit(ctx.getChild(4))
+                if tipo_total != None and tipo_total == tipo:
+                    definido = True
+                
 
-                if tipo != tipo2:
-                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
+
+                if tipo != tipo2 and definido == False:
+                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo de: " + str(tipo2)
                     self.errores.append(mensaje)
                     # #print(mensaje)
 
