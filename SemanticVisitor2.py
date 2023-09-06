@@ -65,7 +65,9 @@ class SemanticV2(yaplVisitor):
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
 
-        tipo = ctx.TYPE().getText()
+        if ctx.COLON():
+
+            tipo = ctx.TYPE().getText()
 
         if ctx.LPAR():
 
@@ -273,43 +275,45 @@ class SemanticV2(yaplVisitor):
 
         else:
 
-            if ctx.ASSIGN():
+            if ctx.COLON():
 
-                tipo2 = ctx.getChild(4).getText()
+                if ctx.ASSIGN():
 
-                indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
-                if indice != -1:
-                    tipo2 = tipo2[indice + len("new"):]
+                    tipo2 = ctx.getChild(4).getText()
 
-                if tipo != tipo2:
-                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
-                    #self.errores.append(mensaje)
-                    # #print(mensaje)
+                    indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
+                    if indice != -1:
+                        tipo2 = tipo2[indice + len("new"):]
+
+                    if tipo != tipo2:
+                        mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo " + tipo2
+                        #self.errores.append(mensaje)
+                        # #print(mensaje)
 
 
-            parent_ctx = ctx
+                parent_ctx = ctx
 
-            seaClass = True
+                seaClass = True
 
-            while seaClass:
-                parent_ctx = parent_ctx.parentCtx
-                if isinstance(parent_ctx, yaplParser.ClassContext):
-                    parent_ctx = parent_ctx.TYPE()[0].getText()
+                while seaClass:
+                    parent_ctx = parent_ctx.parentCtx
+                    if isinstance(parent_ctx, yaplParser.ClassContext):
+                        parent_ctx = parent_ctx.TYPE()[0].getText()
 
-                    sco = self.symbol_table.getSpecific(parent_ctx)
+                        sco = self.symbol_table.getSpecific(parent_ctx)
 
-                    r = self.symbol_table.getItem(tipo, sco)
+                        r = self.symbol_table.getItem(tipo, sco)
 
-                    if r[0] == False:
-                        if tipo not in self.originales:
-                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
-                            #self.errores.append(mensaje)
-                            # #print(mensaje)
+                        if r[0] == False:
+                            if tipo not in self.originales:
+                                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
+                                #self.errores.append(mensaje)
+                                # #print(mensaje)
 
-                    seaClass = False
-           
-            temp = self.visitChildren(ctx)
-            return temp
+                        seaClass = False
+            
+                temp = self.visitChildren(ctx)
+                return temp
     
     def visitFormal(self, ctx:yaplParser.FormalContext):
         pass

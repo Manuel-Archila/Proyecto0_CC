@@ -93,54 +93,60 @@ class SemanticR(yaplVisitor):
 
         else:
 
-            tipo = ctx.TYPE().getText()
+            if ctx.COLON():
 
-            if ctx.ASSIGN():
+                tipo = ctx.TYPE().getText()
 
-                tipo2 = ctx.getChild(4).getText()
+            
 
-                indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
-                if indice != -1:
-                    tipo2 = tipo2[indice + len("new"):]
-                
-                definido = False
-                tipo_total = self.visit(ctx.getChild(4))
-                if tipo_total != None and tipo_total == tipo:
-                    definido = True
-                
+                if ctx.ASSIGN():
 
+                    tipo2 = ctx.getChild(4).getText()
 
-                if tipo != tipo2 and definido == False:
-                    mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo de: " + str(tipo2)
-                    self.errores.append(mensaje)
-                    # #print(mensaje)
+                    indice = tipo2.find("new")  # Encuentra la posición de "new" en la cadena
+                    if indice != -1:
+                        tipo2 = tipo2[indice + len("new"):]
+                    
+                    definido = False
+                    tipo_total = self.visit(ctx.getChild(4))
+                    if tipo_total != None and tipo_total == tipo:
+                        definido = True
+                    
 
 
-            parent_ctx = ctx
+                    if tipo != tipo2 and definido == False:
+                        mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no coincide con el tipo de: " + str(tipo2)
+                        self.errores.append(mensaje)
+                        # #print(mensaje)
 
-            seaClass = True
 
-            while seaClass:
-                #print("Ver si tipo existe")
-                parent_ctx = parent_ctx.parentCtx
-                if isinstance(parent_ctx, yaplParser.ClassContext):
-                    parent_ctx = parent_ctx.TYPE()[0].getText()
+                parent_ctx = ctx
 
-                    sco = self.symbol_table.getSpecific(parent_ctx)
+                seaClass = True
 
-                    r = self.symbol_table.getItem(tipo, sco)
+                while seaClass:
+                    #print("Ver si tipo existe")
+                    parent_ctx = parent_ctx.parentCtx
+                    if isinstance(parent_ctx, yaplParser.ClassContext):
+                        parent_ctx = parent_ctx.TYPE()[0].getText()
 
-                    if r[0] == False:
-                        if tipo not in self.originales:
-                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
-                            self.errores.append(mensaje)
-                            # #print(mensaje)
+                        sco = self.symbol_table.getSpecific(parent_ctx)
 
-                    seaClass = False
-           
-            temp = self.visitChildren(ctx)
-            return temp
-    
+                        r = self.symbol_table.getItem(tipo, sco)
+
+                        if r[0] == False:
+                            if tipo not in self.originales:
+                                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + tipo + " no existe"
+                                self.errores.append(mensaje)
+                                # #print(mensaje)
+
+                        seaClass = False
+            
+                temp = self.visitChildren(ctx)
+                return temp
+
+            else:
+                print(ctx.getText())
     def visitFormal(self, ctx:yaplParser.FormalContext):
         pass
 
@@ -628,7 +634,27 @@ class SemanticR(yaplVisitor):
             if ctx.getChildCount() > 0:
 
                 if ctx.ASSIGN():
-                    return (self.visitChildren(ctx))
+
+                    current_scope = self.symbol_table.getScope()
+
+                    respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
+
+
+                    if respuesta1[0] == False:
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + ctx.ID()[0].getText()
+                        self.errores.append(error)
+
+                        return (self.visitChildren(ctx))
+
+                    else:
+                            
+                            if respuesta1[1] != self.visit(ctx.getChild(2)):
+                                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede asignar " + str(self.visit(ctx.getChild(2))) + " a " + str(respuesta1[1])
+                                self.errores.append(error)
+    
+                            return respuesta1[1]
+
+                    
                 
                 if ctx.LPAR():
                     

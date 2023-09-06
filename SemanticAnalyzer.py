@@ -171,8 +171,9 @@ class SemanticAnalyzerMio(yaplVisitor):
             
             resp = self.symbol_table.getItem(ctx.ID().getText(), current)
 
-            if resp[0] == True:
+            if resp[0] == True  and ctx.COLON():
                 self.errores.append("Error: El atribute " + ctx.ID().getText() + " ya existe")
+
                 # print("Error: El atribute " + ctx.ID().getText() + " ya existe")
 
             else:
