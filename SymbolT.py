@@ -1,5 +1,5 @@
 class Symbol:
-    def __init__(self, name, line, symbol_type, scope, data_type=None, hereda=None, params=None):
+    def __init__(self, name, line, symbol_type, scope, data_type=None, hereda=None, params=None, memoria = None):
         self.name = name  
         self.line = line  
         self.symbol_type = symbol_type  
@@ -7,6 +7,7 @@ class Symbol:
         self.scope = scope  
         self.hereda = hereda
         self.params = params
+        self.memoria = memoria
     def __repr__(self):
         return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda) + " " + str(self.params)
 
@@ -61,8 +62,8 @@ class SymbolT:
             #print("Saliendo del scope", self.current_scope.name)
             self.current_scope = self.current_scope.parent
     
-    def put(self, name, line, symbol_type, data_type=None, hereda=None, params=None):
-        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda, params)
+    def put(self, name, line, symbol_type, data_type=None, hereda=None, params=None, memoria = None):
+        symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda, params, memoria)
         self.current_scope.put(symbol)
     
     def enter_scope2(self):
