@@ -9,6 +9,7 @@ class SemanticAnalyzerMio(yaplVisitor):
         self.mmain = False
         self.mmain2 = False
         self.errores = []
+        self.puntero = 16
 
     def visit_program(self, ctx:yaplParser.ProgramContext):
         self.symbol_table.enter_scope()
@@ -183,7 +184,18 @@ class SemanticAnalyzerMio(yaplVisitor):
                     # print("Error: El atributo no puede llamarse self")
 
                 else:
-                    self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText())
+                    mem = 0
+                    if ctx.TYPE().getText() == "String":
+                        mem = 2
+                    elif ctx.TYPE().getText() == "Int":
+                        mem = 4
+                    elif ctx.TYPE().getText() == "Bool":
+                        mem = 1
+
+                    else:
+                        mem = self.puntero
+
+                    self.symbol_table.put(ctx.ID().getText(), self.get_line(ctx), "atribute", ctx.TYPE().getText(), None, None, mem)
 
             return None
     

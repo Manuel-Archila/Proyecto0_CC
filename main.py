@@ -87,7 +87,7 @@ def cerrar_ventana():
         semanticR.visit_program(tree)
         semanticR.error_mmain2()
 
-        semanticV = SemanticV2(symbol_table)
+        semanticV = SemanticV2(semanticR.symbol_table)
         semanticV.visit_program(tree)
 
 
@@ -120,6 +120,8 @@ def cerrar_ventana():
         else:
             visitor = TreeBuildingVisitor()
             visitor.visitar(tree)
+
+            print(semanticV.symbol_table)
 
             dot_graph = visitor.getDotGraph()
             dot_graph.render(filename='output.gv', view=True, format='png')

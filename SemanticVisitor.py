@@ -57,7 +57,17 @@ class SemanticR(yaplVisitor):
                     salmon = False
             self.classes = []
 
- 
+
+        current_scope = self.symbol_table.getScope()
+
+        scopeee = self.symbol_table.getSpecificScope(ctx.TYPE()[0].getText())
+
+        peso = self.symbol_table.verificarPeso(scopeee)
+
+        self.symbol_table.cambiarPeso(ctx.TYPE()[0].getText(),current_scope, peso)
+
+        #AQUI SE PONE EL PESO DE LA CLASE
+
         ## #print(ctx.TYPE()[0].getText())
         self.symbol_table.enter_scope2()
         temp = self.visitChildren(ctx)

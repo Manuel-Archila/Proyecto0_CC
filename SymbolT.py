@@ -9,7 +9,7 @@ class Symbol:
         self.params = params
         self.memoria = memoria
     def __repr__(self):
-        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda) + " " + str(self.params)
+        return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda) + " " + str(self.params) + " " + str(self.memoria) 
 
 class Scope:
     def __init__(self, name, parent=None):
@@ -133,6 +133,7 @@ class SymbolT:
     #         current_scope = current_scope.parent
     #     return None
     
+    #Retorna el scope donde se encuentra el simbolo
     def getSpecific(self, name):
         current_scope = self.current_scope
         while current_scope:
@@ -164,7 +165,7 @@ class SymbolT:
                 return result
         return None
 
-            
+    # Retorna el scope del simbolo
     def getSpecificScope(self, name):
         current_scope = self.current_scope
         while current_scope:
@@ -194,7 +195,23 @@ class SymbolT:
                 return current_scope.symbols[name]
             current_scope = current_scope.parent
         return None
-          
+    
+    def verificarPeso(self, scope):
+        contador = 0
+        for sim in scope.symbols:
+            if scope.symbols[sim].symbol_type == "atribute":
+                contador += scope.symbols[sim].memoria
+        return contador
+
+    def cambiarPeso(self, name, scope, peso):
+        current_scope = scope
+        while current_scope:
+            if name in current_scope.symbols:
+                current_scope.symbols[name].memoria = peso
+                return True
+            current_scope = current_scope.parent
+        
+
     def __repr__(self):
         def recurse(scope, indent=0):
             result = [repr(scope)]
