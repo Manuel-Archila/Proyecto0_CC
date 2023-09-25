@@ -1,8 +1,8 @@
 (* COMENTARIO *)
 class Main {
-    main() : Object {
+    main() : Int {
         if 5 < 10 then
-            "hola"
+            3 - 5
         else
             1 + 2
         fi 

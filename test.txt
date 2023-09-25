@@ -1,0 +1,14 @@
+(* COMENTARIO *)
+class Main {
+    count: Int <- 0;
+    limit: Int <- 10;
+    main() : Int {
+        WHILE count < limit LOOP
+            10 + 10
+        POOL
+    };
+
+    contar( initial : Int ) : Int {
+        1 + initial
+    };
+};

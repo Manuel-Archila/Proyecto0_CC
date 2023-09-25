@@ -1,7 +1,6 @@
 from dist.yaplVisitor import yaplVisitor
 from dist.yaplParser import yaplParser
 from antlr4.tree.Tree import TerminalNode
-from SymbolTable import Symbol, SymbolTable
 import re
 
 class SemanticV2(yaplVisitor):

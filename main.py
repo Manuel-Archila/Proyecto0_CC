@@ -3,12 +3,13 @@ from dist.yaplParser import yaplParser
 from CustomErrorListener import CustomErrorListener
 from MyLexer import MyLexer
 from TreeBuildingVisitor import TreeBuildingVisitor
-from TS import TS 
-from SymbolTable import *
 from SymbolT import *
 from SemanticVisitor import SemanticR
 from SemanticAnalyzer import SemanticAnalyzerMio
 from SemanticVisitor2 import SemanticV2
+from CuadruplasVisitor import *
+from Cuadruplas import *
+
 import tempfile
 
 import tkinter as tk
@@ -42,14 +43,13 @@ def guardar_archivo():
 def cerrar_ventana():
     guardar_archivo()
     
-    tabla_simbolos = TS()
 
 
     
     if archivo_temporal:
         input_stream = FileStream(archivo_temporal.name)
 
-        lexer = MyLexer(input_stream, tabla_simbolos)
+        lexer = MyLexer(input_stream)
         token_stream = CommonTokenStream(lexer)
         token_stream.fill()
 
@@ -125,6 +125,23 @@ def cerrar_ventana():
 
             dot_graph = visitor.getDotGraph()
             dot_graph.render(filename='output.gv', view=True, format='png')
+
+            #Aqui
+
+            print("============ CUADRUPLAS ==============")
+
+            cuadruplas = Cuadruplas()
+
+            genCuadruplas = CuadruplasVisitor(semanticV.symbol_table, cuadruplas)
+
+            genCuadruplas.visit_program(tree)
+
+
+            cuadruplas.imprimir_cuadruplas()
+
+
+
+            
 
 def resetear_todo():
     global archivo_temporal

@@ -1,7 +1,6 @@
 from dist.yaplVisitor import yaplVisitor
 from dist.yaplParser import yaplParser
 from antlr4.tree.Tree import TerminalNode
-from SymbolTable import Symbol, SymbolTable
 
 class SemanticAnalyzerMio(yaplVisitor):
     def __init__(self, symbol_table):
@@ -186,7 +185,7 @@ class SemanticAnalyzerMio(yaplVisitor):
                 else:
                     mem = 0
                     if ctx.TYPE().getText() == "String":
-                        mem = 2
+                        mem = 256
                     elif ctx.TYPE().getText() == "Int":
                         mem = 4
                     elif ctx.TYPE().getText() == "Bool":

@@ -1,7 +1,6 @@
 from dist.yaplVisitor import yaplVisitor
 from dist.yaplParser import yaplParser
 from antlr4.tree.Tree import TerminalNode
-from SymbolTable import Symbol, SymbolTable
 import re
 
 class SemanticR(yaplVisitor):
@@ -444,6 +443,12 @@ class SemanticR(yaplVisitor):
 
             self.symbol_table.enter_scope2()
             temp = self.visit(ctx.expr()[0])
+
+            if temp != "Bool":
+                mensaje = "Error en línea " + str(self.get_line(ctx)) + ": La condición del if no es de tipo Bool"
+                self.errores.append(mensaje)
+
+
             self.symbol_table.exit_scope2()
 
             self.symbol_table.enter_scope2()
