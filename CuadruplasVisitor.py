@@ -59,68 +59,88 @@ class CuadruplasVisitor(yaplVisitor):
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('-', first_child, second_child, "t" )
+            valor = self.cuadruplas.agregar_cuadrupla('-', first_child, second_child, "t" )
+
+            return valor
 
         if ctx.TIMES():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('*', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('*', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.DIVIDE():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('/', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('/', first_child, second_child, "t" )
 
-            #self.cuadruplas.agregar_cuadrupla('<-', first_child, None, "t" + str(self.cuadruplas.temporal_counter))
+            return valor
+
         
         if ctx.LT():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('<', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('<', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.RT():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('>', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('>', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.LE():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('<=', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('<=', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.RE():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('>=', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('>=', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.EQUALS():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('=', first_child, second_child, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('=', first_child, second_child, "t" )
+
+            return valor
+
         if ctx.NOT():
             first_child = ctx.getChild(0).getText()
 
-            self.cuadruplas.agregar_cuadrupla('NOT', first_child, None, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('NOT', first_child, None, "t" )
+
+            return valor
+
         if ctx.ISVOID():
             first_child = ctx.getChild(0).getText()
 
-            self.cuadruplas.agregar_cuadrupla('ISVOID', first_child, None, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('ISVOID', first_child, None, "t" )
+
+            return valor
+
         if ctx.DIAC():
             first_child = ctx.getChild(0).getText()
 
-            self.cuadruplas.agregar_cuadrupla('~', first_child, None, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('~', first_child, None, "t" )
+
+            return valor
+
         if ctx.NEW():
             first_child = ctx.getChild(1).getText()
 
@@ -132,8 +152,10 @@ class CuadruplasVisitor(yaplVisitor):
             first_child = ctx.getChild(1).getText()
             second_child = ctx.getChild(3).getText()
 
-            self.cuadruplas.agregar_cuadrupla('LET', first_child, second_child, "t")
-        
+            valor = self.cuadruplas.agregar_cuadrupla('LET', first_child, second_child, "t")
+
+            return valor
+
         if ctx.IF():
             first_child = ctx.getChild(1)
 
