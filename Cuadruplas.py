@@ -22,6 +22,8 @@ class Cuadruplas:
         if resultado is not None:
             if "L" in resultado:
                 return resultado
+            if "t" in resultado:
+                return resultado
 
     def nuevoLabel(self, resultado):
         resultado = resultado + str(self.labels)

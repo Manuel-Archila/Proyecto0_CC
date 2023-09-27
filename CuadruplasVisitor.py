@@ -27,6 +27,18 @@ class CuadruplasVisitor(yaplVisitor):
             for tupla in params:
                 self.cuadruplas.agregar_cuadrupla('PARAM', None, None, tupla[0])
 
+        if ctx.COLON():
+
+            if ctx.ASSIGN():
+
+                variable = ctx.getChild(0).getText()
+                print(ctx.getChild(4).getText())
+                val = self.visit(ctx.getChild(4))
+
+                print(val)
+
+                self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, val)
+
 
         return self.visitChildren(ctx)
     
@@ -39,7 +51,9 @@ class CuadruplasVisitor(yaplVisitor):
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
 
-            self.cuadruplas.agregar_cuadrupla('+', first_child, second_child, "t")
+            valor = self.cuadruplas.agregar_cuadrupla('+', first_child, second_child, "t")
+
+            return valor
 
         if ctx.MINUS():
             first_child = ctx.getChild(0).getText()
@@ -59,10 +73,8 @@ class CuadruplasVisitor(yaplVisitor):
 
             self.cuadruplas.agregar_cuadrupla('/', first_child, second_child, "t" )
         
-        # if ctx.ASSIGN():
-        #     first_child = ctx.getChild(0).getText()
 
-        #     self.cuadruplas.agregar_cuadrupla('<-', first_child, None, "t" + str(self.cuadruplas.temporal_counter))
+            #self.cuadruplas.agregar_cuadrupla('<-', first_child, None, "t" + str(self.cuadruplas.temporal_counter))
         
         if ctx.LT():
             first_child = ctx.getChild(0).getText()
@@ -112,8 +124,10 @@ class CuadruplasVisitor(yaplVisitor):
         if ctx.NEW():
             first_child = ctx.getChild(1).getText()
 
-            self.cuadruplas.agregar_cuadrupla('NEW', first_child, None, "t" )
-        
+            valor = self.cuadruplas.agregar_cuadrupla('NEW', first_child, None, "t" )
+
+            return valor
+
         if ctx.LET():
             first_child = ctx.getChild(1).getText()
             second_child = ctx.getChild(3).getText()
@@ -165,6 +179,17 @@ class CuadruplasVisitor(yaplVisitor):
             first_child
 
         if ctx.ID():
+
+            if ctx.ASSIGN():
+
+                first_child = ctx.getChild(0).getText()
+                second_child = ctx.getChild(2).getText()
+
+                print("ASSIGN")
+                print(first_child)
+                print(second_child)
+
+                #self.cuadruplas.agregar_cuadrupla('<-', first_child, second_child, "t" )
 
             if ctx.LPAR():
                     
