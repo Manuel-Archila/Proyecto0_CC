@@ -14,6 +14,20 @@ class CuadruplasVisitor(yaplVisitor):
         return self.visitChildren(ctx)
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
+
+        if ctx.LPAR():
+            
+            params = []
+            if ctx.formal():
+                for por in ctx.formal():
+                    string = por.getText()
+                    string = string.split(":")
+                    params.append((string[0], string[1]))
+                    
+            for tupla in params:
+                self.cuadruplas.agregar_cuadrupla('PARAM', None, None, tupla[0])
+
+
         return self.visitChildren(ctx)
     
     def visitformal(self, ctx:yaplParser.FormalContext):
@@ -126,7 +140,6 @@ class CuadruplasVisitor(yaplVisitor):
             self.cuadruplas.agregar_cuadrupla("LABEL", name2, None, None)
 
             self.visit(ctx.expr(2))
-
         
         if ctx.WHILE():
             first_child = ctx.getChild(1)
@@ -151,6 +164,31 @@ class CuadruplasVisitor(yaplVisitor):
 
             first_child
 
+        if ctx.ID():
+
+            if ctx.LPAR():
+                    
+                    argumentoss = []
+                    contenido_actual = None
+
+                    for elemento in ctx.getChildren():
+                        if elemento.getText() == '(':
+                            contenido_actual = []
+                        elif elemento.getText() == ')':
+                            if contenido_actual is not None:
+                                argumentoss.append(contenido_actual)
+                                contenido_actual = None
+                        elif contenido_actual is not None:
+                            if ',' not in elemento.getText():
+                                contenido_actual.append((elemento.getText(), self.visit(elemento)))
+                    argumentoss = argumentoss[0]
+
+
+
+                    funtion = ctx.ID()[0].getText()
+                    
+                    
+                    self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
 
 
 
