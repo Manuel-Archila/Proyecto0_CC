@@ -18,7 +18,7 @@ from tkinter import filedialog, messagebox
 archivo_temporal = None
 archi = None
 
-color1 = "#404040"
+color1 = "#808080"
 letra1 = "#CCFFFF"
 color2 = "#FFFFFF"
 letra2 = "black"
@@ -165,6 +165,8 @@ def cambiar_color_fondo():
 
     contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
     contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
+
+    #contenido_texto.configure(insertbackground=color_letra)
 
     numeros_linea_widget.tag_configure("color_texto_tag", foreground=color_letra)
     numeros_linea_widget.tag_add("color_texto_tag", "1.0", tk.END)
