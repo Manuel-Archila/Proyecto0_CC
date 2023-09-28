@@ -32,12 +32,15 @@ class CuadruplasVisitor(yaplVisitor):
             if ctx.ASSIGN():
 
                 variable = ctx.getChild(0).getText()
-                print(ctx.getChild(4).getText())
                 val = self.visit(ctx.getChild(4))
 
-                print(val)
+                if val is not None:
 
-                self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, val)
+                    self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, val)
+                else:
+                    self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, "t")
+
+                return None
 
 
         return self.visitChildren(ctx)
