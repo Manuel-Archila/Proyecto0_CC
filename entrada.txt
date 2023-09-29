@@ -1,8 +1,10 @@
 (* Comentario *)
 class Main { 
 
+   x : String;
+
    main() : String {
-        "pass"
+        x <- "Hola Mundo"
         
     };
 

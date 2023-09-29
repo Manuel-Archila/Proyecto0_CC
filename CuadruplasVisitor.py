@@ -82,7 +82,6 @@ class CuadruplasVisitor(yaplVisitor):
 
             return valor
 
-        
         if ctx.LT():
             first_child = ctx.getChild(0).getText()
             second_child = ctx.getChild(2).getText()
@@ -208,13 +207,15 @@ class CuadruplasVisitor(yaplVisitor):
             if ctx.ASSIGN():
 
                 first_child = ctx.getChild(0).getText()
-                second_child = ctx.getChild(2).getText()
+                second_child = ctx.getChild(2)
 
-                print("ASSIGN")
-                print(first_child)
-                print(second_child)
+                val = self.visit(second_child)
 
-                #self.cuadruplas.agregar_cuadrupla('<-', first_child, second_child, "t" )
+                if val is not None:
+
+                    self.cuadruplas.agregar_cuadrupla("ASSING", first_child, None, val)
+                else:
+                    self.cuadruplas.agregar_cuadrupla("ASSING", first_child, None, "t")
 
             if ctx.LPAR():
                     
@@ -240,6 +241,11 @@ class CuadruplasVisitor(yaplVisitor):
                     
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
 
+        if ctx.STRING():
+
+            valor = self.cuadruplas.agregar_cuadrupla('STRING', ctx.STRING().getText(), None, "t")
+
+            return valor
 
 
             
