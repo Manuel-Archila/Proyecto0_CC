@@ -18,7 +18,7 @@ from tkinter import filedialog, messagebox
 archivo_temporal = None
 archi = None
 
-palabras_reservadas = ["IF", "ELSE", "WHILE", "LOOP", "RETURN", "Int", "String", "Bool", "class"]
+palabras_reservadas = ["IF", "ELSE", "WHILE", "LOOP", "RETURN", "Int", "String", "Bool", "class", "if", "while", "else"]
 delimitador_inicio = "(*"
 delimitador_fin = "*)"
 
@@ -32,7 +32,6 @@ color_letra = letra1
 def on_text_change(event=None):
     resaltar_palabras_reservadas()
     resaltar_delimitadores()
-
 
 def resaltar_delimitadores():
     contenido = contenido_texto.get("1.0", tk.END)
@@ -266,5 +265,6 @@ contenido_texto.bind("<BackSpace>", actualizar_numeros_de_linea)
 contenido_texto.bind("<KeyRelease>", actualizar_numeros_de_linea)
 contenido_texto.bind("<MouseWheel>", actualizar_numeros_de_linea)
 contenido_texto.bind("<Configure>", update_line_numbers_view)
+contenido_texto.bind("<KeyRelease>", on_text_change)
 
 ventana.mainloop()

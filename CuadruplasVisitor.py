@@ -36,7 +36,7 @@ class CuadruplasVisitor(yaplVisitor):
 
                 if val is not None:
 
-                    self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, val)
+                    self.cuadruplas.agregar_cuadrupla("ASSING", val, None, variable)
                 else:
                     self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, "t")
 
@@ -248,9 +248,15 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.STRING():
 
-            valor = self.cuadruplas.agregar_cuadrupla('STRING', ctx.STRING().getText(), None, "t")
+            return ctx.getText()
 
-            return valor
+        if ctx.DIGIT():
+
+            return ctx.getText()
+        
+        if ctx.TRUE() or ctx.FALSE():
+
+            return ctx.getText()
 
 
             

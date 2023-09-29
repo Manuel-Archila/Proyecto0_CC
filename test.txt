@@ -1,14 +1,23 @@
 (* COMENTARIO *)
 class Main {
-    count: Int <- 0;
-    limit: Int <- 10;
+    a : Int <- 0;
+    b: Silly <- new Silly;
+    
     main() : Int {
-        WHILE count < limit LOOP
-            10 + 10
-        POOL
+        otra(1)
     };
 
-    contar( initial : Int ) : Int {
-        1 + initial
+    k : Int <- a;
+
+    otra(z: Int): Int {
+        let x: Int<-89 in (
+            let y: Int<-x, r:Int <- 2, k:Bool <- false in {
+                k <-1 + z;
+            }
+        )
     };
+};
+
+class Silly {
+    x:Int <- 1;
 };

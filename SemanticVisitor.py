@@ -120,7 +120,19 @@ class SemanticR(yaplVisitor):
                     tipo_total = self.visit(ctx.getChild(4))
                     if tipo_total != None and tipo_total == tipo:
                         definido = True
-                    
+
+
+                    if tipo != tipo2 and tipo_total == None:
+                        current_scope = self.symbol_table.getScope()  
+
+                        sc = self.symbol_table.getItem(tipo2, current_scope)
+
+                        if sc[0] == True:
+                            if sc[1] == tipo:
+                                definido = True
+                                
+
+
 
 
                     if tipo != tipo2 and definido == False:
@@ -653,7 +665,6 @@ class SemanticR(yaplVisitor):
                     current_scope = self.symbol_table.getScope()
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
-
 
                     if respuesta1[0] == False:
                         error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + ctx.ID()[0].getText()
