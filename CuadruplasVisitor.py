@@ -41,6 +41,11 @@ class CuadruplasVisitor(yaplVisitor):
                     self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, "t")
 
                 return None
+            
+            else:
+
+                variable = ctx.getChild(0).getText()
+                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
 
 
         return self.visitChildren(ctx)

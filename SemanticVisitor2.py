@@ -262,13 +262,18 @@ class SemanticV2(yaplVisitor):
                    
                 else:
 
-                    type2 = self.visit(ctx.expr())
+                    if ctx.expr().ASSIGN():
+                        print("Error en línea " + str(self.get_line(ctx)) + ": No se puede asignar a una función")
 
-                    ty = ctx.TYPE().getText()
+                    else:
 
-                    if ty != type2:
-                        mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
-                        self.errores.append(mensaje)
+                        type2 = self.visit(ctx.expr())
+
+                        ty = ctx.TYPE().getText()
+
+                        if ty != type2:
+                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
+                            self.errores.append(mensaje)
 
             return temp
 
