@@ -18,6 +18,10 @@ from tkinter import filedialog, messagebox
 archivo_temporal = None
 archi = None
 
+palabras_reservadas = ["IF", "ELSE", "WHILE", "LOOP", "RETURN", "Int", "String", "Bool", "class"]
+delimitador_inicio = "(*"
+delimitador_fin = "*)"
+
 color1 = "#404040"
 letra1 = "#CCFFFF"
 color2 = "#FFFFFF"
@@ -25,15 +29,53 @@ letra2 = "black"
 color_actual = color1
 color_letra = letra1
 
+def on_text_change(event=None):
+    resaltar_palabras_reservadas()
+    resaltar_delimitadores()
+
+
+def resaltar_delimitadores():
+    contenido = contenido_texto.get("1.0", tk.END)
+    inicio = "1.0"
+    while True:
+        inicio = contenido_texto.search(delimitador_inicio, inicio, stopindex=tk.END)
+        if not inicio:
+            break
+        fin = contenido_texto.search(delimitador_fin, inicio, stopindex=tk.END)
+        if not fin:
+            break
+        fin = f"{fin}+{len(delimitador_fin)}c"
+        contenido_texto.tag_add("delimitador", inicio, fin)
+        inicio = fin
+
+def resaltar_palabras_reservadas():
+    contenido = contenido_texto.get("1.0", tk.END)
+    for palabra in palabras_reservadas:
+        inicio = "1.0"
+        while True:
+            inicio = contenido_texto.search(palabra, inicio, stopindex=tk.END)
+            if not inicio:
+                break
+            fin = f"{inicio}+{len(palabra)}c"
+            contenido_texto.tag_add("reservada", inicio, fin)
+            inicio = fin
 
 def cargar_archivo():
     global archi
+
+    global color_actual
+
     archivo = filedialog.askopenfilename(filetypes=[("Archivos de texto", "*.txt")])
     if archivo:
         with open(archivo, "r") as f:
             archi = archivo
             contenido_texto.delete("1.0", tk.END)
             contenido_texto.insert(tk.END, f.read()) 
+
+            contenido_texto.tag_configure("reservada", foreground="#CE8E0F")  
+            contenido_texto.tag_configure("delimitador", foreground="green")  
+            resaltar_palabras_reservadas()  
+            resaltar_delimitadores()
 
             contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
             contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
@@ -48,7 +90,7 @@ def guardar_archivo():
     with open(archivo_temporal.name, 'wb') as archivo:
         archivo.write(contenido.encode())
     
-    archivo_temporal.close()  # Cerrar el archivo después de escribir en él
+    archivo_temporal.close()  
 
 def cerrar_ventana():
     guardar_archivo()
