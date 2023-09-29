@@ -688,10 +688,19 @@ class SemanticR(yaplVisitor):
                                 contenido_actual.append((elemento.getText(), self.visit(elemento)))
                     argumentoss = argumentoss[0]
 
+                    current_scope = self.symbol_table.getScope()
+
+                    for vari in argumentoss:
+                        if vari[1] == None:
+
+                            sc = self.symbol_table.getItem(vari[0], current_scope)
+
+                            if sc[0] == True:
+                                argumentoss[argumentoss.index(vari)] = (vari[0], sc[1])
 
 
                     funtion = ctx.ID()[0].getText()
-                    current_scope = self.symbol_table.getScope()
+                    
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
 

@@ -263,7 +263,7 @@ class SemanticV2(yaplVisitor):
                 else:
 
                     if ctx.expr().ASSIGN():
-                        print("Error en línea " + str(self.get_line(ctx)) + ": No se puede asignar a una función")
+                        pass
 
                     else:
 
