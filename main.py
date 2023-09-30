@@ -96,7 +96,7 @@ def cerrar_ventana():
     
 
 
-    
+
     if archivo_temporal:
         input_stream = FileStream(archivo_temporal.name)
 
@@ -191,6 +191,8 @@ def cerrar_ventana():
 
 
             cuadruplas.imprimir_cuadruplas()
+
+            cuadruplas.escribir_cuadruplas_en_archivo("Cuadruplas.txt")
 
 def cambiar_color_fondo():
     global color_actual

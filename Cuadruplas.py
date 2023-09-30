@@ -1,3 +1,5 @@
+from tabulate import tabulate
+
 class Cuadruplas:
     def __init__(self):
         self.cuadruplas = {}
@@ -39,4 +41,16 @@ class Cuadruplas:
     def imprimir_cuadruplas(self):
         for num_cuadrupla, cuadrupla in self.cuadruplas.items():
             print(f"Cuadrupla {num_cuadrupla}: {cuadrupla}")
+
+    def escribir_cuadruplas_en_archivo(self, nombre_archivo):
+        headers = ['Cuadrupla', 'Operador', 'Operando1', 'Operando2', 'Resultado']
+        cuadruplas_data = []
+
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            cuadruplas_data.append([num_cuadrupla] + cuadrupla)
+
+        tabla_formateada = tabulate(cuadruplas_data, headers, tablefmt='grid')
+
+        with open(nombre_archivo, 'w') as archivo:
+            archivo.write(tabla_formateada)
     
