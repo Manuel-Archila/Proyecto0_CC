@@ -263,7 +263,23 @@ class SemanticV2(yaplVisitor):
                 else:
 
                     if ctx.expr().ASSIGN():
-                        pass
+
+                        current_scope = self.symbol_table.getSpecific2(ctx.ID().getText())
+
+
+                        respuesta1 = self.symbol_table.getItem(ctx.expr().getChild(0).getText(), current_scope)
+
+                        type2 = tipo
+
+                        if respuesta1[0] == True:
+                            type2 = respuesta1[1]
+
+                        ty = ctx.TYPE().getText()
+
+                        if ty != type2:
+                            mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
+                            self.errores.append(mensaje)
+
 
                     else:
 

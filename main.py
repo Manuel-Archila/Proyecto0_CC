@@ -138,6 +138,8 @@ def cerrar_ventana():
         semanticR.visit_program(tree)
         semanticR.error_mmain2()
 
+        print("=============================")
+
         semanticV = SemanticV2(semanticR.symbol_table)
         semanticV.visit_program(tree)
 

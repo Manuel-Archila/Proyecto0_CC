@@ -168,6 +168,7 @@ class SemanticR(yaplVisitor):
 
             else:
                 print(ctx.getText())
+
     def visitFormal(self, ctx:yaplParser.FormalContext):
         pass
 
@@ -666,7 +667,6 @@ class SemanticR(yaplVisitor):
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
 
-                    print(ctx.getChild(0).getText())
 
                     if respuesta1[0] == False:
                         error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + ctx.ID()[0].getText()
