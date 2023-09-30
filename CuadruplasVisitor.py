@@ -11,7 +11,18 @@ class CuadruplasVisitor(yaplVisitor):
         return self.visitChildren(ctx)
     
     def visitClass(self, ctx:yaplParser.ClassContext):
-        return self.visitChildren(ctx)
+
+        if ctx.INHERITS():
+            self.cuadruplas.agregar_cuadrupla("CLASS", ctx.TYPE()[0].getText(), ctx.TYPE()[1].getText(), None)
+
+        else:
+            self.cuadruplas.agregar_cuadrupla("CLASS", ctx.TYPE()[0].getText(), None, None)
+
+        
+        tm = self.visitChildren(ctx)
+
+        self.cuadruplas.agregar_cuadrupla("END_CLASS", ctx.TYPE()[0].getText(), None, None)
+        return 
     
     def visitFeature(self, ctx:yaplParser.FeatureContext):
 
@@ -29,26 +40,31 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.COLON():
 
+            variable = ctx.getChild(0).getText()
+            self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
+
+
+
             if ctx.ASSIGN():
 
                 variable = ctx.getChild(0).getText()
                 val = self.visit(ctx.getChild(4))
 
                 if val is not None:
-
                     self.cuadruplas.agregar_cuadrupla("ASSING", val, None, variable)
                 else:
                     self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, "t")
 
                 return None
-            
-            else:
+        
 
-                variable = ctx.getChild(0).getText()
-                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
+        tm = self.visitChildren(ctx)
+
+        if ctx.LPAR():
+            self.cuadruplas.agregar_cuadrupla("END_FUNCTION", variable, None, None)
 
 
-        return self.visitChildren(ctx)
+        return tm
     
     def visitformal(self, ctx:yaplParser.FormalContext):
         return self.visitChildren(ctx)
@@ -216,11 +232,16 @@ class CuadruplasVisitor(yaplVisitor):
 
                 val = self.visit(second_child)
 
+                first_child = "BaseIntancia + offset" + first_child
+
                 if val is not None:
 
-                    self.cuadruplas.agregar_cuadrupla("ASSING", first_child, None, val)
+                    self.cuadruplas.agregar_cuadrupla("ASSING", val, None, first_child)
                 else:
-                    self.cuadruplas.agregar_cuadrupla("ASSING", first_child, None, "t")
+                    num = self.cuadruplas.encontrar_cuadrupla_param(second_child.getText())
+
+                    if num is not None:
+                        self.cuadruplas.agregar_cuadrupla("ASSING", second_child.getText(), None, first_child)
 
             if ctx.LPAR():
                     

@@ -19,10 +19,10 @@ class Tres{
 };
 
 class Uno{
-    x : Uno <- new Uno;
+    x : Int <- 12;
 
     count( initial : Int ) : Int {
-        0
+        x <- initial
     };
 
 };

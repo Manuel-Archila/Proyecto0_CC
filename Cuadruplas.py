@@ -30,6 +30,12 @@ class Cuadruplas:
         self.labels += 1
         return resultado
 
+    def encontrar_cuadrupla_param(self, parametro):
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            if cuadrupla[0] == "PARAM" and cuadrupla[3] == parametro:
+                return num_cuadrupla
+        return None
+
     def imprimir_cuadruplas(self):
         for num_cuadrupla, cuadrupla in self.cuadruplas.items():
             print(f"Cuadrupla {num_cuadrupla}: {cuadrupla}")

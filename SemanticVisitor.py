@@ -666,6 +666,8 @@ class SemanticR(yaplVisitor):
 
                     respuesta1 = self.symbol_table.getItem(ctx.getChild(0).getText(), current_scope)
 
+                    print(ctx.getChild(0).getText())
+
                     if respuesta1[0] == False:
                         error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + ctx.ID()[0].getText()
                         self.errores.append(error)
@@ -675,8 +677,13 @@ class SemanticR(yaplVisitor):
                     else:
                             
                             if respuesta1[1] != self.visit(ctx.getChild(2)):
-                                error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede asignar " + str(self.visit(ctx.getChild(2))) + " a " + str(respuesta1[1])
-                                self.errores.append(error)
+
+                                resp = self.symbol_table.getItem(ctx.getChild(2).getText(), current_scope)
+                                
+                                if respuesta1[1] != resp[1]:
+
+                                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede asignar " + str((ctx.getChild(2).getText())) + " a " + str(respuesta1[1])
+                                    self.errores.append(error)
     
                             return respuesta1[1]
 
