@@ -1,6 +1,5 @@
 from antlr4.error.ErrorListener import ErrorListener
 from dist.yaplLexer import yaplLexer
-from colorama import init, Fore, Back, Style
 
 class CustomErrorListener(ErrorListener):
     def __init__(self, tipo):
