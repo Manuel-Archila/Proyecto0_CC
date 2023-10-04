@@ -647,6 +647,109 @@ class SemanticV2(yaplVisitor):
 
             return temp
 
+        elif ctx.LBRACE():
+
+            #hay que revisar tabla de simbolos aqui
+            for hijo in ctx.getChildren():
+                if hijo.getText() not in [';', '{', '}']:
+
+                    if(hijo.LPAR()):
+
+                        funtion = hijo.ID()[0].getText()
+
+                        current_scope = self.symbol_table.getSpecific2(ctx.parentCtx.ID().getText())
+
+                        respuesta1 = self.symbol_table.getItem(funtion, current_scope)
+
+                        if respuesta1[0] == False:
+
+                            inheri = False
+                            parent_ctx = hijo
+
+                            seaClass = True
+
+                            while seaClass:
+                                parent_ctx = parent_ctx.parentCtx
+                                if isinstance(parent_ctx, yaplParser.ClassContext):
+                                    parent_ctx = parent_ctx.TYPE()[0].getText()
+
+                                    while not inheri:
+
+                                        sco = self.symbol_table.getSpecific(parent_ctx)
+                                        
+                                        r = self.symbol_table.getSymbol(parent_ctx, sco)
+                                        
+
+
+                                        if r.hereda is not None:
+                                            hereda = r.hereda
+
+
+                                            scopeH = self.symbol_table.getSpecificScope(hereda)
+
+
+                                            resp = self.symbol_table.getItem(funtion, scopeH)
+
+                                            argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
+
+                                            if argumentTemp is not None:
+                                                argument = argumentTemp.params
+
+                                            inheri = resp[0]
+
+                                            
+                                            if resp[0] == False:
+
+                                                inheri = resp[0]
+                                                parent_ctx = hereda
+
+                                            else:
+
+                                                if len(argument) != len(argumentoss):
+                                                    error = "Error en línea " + str(self.get_line(ctx)) + ": se esperan  " + str(len(argument)) + " argumentos, pero se recibieron " + str(len(argumentoss))
+                                                    #self.errores.append(error)
+                                                    # #print(error)
+                                                    return "Indefinido"
+                                                else:
+                                                    for argumento, parametro in zip(argumentoss, argument):
+                                                        if argumento[1] != parametro[1]:
+                                                            error = "Error en línea " + str(self.get_line(ctx)) + ": El argumento  " + str(argumento[0]) + " no es de tipo " + str(parametro[1])
+                                                            #self.errores.append(error)
+                                                            # #print(error)
+                                                            return "Indefinido"
+                                                
+                                                temp = resp[1]
+                                            
+                                        elif r.hereda == "Main":
+                                            error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                                            #self.errores.append(error)
+                                            # #print(error)
+                                            return "Indefinido"
+
+                                        else:
+
+                                            inheri = True
+                                            
+
+                                    seaClass = False
+                            
+                        if respuesta1[0] == False:
+                            error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                            #self.errores.append(error)
+                            # #print(error)
+                            return "Indefinido"
+
+                        temp = respuesta1[1]
+
+                        print(temp)
+                    else:
+
+                        temp = self.visit(hijo)
+                    
+                
+            return temp
+
+
         elif ctx.STRING():
             return "String"
 
