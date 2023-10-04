@@ -253,19 +253,19 @@ ventana.title("Editor de Archivos")
 boton_frame = tk.Frame(ventana)
 boton_frame.pack()
 
-boton_cargar = tk.Button(boton_frame, text="Cargar Archivo", command=cargar_archivo)
+boton_cargar = tk.Button(boton_frame, text="Cargar Archivo", command=cargar_archivo, bg="#c7eaf2")
 boton_cargar.pack(side=tk.LEFT, padx=5, pady=5)
 
-boton_cerrar = tk.Button(boton_frame, text="Analizar Codigo", command=cerrar_ventana)
+boton_cerrar = tk.Button(boton_frame, text="Analizar Codigo", command=cerrar_ventana, bg="#c7eaf2")
 boton_cerrar.pack(side=tk.LEFT, padx=5, pady=5)
 
-boton_resetear = tk.Button(boton_frame, text="Resetear Todo", command=resetear_todo)
+boton_resetear = tk.Button(boton_frame, text="Resetear Todo", command=resetear_todo, bg="#c7eaf2")
 boton_resetear.pack(side=tk.LEFT, padx=5, pady=5)
 
-boton_cambiar_color_fondo = tk.Button(boton_frame, text="Cambiar Tema", command=cambiar_color_fondo)
-boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=5, pady=5)
+boton_cambiar_color_fondo = tk.Button(boton_frame, text="Cambiar Tema", command=cambiar_color_fondo, bg="#c7eaf2")
+boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=2.5, pady=2.5)
 
-boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar Cuádruplas", command=mostrar_cuadruplas)
+boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar Cuádruplas", command=mostrar_cuadruplas, bg="#c7eaf2")
 boton_mostrar_cuadruplas.pack(side=tk.LEFT, padx=5, pady=5)
 
 contenido_frame = tk.Frame(ventana)
