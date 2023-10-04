@@ -235,6 +235,18 @@ def actualizar_numeros_de_linea(event=None):
     numeros_linea_widget.config(state=tk.DISABLED)
     update_line_numbers_view()
 
+def mostrar_cuadruplas():
+    ventana_cuadruplas = tk.Toplevel(ventana)
+    ventana_cuadruplas.title("Cuádruplas")
+    
+    with open("Cuadruplas.txt", "r") as archivo_cuadruplas:
+        contenido = archivo_cuadruplas.read()
+
+    cuadruplas_texto = tk.Text(ventana_cuadruplas, wrap=tk.WORD, height=20, width=80, bg=color1, fg=letra1)
+    cuadruplas_texto.pack(padx=10, pady=10)
+    cuadruplas_texto.insert(tk.END, contenido)
+    cuadruplas_texto.config(state=tk.DISABLED)
+
 ventana = tk.Tk()
 ventana.title("Editor de Archivos")
 
@@ -253,6 +265,9 @@ boton_resetear.pack(side=tk.LEFT, padx=5, pady=5)
 boton_cambiar_color_fondo = tk.Button(boton_frame, text="Cambiar Tema", command=cambiar_color_fondo)
 boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=5, pady=5)
 
+boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar Cuádruplas", command=mostrar_cuadruplas)
+boton_mostrar_cuadruplas.pack(side=tk.LEFT, padx=5, pady=5)
+
 contenido_frame = tk.Frame(ventana)
 contenido_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -264,6 +279,9 @@ contenido_texto = tk.Text(contenido_frame, wrap=tk.NONE, bg=color_actual)
 contenido_texto.pack(side=tk.LEFT, fill=tk.Y)
 contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
 contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
+
+cambiar_color_fondo()
+
 contenido_texto.bind("<Return>", actualizar_numeros_de_linea)
 contenido_texto.bind("<BackSpace>", actualizar_numeros_de_linea)
 contenido_texto.bind("<KeyRelease>", actualizar_numeros_de_linea)
