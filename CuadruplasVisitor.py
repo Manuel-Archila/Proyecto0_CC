@@ -37,12 +37,27 @@ class CuadruplasVisitor(yaplVisitor):
                     
             for tupla in params:
                 self.cuadruplas.agregar_cuadrupla('PARAM', None, None, tupla[0])
+            
 
         if ctx.COLON():
 
             variable = ctx.getChild(0).getText()
             self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
 
+            if ctx.LPAR():
+                
+                if ctx.expr():
+
+                    if ctx.expr().LPAR():
+                        pass
+                    else:
+
+                        if ctx.expr().ASSIGN():
+                            pass
+                        else:
+                            for hijo in ctx.expr().getChildren():
+                                if hijo.getText() not in [';', '{', '}']:
+                                    self.visit(hijo)
 
 
             if ctx.ASSIGN():
@@ -58,9 +73,12 @@ class CuadruplasVisitor(yaplVisitor):
                 return None
         
 
-        tm = self.visitChildren(ctx)
+        tm = self.visitChildren(ctx)    
 
         if ctx.LPAR():
+            cua = self.cuadruplas.get_last_cuadrupla()
+            resultado = cua[3]
+            self.cuadruplas.agregar_cuadrupla("RETURN_FUNCTION", resultado, None, None)
             self.cuadruplas.agregar_cuadrupla("END_FUNCTION", variable, None, None)
 
 
@@ -73,7 +91,11 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.PLUS():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('+', first_child, second_child, "t")
 
@@ -81,15 +103,23 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.MINUS():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
-
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
             valor = self.cuadruplas.agregar_cuadrupla('-', first_child, second_child, "t" )
 
             return valor
 
         if ctx.TIMES():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('*', first_child, second_child, "t" )
 
@@ -97,7 +127,11 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.DIVIDE():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('/', first_child, second_child, "t" )
 
@@ -105,23 +139,33 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.LT():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
-
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
             valor = self.cuadruplas.agregar_cuadrupla('<', first_child, second_child, "t" )
 
             return valor
 
         if ctx.RT():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
-
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
             valor = self.cuadruplas.agregar_cuadrupla('>', first_child, second_child, "t" )
 
             return valor
 
         if ctx.LE():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('<=', first_child, second_child, "t" )
 
@@ -129,7 +173,11 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.RE():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('>=', first_child, second_child, "t" )
 
@@ -137,7 +185,11 @@ class CuadruplasVisitor(yaplVisitor):
 
         if ctx.EQUALS():
             first_child = ctx.getChild(0).getText()
-            second_child = ctx.getChild(2).getText()
+            resultado_ant = self.visit(ctx.getChild(2))
+            if resultado_ant is not None:
+                second_child = resultado_ant
+            else:
+                second_child = ctx.getChild(2).getText()
 
             valor = self.cuadruplas.agregar_cuadrupla('=', first_child, second_child, "t" )
 

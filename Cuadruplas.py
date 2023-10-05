@@ -54,3 +54,6 @@ class Cuadruplas:
         with open(nombre_archivo, 'w') as archivo:
             archivo.write(tabla_formateada)
     
+    def get_last_cuadrupla(self):
+        return self.cuadruplas[self.contCuadruplas-1]
+    
