@@ -55,9 +55,16 @@ class CuadruplasVisitor(yaplVisitor):
                         if ctx.expr().ASSIGN():
                             pass
                         else:
-                            for hijo in ctx.expr().getChildren():
-                                if hijo.getText() not in [';', '{', '}']:
-                                    self.visit(hijo)
+
+                            if ctx.expr().IF():
+                                pass
+                            
+                            else:
+
+                                for hijo in ctx.expr().getChildren():
+                                    if hijo.getText() not in [';', '{', '}']:
+                                        self.visit(hijo)
+                                    
 
 
             if ctx.ASSIGN():
@@ -74,11 +81,37 @@ class CuadruplasVisitor(yaplVisitor):
         
 
         tm = self.visitChildren(ctx)    
+        bandera = True
 
         if ctx.LPAR():
+
+            if ctx.expr():
+
+                if ctx.expr().LPAR():
+                    pass
+
+                else:
+
+                    if ctx.expr().ASSIGN():
+                        pass
+                    else:
+
+                        if ctx.expr().IF():
+
+                            hay = self.cuadruplas.verIf()
+
+                            if hay == True:
+                                self.cuadruplas.retIF()
+                                
+
+                            bandera = False
+
+
+
             cua = self.cuadruplas.get_last_cuadrupla()
             resultado = cua[3]
-            self.cuadruplas.agregar_cuadrupla("RETURN_FUNCTION", resultado, None, None)
+            if bandera == True:
+                self.cuadruplas.agregar_cuadrupla("RETURN_FUNCTION", resultado, None, None)
             self.cuadruplas.agregar_cuadrupla("END_FUNCTION", variable, None, None)
 
 
@@ -90,7 +123,13 @@ class CuadruplasVisitor(yaplVisitor):
     def visitExpr(self, ctx:yaplParser.ExprContext):
 
         if ctx.PLUS():
-            first_child = ctx.getChild(0).getText()
+            resultado_ant1 = self.visit(ctx.getChild(0))
+
+            if resultado_ant1 is not None:
+                first_child = resultado_ant1
+            else:
+                first_child = ctx.getChild(0).getText()
+
             resultado_ant = self.visit(ctx.getChild(2))
             if resultado_ant is not None:
                 second_child = resultado_ant
@@ -113,7 +152,12 @@ class CuadruplasVisitor(yaplVisitor):
             return valor
 
         if ctx.TIMES():
-            first_child = ctx.getChild(0).getText()
+            resultado_ant1 = self.visit(ctx.getChild(0))
+
+            if resultado_ant1 is not None:
+                first_child = resultado_ant1
+            else:
+                first_child = ctx.getChild(0).getText()
 
             resultado_ant = self.visit(ctx.getChild(2))
             if resultado_ant is not None:

@@ -57,3 +57,23 @@ class Cuadruplas:
     def get_last_cuadrupla(self):
         return self.cuadruplas[self.contCuadruplas-1]
     
+    def verIf(self):
+        try:
+            cua = self.cuadruplas[self.contCuadruplas-6]
+
+            if "IF" in cua[0]:
+                return True
+            else:
+                return False
+        except:
+            print(len(self.cuadruplas))
+
+    def retIF(self):
+
+        valT = self.cuadruplas[self.contCuadruplas-3][3]
+        valF = self.cuadruplas[self.contCuadruplas-1][3]
+
+        self.agregar_cuadrupla("RETURN_FUNCTION", valT, valF, None)
+
+
+    

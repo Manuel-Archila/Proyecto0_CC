@@ -242,7 +242,7 @@ def mostrar_cuadruplas():
     with open("Cuadruplas.txt", "r") as archivo_cuadruplas:
         contenido = archivo_cuadruplas.read()
 
-    cuadruplas_texto = tk.Text(ventana_cuadruplas, wrap=tk.WORD, height=20, width=80, bg=color1, fg=letra1)
+    cuadruplas_texto = tk.Text(ventana_cuadruplas, wrap=tk.WORD, height=50, width=100, bg=color1, fg=letra1)
     cuadruplas_texto.pack(padx=10, pady=10)
     cuadruplas_texto.insert(tk.END, contenido)
     cuadruplas_texto.config(state=tk.DISABLED)
