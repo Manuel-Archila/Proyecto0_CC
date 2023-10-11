@@ -122,118 +122,703 @@ class CuadruplasVisitor(yaplVisitor):
     
     def visitExpr(self, ctx:yaplParser.ExprContext):
 
-        if ctx.PLUS():
-            resultado_ant1 = self.visit(ctx.getChild(0))
-
-            if resultado_ant1 is not None:
-                first_child = resultado_ant1
-            else:
-                first_child = ctx.getChild(0).getText()
-
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
-            else:
-                second_child = ctx.getChild(2).getText()
-
-            valor = self.cuadruplas.agregar_cuadrupla('+', first_child, second_child, "t")
-
-            return valor
-
         if ctx.MINUS():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
+            
             valor = self.cuadruplas.agregar_cuadrupla('-', first_child, second_child, "t" )
 
             return valor
 
         if ctx.TIMES():
-            resultado_ant1 = self.visit(ctx.getChild(0))
+            resultado_ant1 = ctx.getChild(0)
 
-            if resultado_ant1 is not None:
-                first_child = resultado_ant1
-            else:
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
                 first_child = ctx.getChild(0).getText()
-
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
 
             valor = self.cuadruplas.agregar_cuadrupla('*', first_child, second_child, "t" )
 
             return valor
 
         if ctx.DIVIDE():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
 
             valor = self.cuadruplas.agregar_cuadrupla('/', first_child, second_child, "t" )
 
             return valor
 
-        if ctx.LT():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+        if ctx.PLUS():
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
+
+            valor = self.cuadruplas.agregar_cuadrupla('+', first_child, second_child, "t")
+
+            return valor
+
+        if ctx.LT():
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
+            else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
+                second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
+
             valor = self.cuadruplas.agregar_cuadrupla('<', first_child, second_child, "t" )
 
             return valor
 
         if ctx.RT():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
+
             valor = self.cuadruplas.agregar_cuadrupla('>', first_child, second_child, "t" )
 
             return valor
 
         if ctx.LE():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
 
             valor = self.cuadruplas.agregar_cuadrupla('<=', first_child, second_child, "t" )
 
             return valor
 
         if ctx.RE():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
 
             valor = self.cuadruplas.agregar_cuadrupla('>=', first_child, second_child, "t" )
 
             return valor
 
         if ctx.EQUALS():
-            first_child = ctx.getChild(0).getText()
-            resultado_ant = self.visit(ctx.getChild(2))
-            if resultado_ant is not None:
-                second_child = resultado_ant
+            resultado_ant1 = ctx.getChild(0)
+
+            if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                first_child = ctx.getChild(0).getText()
             else:
+                first_child = "t"
+                first_child += str(self.cuadruplas.temporal_counter - 1)
+
+            
+            resultado_ant = ctx.getChild(2)
+
+            if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+            else:
+                second_child = "t"
+                second_child += str(self.cuadruplas.temporal_counter - 1)
+
+            if resultado_ant.PLUS() and resultado_ant1.PLUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.MINUS() and resultado_ant1.MINUS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.TIMES() and resultado_ant1.TIMES():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.DIVIDE() and resultado_ant1.DIVIDE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LT() and resultado_ant1.LT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RT() and resultado_ant1.RT():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.LE() and resultado_ant1.LE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.RE() and resultado_ant1.RE():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            elif resultado_ant.EQUALS() and resultado_ant1.EQUALS():
+                val = self.cuadruplas.temporal_counter
+                first_child = "t"
+                first_child += str(val - 2)
+                second_child = "t"
+                second_child += str(val - 1)
+            
 
             valor = self.cuadruplas.agregar_cuadrupla('=', first_child, second_child, "t" )
 
