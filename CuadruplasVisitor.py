@@ -892,6 +892,11 @@ class CuadruplasVisitor(yaplVisitor):
             self.visit(ctx.expr(2))
         
         if ctx.WHILE():
+
+            self.cuadruplas.eliminarUltima()
+            self.cuadruplas.eliminarUltima()
+
+
             first_child = ctx.getChild(1)
 
             operador = first_child.getChild(1).getText()

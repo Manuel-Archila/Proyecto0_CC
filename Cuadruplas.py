@@ -75,5 +75,9 @@ class Cuadruplas:
 
         self.agregar_cuadrupla("RETURN_FUNCTION", valT, valF, None)
 
+    def eliminarUltima(self):
+        del self.cuadruplas[self.contCuadruplas-1]
+        self.contCuadruplas -= 1
+        self.temporal_counter -= 1
 
     
