@@ -42,9 +42,12 @@ class CuadruplasVisitor(yaplVisitor):
         if ctx.COLON():
 
             variable = ctx.getChild(0).getText()
-            self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
+            if not ctx.LPAR():
+                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, "BaseIntancia + offset" + variable)
 
             if ctx.LPAR():
+
+                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, None)
                 
                 if ctx.expr():
 
@@ -204,6 +207,8 @@ class CuadruplasVisitor(yaplVisitor):
             resultado_ant1 = ctx.getChild(0)
 
             if resultado_ant1.DIGIT() or resultado_ant1.ID():
+                if ctx.ASSIGN():
+                    first_child = ctx.getChild(0).getText()
                 first_child = ctx.getChild(0).getText()
             else:
                 first_child = "t"
@@ -959,9 +964,14 @@ class CuadruplasVisitor(yaplVisitor):
 
 
                     funtion = ctx.ID()[0].getText()
+
+
                     
                     
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
+
+                    for argumento in argumentoss:
+                        self.cuadruplas.agregar_cuadrupla('ASSING_PARAM', argumento[1], None, argumento[0])
 
         if ctx.STRING():
 
