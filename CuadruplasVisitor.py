@@ -856,7 +856,17 @@ class CuadruplasVisitor(yaplVisitor):
             first_child = ctx.getChild(1).getText()
             second_child = ctx.getChild(3).getText()
 
-            valor = self.cuadruplas.agregar_cuadrupla('LET', first_child, second_child, "t")
+
+            try:
+                valor = self.cuadruplas.agregar_cuadrupla('LET', ctx.getChild(5).getText(), second_child, first_child)
+            except:
+                valor = self.cuadruplas.agregar_cuadrupla('LET', "t", second_child, first_child)
+
+            try:
+               self.visit(ctx.getChild(7))
+
+            except:
+                pass
 
             return valor
 
@@ -960,5 +970,11 @@ class CuadruplasVisitor(yaplVisitor):
 
             return ctx.getText()
 
+        if ctx.LPAR():
+            for hijo in ctx.getChildren():
+                if hijo.getText() != '(' and hijo.getText() != ')':
+                    self.visit(hijo)
+
+            return 0
 
             
