@@ -1,6 +1,7 @@
 from dist.yaplVisitor import yaplVisitor
 from dist.yaplParser import yaplParser
 from antlr4.tree.Tree import TerminalNode
+import re
 
 class CuadruplasVisitor(yaplVisitor):
     def __init__(self, symbol_table, cuadruplas):
@@ -43,7 +44,7 @@ class CuadruplasVisitor(yaplVisitor):
 
             variable = ctx.getChild(0).getText()
             if not ctx.LPAR():
-                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, "BaseIntancia + offset" + variable)
+                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, "BaseInstancia + offset" + variable)
 
             if ctx.LPAR():
 
@@ -76,9 +77,9 @@ class CuadruplasVisitor(yaplVisitor):
                 val = self.visit(ctx.getChild(4))
 
                 if val is not None:
-                    self.cuadruplas.agregar_cuadrupla("ASSING", val, None, variable)
+                    self.cuadruplas.agregar_cuadrupla("ASSIGN", val, None, variable)
                 else:
-                    self.cuadruplas.agregar_cuadrupla("ASSING", variable, None, "t")
+                    self.cuadruplas.agregar_cuadrupla("ASSIGN", variable, None, "t")
 
                 return None
         
@@ -112,7 +113,12 @@ class CuadruplasVisitor(yaplVisitor):
 
 
             cua = self.cuadruplas.get_last_cuadrupla()
-            resultado = cua[3]
+            if bool(re.match(r'^t\d+$', cua[3])) == True or "BaseInstancia" in cua[3]:
+                print("entro al if con", cua[3])
+                resultado = cua[3]
+            else:
+                print("entro al else con", cua[3])
+                resultado = self.cuadruplas.get_last_call()
             if bandera == True:
                 self.cuadruplas.agregar_cuadrupla("RETURN_FUNCTION", resultado, None, None)
             self.cuadruplas.agregar_cuadrupla("END_FUNCTION", variable, None, None)
@@ -943,7 +949,7 @@ class CuadruplasVisitor(yaplVisitor):
 
                 val = self.visit(second_child)
 
-                first_child = "BaseIntancia + offset" + first_child
+                first_child = "BaseInstancia + offset" + first_child
 
                 if val is not None:
 
@@ -979,9 +985,15 @@ class CuadruplasVisitor(yaplVisitor):
                     
                     
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
+                    parametroos = self.cuadruplas.get_function_params(funtion)
+                    parametroos = parametroos[::-1]
+                    print(parametroos)
 
-                    for argumento in argumentoss:
-                        self.cuadruplas.agregar_cuadrupla('ASSING_PARAM', argumento[1], None, argumento[0])
+                    # for argumento in argumentoss:
+                    #     self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[1], None, argumento[0])
+                    
+                    for argumento, parametro in zip(argumentoss, parametroos):
+                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', parametro, None, argumento[0])
 
         if ctx.STRING():
 

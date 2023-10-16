@@ -221,6 +221,14 @@ class SymbolT:
         
         return recurse(self.root)
     
+    def get_params(self, name, scope):
+        current_scope = scope
+        while current_scope:
+            if name in current_scope.symbols:
+                return current_scope.symbols[name].params
+            current_scope = current_scope.parent
+        return None
+    
     def build_natives(self):
         # Scope 0
         self.enter_scope()

@@ -80,4 +80,34 @@ class Cuadruplas:
         self.contCuadruplas -= 1
         self.temporal_counter -= 1
 
+    def get_function_cuadrupla(self, function_name):
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            if cuadrupla[0] == "DECLARE" and cuadrupla[1] == function_name:
+                print("El numero de cuadrupla es: ", num_cuadrupla)
+                return num_cuadrupla
+        return None
+    
+    def get_function_params(self, function_name):
+        params = []
+        function_cuadrupla = self.get_function_cuadrupla(function_name)
+        is_param = True
+        while is_param:
+            function_cuadrupla -= 1
+            cuadrupla = self.cuadruplas[function_cuadrupla]
+            if cuadrupla[0] == "PARAM":
+                params.append(cuadrupla[3])
+            else:
+                is_param = False
+        return params
+    
+    def get_last_call(self):
+        last_counter = self.contCuadruplas - 1
+        last_cuadrupla = self.cuadruplas[last_counter]
+        print(last_cuadrupla)
+        while last_cuadrupla[0] != "CALL":
+            last_counter -= 1
+            last_cuadrupla = self.cuadruplas[last_counter]
+            print(last_cuadrupla)
+        return self.cuadruplas[last_counter][3]
+
     

@@ -12,7 +12,7 @@ class Main {
 
 class Tres{
 
-    hola( initial : Int ) : Int {
+    hola( initial : Int, ini: Int, iner : Int ) : Int {
         1 + 1
     };
 
@@ -31,7 +31,7 @@ class Dos inherits Tres{
     x : Tres <- new Tres;
 
     constructor () : Int {
-        x @ Tres.hola(1)
+        x @ Tres.hola(2, 5, 8)
     };
 
 };
