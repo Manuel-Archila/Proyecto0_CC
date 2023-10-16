@@ -366,6 +366,12 @@ class CuadruplasVisitor(yaplVisitor):
 
             if resultado_ant1.DIGIT() or resultado_ant1.ID():
                 first_child = ctx.getChild(0).getText()
+                if resultado_ant1.ASSIGN():
+                    first_child = first_child.split("<-")[1].strip()
+
+                if resultado_ant1.ID():
+                    first_child = "BaseInstancia + offset" + first_child
+                
             else:
                 first_child = "t"
                 first_child += str(self.cuadruplas.temporal_counter - 1)
@@ -375,6 +381,10 @@ class CuadruplasVisitor(yaplVisitor):
 
             if resultado_ant.DIGIT() or resultado_ant.ID():
                 second_child = ctx.getChild(2).getText()
+
+                if resultado_ant.ID():
+                    second_child = "BaseInstancia + offset" + second_child
+                
             else:
                 second_child = "t"
                 second_child += str(self.cuadruplas.temporal_counter - 1)
