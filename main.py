@@ -9,6 +9,7 @@ from SemanticAnalyzer import SemanticAnalyzerMio
 from SemanticVisitor2 import SemanticV2
 from CuadruplasVisitor import *
 from Cuadruplas import *
+from traductor import *
 
 import tempfile
 
@@ -193,6 +194,19 @@ def cerrar_ventana():
             cuadruplas.imprimir_cuadruplas()
 
             cuadruplas.escribir_cuadruplas_en_archivo("Cuadruplas.txt")
+
+            print("============ MIPS ==============")
+
+            traductor = Traductor(cuadruplas.cuadruplas)
+
+            lis = traductor.buscar_operadores_aritmeticos()
+
+            trad = traductor.generar_codigo_mips(lis)
+
+            for el in trad:
+                print(el)
+                
+             
 
 def cambiar_color_fondo():
     global color_actual
