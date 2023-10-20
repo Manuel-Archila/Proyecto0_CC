@@ -53,7 +53,14 @@ class Cuadruplas:
 
         with open(nombre_archivo, 'w') as archivo:
             archivo.write(tabla_formateada)
-    
+
+        
+        nombre_archivo = nombre_archivo.replace(".txt", "2.txt")
+
+        with open(nombre_archivo, 'w') as file:
+            for key, value in self.cuadruplas.items():
+                file.write(','.join(str(x) for x in value) + '\n')
+            
     def get_last_cuadrupla(self):
         return self.cuadruplas[self.contCuadruplas-1]
     

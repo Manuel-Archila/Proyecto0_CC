@@ -1,0 +1,6 @@
+CLASS,Main,None,None
+DECLARE,main,None,None
++,1,1,t0
+RETURN_FUNCTION,t0,None,None
+END_FUNCTION,main,None,None
+END_CLASS,Main,None,None

@@ -1,3 +1,5 @@
+from tabulate import tabulate
+
 class Traductor:
     def __init__(self, cuadruplas):
         self.cuadruplas = cuadruplas
@@ -40,3 +42,14 @@ class Traductor:
 
         return codigo_mips
     
+
+    def escribir_cuadruplaTrad_en_archivo(self, nombre_archivo, lis):
+        cuadruplas_data = []
+
+        for cuadrupla in lis:
+            cuadruplas_data.append(cuadrupla)
+
+        cuadruplas_str = '\n'.join(cuadruplas_data) 
+
+        with open(nombre_archivo, 'w') as archivo:
+            archivo.write(cuadruplas_str)

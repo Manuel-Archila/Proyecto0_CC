@@ -80,6 +80,8 @@ def cargar_archivo():
             contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
             contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
 
+            actualizar_numeros_de_linea()
+
 def guardar_archivo():
     global archivo_temporal
     contenido = contenido_texto.get("1.0", tk.END)
@@ -182,7 +184,7 @@ def cerrar_ventana():
 
             #Aqui
 
-            print("============ CUADRUPLAS ==============")
+            print("============ CUADRUPLAS ==============\n\n")
 
             cuadruplas = Cuadruplas()
 
@@ -195,7 +197,7 @@ def cerrar_ventana():
 
             cuadruplas.escribir_cuadruplas_en_archivo("Cuadruplas.txt")
 
-            print("============ MIPS ==============")
+            print("============ MIPS ==============\n\n")
 
             traductor = Traductor(cuadruplas.cuadruplas)
 
@@ -203,10 +205,11 @@ def cerrar_ventana():
 
             trad = traductor.generar_codigo_mips(lis)
 
+            traductor.escribir_cuadruplaTrad_en_archivo("MIPS.txt", trad)
+
             for el in trad:
                 print(el)
-                
-             
+                          
 
 def cambiar_color_fondo():
     global color_actual
@@ -261,6 +264,23 @@ def mostrar_cuadruplas():
     cuadruplas_texto.insert(tk.END, contenido)
     cuadruplas_texto.config(state=tk.DISABLED)
 
+def mostrar_mips():
+    with open("MIPS.txt", "r") as f:
+            
+            contenido_texto.delete("1.0", tk.END)
+            contenido_texto.insert(tk.END, f.read()) 
+
+            contenido_texto.tag_configure("reservada", foreground="#CE8E0F")  
+            contenido_texto.tag_configure("delimitador", foreground="green")  
+            resaltar_palabras_reservadas()  
+            resaltar_delimitadores()
+
+            contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
+            contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
+
+            actualizar_numeros_de_linea()
+
+
 ventana = tk.Tk()
 ventana.title("Editor de Archivos")
 
@@ -282,6 +302,9 @@ boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=2.5, pady=2.5)
 boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar Cuádruplas", command=mostrar_cuadruplas, bg="#c7eaf2")
 boton_mostrar_cuadruplas.pack(side=tk.LEFT, padx=5, pady=5)
 
+boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar MIPS", command=mostrar_mips, bg="#c7eaf2")
+boton_mostrar_cuadruplas.pack(side=tk.LEFT, padx=5, pady=5)
+
 contenido_frame = tk.Frame(ventana)
 contenido_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -298,9 +321,8 @@ cambiar_color_fondo()
 
 contenido_texto.bind("<Return>", actualizar_numeros_de_linea)
 contenido_texto.bind("<BackSpace>", actualizar_numeros_de_linea)
-contenido_texto.bind("<KeyRelease>", actualizar_numeros_de_linea)
 contenido_texto.bind("<MouseWheel>", actualizar_numeros_de_linea)
 contenido_texto.bind("<Configure>", update_line_numbers_view)
 contenido_texto.bind("<KeyRelease>", on_text_change)
-
+contenido_texto.bind("<KeyRelease>", actualizar_numeros_de_linea)
 ventana.mainloop()
