@@ -8,6 +8,7 @@ from SemanticVisitor import SemanticR
 from SemanticAnalyzer import SemanticAnalyzerMio
 from SemanticVisitor2 import SemanticV2
 from CuadruplasVisitor import *
+from CuadruplasVisitor2 import *
 from Cuadruplas import *
 from traductor import *
 
@@ -188,7 +189,7 @@ def cerrar_ventana():
 
             cuadruplas = Cuadruplas()
 
-            genCuadruplas = CuadruplasVisitor(semanticV.symbol_table, cuadruplas)
+            genCuadruplas = CuadruplasVisitor2(semanticV.symbol_table, cuadruplas)
 
             genCuadruplas.visit_program(tree)
 
