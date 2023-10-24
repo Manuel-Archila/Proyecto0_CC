@@ -113,14 +113,18 @@ class CuadruplasVisitor2(yaplVisitor):
 
 
 
-            cua = self.cuadruplas.get_last_cuadrupla()
-            if bool(re.match(r'^t\d+$', cua[3])) == True or "BaseInstancia" in cua[3]:
-                print("entro al if con", cua[3])
-                resultado = cua[3]
-            else:
-                print("entro al else con", cua[3])
-                resultado = self.cuadruplas.get_last_call()
+            
             if bandera == True:
+                cua = self.cuadruplas.get_last_cuadrupla()
+            
+                print("La ultima cuadrupla es: ", cua)
+
+                if "t" in cua[3] or "BaseInstancia" in cua[3]:
+                    print("entro al if con", cua[3])
+                    resultado = cua[3]
+                else:
+                    print("entro al else con", cua[3])
+                    resultado = self.cuadruplas.get_last_call()
                 self.cuadruplas.agregar_cuadrupla("RETURN_FUNCTION", resultado, None, None)
             self.cuadruplas.agregar_cuadrupla("END_FUNCTION", variable, None, None)
 
@@ -341,7 +345,7 @@ class CuadruplasVisitor2(yaplVisitor):
             valor = self.cuadruplas.agregar_cuadrupla('=', first_child, second_child, "t" )
             
             self.visited_nodes[ctx] = valor
-            
+
             return valor
 
         if ctx.NOT():
