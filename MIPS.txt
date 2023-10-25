@@ -1,6 +1,2 @@
-li t0, 3
-sub t0, t0, 5
-li t1, 1
-addi t1, t1, 2
-li t2, 1
-addi t2, t2, initial
+li t0, 1
+addi t0, t0, 1

@@ -78,6 +78,9 @@ class CuadruplasVisitor2(yaplVisitor):
                 val = self.visit(ctx.getChild(4))
 
                 if val is not None:
+                    
+                    variable = "BaseInstancia + offset" + variable
+
                     self.cuadruplas.agregar_cuadrupla("ASSIGN", val, None, variable)
                 else:
                     self.cuadruplas.agregar_cuadrupla("ASSIGN", variable, None, "t")
@@ -496,7 +499,7 @@ class CuadruplasVisitor2(yaplVisitor):
                     #     self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[1], None, argumento[0])
                     
                     for argumento, parametro in zip(argumentoss, parametroos):
-                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', parametro, None, argumento[0])
+                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[0], None, parametro)
 
             return ctx.getText()
         
