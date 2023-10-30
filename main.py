@@ -189,7 +189,7 @@ def cerrar_ventana():
 
             cuadruplas = Cuadruplas()
 
-            genCuadruplas = CuadruplasVisitor2(semanticV.symbol_table, cuadruplas)
+            genCuadruplas = CuadruplasVisitor(semanticV.symbol_table, cuadruplas)
 
             genCuadruplas.visit_program(tree)
 
