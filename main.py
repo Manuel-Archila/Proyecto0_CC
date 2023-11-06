@@ -202,11 +202,10 @@ def cerrar_ventana():
 
             traductor = Traductor(cuadruplas.cuadruplas)
 
-            lis = traductor.buscar_operadores_aritmeticos()
 
-            trad = traductor.generar_codigo_mips(lis)
+            trad = traductor.generar_codigo_mips()
 
-            traductor.escribir_cuadruplaTrad_en_archivo("MIPS.txt", trad)
+            traductor.escribir_cuadruplaTrad_en_archivo("MIPS.asm", trad)
 
             for el in trad:
                 print(el)

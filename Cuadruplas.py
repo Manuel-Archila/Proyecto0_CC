@@ -15,6 +15,7 @@ class Cuadruplas:
         elif resultado == "L":
             resultado = resultado + str(self.labels)
             self.labels += 1
+        
 
         cuadrupla = [operador, operando1, operando2, resultado]
         self.cuadruplas[self.contCuadruplas] = cuadrupla
@@ -26,6 +27,9 @@ class Cuadruplas:
                 return resultado
             if "t" in resultado:
                 return resultado
+            
+        if operador == "END_FUNCTION":
+            self.temporal_counter = 0
 
     def nuevoLabel(self, resultado):
         resultado = resultado + str(self.labels)

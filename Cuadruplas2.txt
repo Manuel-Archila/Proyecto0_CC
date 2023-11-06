@@ -1,6 +1,37 @@
 CLASS,Main,None,None
+DECLARE,x,None,BaseInstancia + offsetx
 DECLARE,main,None,None
-+,1,1,t0
-RETURN_FUNCTION,t0,None,None
+ASSING,"Hola Mundo",None,BaseInstancia + offsetx
+RETURN_FUNCTION,BaseInstancia + offsetx,None,None
 END_FUNCTION,main,None,None
 END_CLASS,Main,None,None
+CLASS,Tres,None,None
+PARAM,None,None,initial
+PARAM,None,None,ini
+PARAM,None,None,iner
+DECLARE,hola,None,None
++,1,1,t0
+RETURN_FUNCTION,t0,None,None
+END_FUNCTION,hola,None,None
+END_CLASS,Tres,None,None
+CLASS,Uno,None,None
+DECLARE,x,None,BaseInstancia + offsetx
+ASSIGN,12,None,x
+PARAM,None,None,initial
+DECLARE,count,None,None
+ASSING,initial,None,BaseInstancia + offsetx
+RETURN_FUNCTION,BaseInstancia + offsetx,None,None
+END_FUNCTION,count,None,None
+END_CLASS,Uno,None,None
+CLASS,Dos,Tres,None
+DECLARE,x,None,BaseInstancia + offsetx
+NEW,Tres,None,t0
+ASSIGN,t0,None,x
+DECLARE,constructor,None,None
+CALL,hola,3,t1
+ASSIGN_PARAM,initial,None,2
+ASSIGN_PARAM,ini,None,5
+ASSIGN_PARAM,iner,None,8
+RETURN_FUNCTION,t1,None,None
+END_FUNCTION,constructor,None,None
+END_CLASS,Dos,None,None
