@@ -1,7 +1,7 @@
 CLASS,Main,None,None
 DECLARE,main,None,None
 PUT,1,None,t0
-PUT,6,None,t1
+PUT,1,None,t1
 +,t0,t1,t2
 RETURN_FUNCTION,t2,None,None
 END_FUNCTION,main,None,None

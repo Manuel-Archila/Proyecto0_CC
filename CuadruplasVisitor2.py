@@ -490,16 +490,17 @@ class CuadruplasVisitor2(yaplVisitor):
 
                     
                     
-                    self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
+                    # self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
                     parametroos = self.cuadruplas.get_function_params(funtion)
                     parametroos = parametroos[::-1]
-                    print(parametroos)
 
                     # for argumento in argumentoss:
                     #     self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[1], None, argumento[0])
                     
                     for argumento, parametro in zip(argumentoss, parametroos):
                         self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[0], None, parametro)
+                    
+                    self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
 
             return ctx.getText()
         

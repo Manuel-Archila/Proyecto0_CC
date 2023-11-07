@@ -40,17 +40,11 @@ class Traductor:
             if operador == "+":
                 codigo_mips.append(f"{indent}add ${result}, ${op1}, ${op2}")
             elif operador == "-":
-                codigo_mips.append(f"{indent}li $t1, {op1}")
-                codigo_mips.append(f"{indent}li $t2, {op2}")
-                codigo_mips.append(f"{indent}sub $t0, $t1, $t2")
+                codigo_mips.append(f"{indent}sub ${result}, ${op1}, ${op2}")
             elif operador == "*":
-                codigo_mips.append(f"{indent}li $t1, {op1}")
-                codigo_mips.append(f"{indent}li $t2, {op2}")
-                codigo_mips.append(f"{indent}mul $t0, $t1, $t2")
+                codigo_mips.append(f"{indent}mul ${result}, ${op1}, ${op2}")
             elif operador == "/":
-                codigo_mips.append(f"{indent}li $t1, {op1}")
-                codigo_mips.append(f"{indent}li $t2, {op2}")
-                codigo_mips.append(f"{indent}div $t0, $t1, $t2")
+                codigo_mips.append(f"{indent}div ${result}, ${op1}, ${op2}")
 
         def handle_return_function(quad):
             codigo_mips.append(f"{self.get_indent()}move $v0, $t0")
