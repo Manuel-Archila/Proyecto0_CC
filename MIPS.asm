@@ -1,8 +1,8 @@
 main:
     move $fp, $sp
-    li $t1, 1
-    li $t2, 9
-    add $t0, $t1, $t2
+    li $t0, 1
+    li $t1, 6
+    add $t2, $t0, $t1
     move $v0, $t0
     li $v0, 10
     syscall

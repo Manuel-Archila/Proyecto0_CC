@@ -183,13 +183,12 @@ def cerrar_ventana():
             dot_graph = visitor.getDotGraph()
             dot_graph.render(filename='output.gv', view=True, format='png')
 
-            #Aqui
 
             print("============ CUADRUPLAS ==============\n\n")
 
             cuadruplas = Cuadruplas()
 
-            genCuadruplas = CuadruplasVisitor(semanticV.symbol_table, cuadruplas)
+            genCuadruplas = CuadruplasVisitor2(semanticV.symbol_table, cuadruplas)
 
             genCuadruplas.visit_program(tree)
 
@@ -265,7 +264,7 @@ def mostrar_cuadruplas():
     cuadruplas_texto.config(state=tk.DISABLED)
 
 def mostrar_mips():
-    with open("MIPS.txt", "r") as f:
+    with open("MIPS.asm", "r") as f:
             
             contenido_texto.delete("1.0", tk.END)
             contenido_texto.insert(tk.END, f.read()) 

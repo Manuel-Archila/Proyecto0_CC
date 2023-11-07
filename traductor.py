@@ -38,9 +38,7 @@ class Traductor:
             operador, op1, op2, result = quad
             indent = self.get_indent()
             if operador == "+":
-                codigo_mips.append(f"{indent}li $t1, {op1}")
-                codigo_mips.append(f"{indent}li $t2, {op2}")
-                codigo_mips.append(f"{indent}add $t0, $t1, $t2")
+                codigo_mips.append(f"{indent}add ${result}, ${op1}, ${op2}")
             elif operador == "-":
                 codigo_mips.append(f"{indent}li $t1, {op1}")
                 codigo_mips.append(f"{indent}li $t2, {op2}")
@@ -67,6 +65,13 @@ class Traductor:
                 codigo_mips.append(f"{self.get_indent()}jr $ra")
                 self.decrement_indent()
 
+        def handle_put(quad):
+            operador, op1, op2, result = quad
+            indent = self.get_indent()
+
+            codigo_mips.append(f"{indent}li ${result}, {op1}")
+
+
         # ... (más manejadores)
 
         # Mapeo de operaciones a sus manejadores
@@ -77,6 +82,7 @@ class Traductor:
             '-': handle_arithmetic,
             '*': handle_arithmetic,
             '/': handle_arithmetic,
+            'PUT': handle_put,
             'RETURN_FUNCTION': handle_return_function,
             'END_FUNCTION': handle_end_function,
             # ... (más manejadores)
