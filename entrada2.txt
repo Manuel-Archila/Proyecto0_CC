@@ -1,14 +1,24 @@
 (* COMENTARIO *)
-class Main {
-    main() : Int {
-        if 5 < 10 then
-            3 - 5
+
+class Uno inherits IO {
+    
+    count( initial : Int ) : Int {
+        if initial < 10 then
+            out_int(initial)
         else
-            1 + 2
-        fi 
+            out_int(1)
+        fi
     };
 
-    count( initial : Int ) : Int {
-        1 + initial
-    };
 };
+
+class Main { 
+
+   x : Uno <- new Uno;
+
+   main() : Int {
+        x @ Uno.count(5)
+        
+    };
+
+};	

@@ -45,7 +45,7 @@ class CuadruplasVisitor2(yaplVisitor):
 
             variable = ctx.getChild(0).getText()
             if not ctx.LPAR():
-                self.cuadruplas.agregar_cuadrupla("DECLARE", variable, None, "BaseInstancia + offset" + variable)
+                self.cuadruplas.agregar_cuadrupla("DECLARE_VAR", variable, None, "BaseInstancia + offset" + variable)
 
             if ctx.LPAR():
 
@@ -491,6 +491,7 @@ class CuadruplasVisitor2(yaplVisitor):
                     
                     
                     # self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
+                    print(funtion)
                     parametroos = self.cuadruplas.get_function_params(funtion)
                     parametroos = parametroos[::-1]
 
@@ -498,7 +499,10 @@ class CuadruplasVisitor2(yaplVisitor):
                     #     self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[1], None, argumento[0])
                     
                     for argumento, parametro in zip(argumentoss, parametroos):
-                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', argumento[0], None, parametro)
+
+                        tempo = self.cuadruplas.get_cuadrupla_put(argumento[0])
+
+                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tempo, None, parametro)
                     
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
 

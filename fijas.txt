@@ -38,11 +38,11 @@ class Bool inherits Object {
 };
 
 class IO inherits Object {
-    out_string(str : String) : String {
+    out_string(stringy : String) : String {
         pass
     };
     
-    out_int(i : Int) : Int {
+    out_int(inty : Int) : Int {
         pass
     };
 

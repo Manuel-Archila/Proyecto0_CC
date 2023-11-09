@@ -152,7 +152,9 @@ class SymbolT:
             for child in current_scope.children:
                 result = self.recurs(child, name)
                 if result:
-                    return result 
+                    return result
+                
+            return None   
         return None
     
     def recurs(self, scope, name):

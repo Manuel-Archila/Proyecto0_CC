@@ -6,7 +6,159 @@ class Cuadruplas:
         self.temporal_counter = 0
         self.labels = 1
         self.contCuadruplas = 1
+        self.fijas()
 
+    def fijas(self):
+
+        cuadrupla = ["CLASS", "Object", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "abort", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "abort", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "type_name", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "type_name", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "copy", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "copy", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_CLASS", "Object", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["CLASS", "String", "Object", None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "length", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "length", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["PARAM", None, None, "str"]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "concat", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "concat", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["PARAM", None, None, "index1"]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["PARAM", None, None, "index2"]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "substr", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "substr", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_CLASS", "String", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["CLASS", "Int", "Object", None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_CLASS", "Int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["CLASS", "Bool", "Object", None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_CLASS", "Bool", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["CLASS", "IO", "Object", None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["PARAM", None, None, "stringy"]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "out_string", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "out_string", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+        
+        cuadrupla = ["PARAM", None, None, "inty"]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "out_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "out_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "out_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "out_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "in_string", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "in_string", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["DECLARE", "in_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_FUNCTION", "int_int", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+        cuadrupla = ["END_CLASS", "IO", None, None]
+        self.cuadruplas[self.contCuadruplas] = cuadrupla
+        self.contCuadruplas += 1
+
+    
     def agregar_cuadrupla(self, operador, operando1, operando2, resultado):
 
         if resultado == "t":
@@ -114,11 +266,15 @@ class Cuadruplas:
     def get_last_call(self):
         last_counter = self.contCuadruplas - 1
         last_cuadrupla = self.cuadruplas[last_counter]
-        print(last_cuadrupla)
         while last_cuadrupla[0] != "CALL":
             last_counter -= 1
             last_cuadrupla = self.cuadruplas[last_counter]
-            print(last_cuadrupla)
         return self.cuadruplas[last_counter][3]
+    
+    def get_cuadrupla_put(self, valor):
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            if cuadrupla[0] == "PUT" and cuadrupla[1] == valor:
+                return cuadrupla[3]
+        return None
 
     
