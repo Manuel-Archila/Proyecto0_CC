@@ -11,6 +11,7 @@ from CuadruplasVisitor import *
 from CuadruplasVisitor2 import *
 from Cuadruplas import *
 from traductor import *
+from aa import *
 
 import tempfile
 
@@ -195,6 +196,8 @@ def cerrar_ventana():
 
             cuadruplas.imprimir_cuadruplas()
 
+            cuadruplas.eliminar_primeras_cuadruplas()
+
             cuadruplas.escribir_cuadruplas_en_archivo("Cuadruplas.txt")
 
             print("============ MIPS ==============\n\n")
@@ -263,6 +266,23 @@ def mostrar_cuadruplas():
     cuadruplas_texto.insert(tk.END, contenido)
     cuadruplas_texto.config(state=tk.DISABLED)
 
+    format_cuadruplas('Cuadruplas2.txt', 'Seudocodigo.txt')
+
+    with open("Seudocodigo.txt", "r") as f:
+            
+            contenido_texto.delete("1.0", tk.END)
+            contenido_texto.insert(tk.END, f.read()) 
+
+            contenido_texto.tag_configure("reservada", foreground="#CE8E0F")  
+            contenido_texto.tag_configure("delimitador", foreground="green")  
+            resaltar_palabras_reservadas()  
+            resaltar_delimitadores()
+
+            contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
+            contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
+
+            actualizar_numeros_de_linea()
+
 def mostrar_mips():
     with open("MIPS.asm", "r") as f:
             
@@ -295,8 +315,8 @@ boton_cerrar.pack(side=tk.LEFT, padx=5, pady=5)
 boton_resetear = tk.Button(boton_frame, text="Resetear Todo", command=resetear_todo, bg="#c7eaf2")
 boton_resetear.pack(side=tk.LEFT, padx=5, pady=5)
 
-boton_cambiar_color_fondo = tk.Button(boton_frame, text="Cambiar Tema", command=cambiar_color_fondo, bg="#c7eaf2")
-boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=2.5, pady=2.5)
+# boton_cambiar_color_fondo = tk.Button(boton_frame, text="Cambiar Tema", command=cambiar_color_fondo, bg="#c7eaf2")
+# boton_cambiar_color_fondo.pack(side=tk.LEFT, padx=2.5, pady=2.5)
 
 boton_mostrar_cuadruplas = tk.Button(boton_frame, text="Mostrar Cuádruplas", command=mostrar_cuadruplas, bg="#c7eaf2")
 boton_mostrar_cuadruplas.pack(side=tk.LEFT, padx=5, pady=5)
@@ -309,12 +329,12 @@ contenido_frame.pack(fill=tk.BOTH, expand=True)
 
 numeros_linea_widget = tk.Text(contenido_frame, width=4, bg=color_actual, state=tk.DISABLED)
 numeros_linea_widget.pack(side=tk.LEFT, fill=tk.Y)
-numeros_linea_widget.tag_configure("color_texto_tag", foreground=color_letra)
-numeros_linea_widget.tag_add("color_texto_tag", "1.0", tk.END)
+# numeros_linea_widget.tag_configure("color_texto_tag", foreground=color_letra)
+# numeros_linea_widget.tag_add("color_texto_tag", "1.0", tk.END)
 contenido_texto = tk.Text(contenido_frame, wrap=tk.NONE, bg=color_actual)
 contenido_texto.pack(side=tk.LEFT, fill=tk.Y)
-contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
-contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
+# contenido_texto.tag_configure("color_texto_tag", foreground=color_letra)
+# contenido_texto.tag_add("color_texto_tag", "1.0", tk.END)
 
 cambiar_color_fondo()
 

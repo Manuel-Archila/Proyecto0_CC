@@ -277,4 +277,8 @@ class Cuadruplas:
                 return cuadrupla[3]
         return None
 
-    
+    def eliminar_primeras_cuadruplas(self):
+        if self.cuadruplas:
+            for i in range(0, 37):
+                primer_elemento = next(iter(self.cuadruplas))  
+                self.cuadruplas.pop(primer_elemento)  
