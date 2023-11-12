@@ -45,7 +45,7 @@ digraph {
 	18 -> 22
 	22 [label=Expr]
 	22 -> 23
-	23 [label=1]
+	23 [label=4]
 	7 -> 24
 	24 [label="}"]
 	1 -> 25
@@ -113,7 +113,7 @@ digraph {
 	48 -> 56
 	56 [label=Expr]
 	56 -> 57
-	57 [label=5]
+	57 [label=2]
 	48 -> 58
 	58 [label=")"]
 	41 -> 59

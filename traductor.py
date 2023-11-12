@@ -73,7 +73,9 @@ class Traductor:
 
                 size = self.classes[op1]['size']
                 metodos =  self.classes[op1]['metodos']
-                string_vtalbe = f"{self.get_indent()} {op1}_vtable: .word "
+                string_vtalbe = f"{self.get_indent()}{op1}_vtable: .word "
+
+
 
                 for metodo in metodos:
                     string_vtalbe += f"{metodo}, "
@@ -84,7 +86,7 @@ class Traductor:
                 # codigo_mips.append(string_vtalbe)
 
                 # codigo_mips.append(f"object_{op1}: .word {size}")
-                self.data_content.append(f"{self.get_indent()} object_{op1}: .word {size}")
+                self.data_content.append(f"{self.get_indent()}object_{op1}: .word {size}")
                 self.decrement_indent()
 
                 constructor_name = f"{op1}_constructor"
@@ -94,24 +96,40 @@ class Traductor:
                 self.constructors.append(f"{self.get_indent()}sw $t0, object_{op1}")
                 self.constructors.append(f"{self.get_indent()}jr $ra")
                 self.decrement_indent()
-                print(self.constructors)
 
-
+            if op1 =="Main":
+                codigo_mips.append('main:')
+                self.increment_indent()
+                codigo_mips.append(f"{self.get_indent()}move $fp, $sp")
                 
 
         def handle_declare(quad):
             nombre_funcion = quad[1]
             if nombre_funcion == 'main':
-                codigo_mips.append('main:')
-                self.increment_indent()
-                codigo_mips.append(f"{self.get_indent()}move $fp, $sp")
+                # codigo_mips.append('main:')
+                # self.increment_indent()
+                # codigo_mips.append(f"{self.get_indent()}move $fp, $sp")
+                pass
             else:
                 codigo_mips.append(f"{self.get_indent()}{nombre_funcion}:")
                 self.increment_indent()
                 # Resto de la lógica para la declaración de otras funciones
 
         def handle_arithmetic(quad):
+            temps = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't0']
             operador, op1, op2, result = quad
+
+            if op1 not in temps:
+                codigo_mips.append(f"{self.get_indent()}la $t5, {op1}")
+                codigo_mips.append(f"{self.get_indent()}lw $t6, 0($t5)")
+                op1 = 't6'
+            
+            if op2 not in temps:
+                codigo_mips.append(f"{self.get_indent()}la $t5, {op2})")
+                codigo_mips.append(f"{self.get_indent()}lw $t6, 0($t5)")
+                op1 = 't6'
+
+
             indent = self.get_indent()
             if operador == "+":
                 codigo_mips.append(f"{indent}add ${result}, ${op1}, ${op2}")
@@ -142,37 +160,19 @@ class Traductor:
             codigo_mips.append(f"{indent}li ${result}, {op1}")
         
         def handle_new(quad):
-            clase = quad[1]
-            indent = self.get_indent()
-            size = self.classes[clase]['size']
-            temp_reg = quad[3]
-
-            # Asignar memoria
-            codigo_mips.append(f"{indent}li $v0, 9")
-            codigo_mips.append(f"{indent}li $a0, {size}")
-            codigo_mips.append(f"{indent}syscall")
-            codigo_mips.append(f"{indent}move ${temp_reg}, $v0")
-
-            # Configurar el puntero a la vtable
-            codigo_mips.append(f"{indent}la $t0, {clase}_vtable")
-            codigo_mips.append(f"{indent}sw $t0, 0(${temp_reg})")
+            operador, op1, op2, result = quad
             
+            codigo_mips.append(f"{self.get_indent()}jal {op1}_constructor")
 
         def handle_vardeclare(quad):
             pass
-        #     nombre_var = quad[1]
-        #     clase = quad[2]
-        #     offset = self.classes[clase]['offsets'][nombre_var]
-        #     temp_reg = quad[3]
-        #     indent = self.get_indent()
-
-        #     codigo_mips.append(f"{indent}sw ${temp_reg}, {offset}($fp)")
 
         def handle_method_call(quad):
             operador, op1, op2, result = quad
 
-            # if op1 == "in_int":
-            #     self.
+            codigo_mips.append(f"{self.get_indent()}lw $t0, object_{op2}")
+            codigo_mips.append(f"{self.get_indent()}lw $t1, 0($t0)")
+            codigo_mips.append(f"{self.get_indent()}jalr $t1")
                 
             
         
@@ -189,7 +189,27 @@ class Traductor:
 
             return codigo_mips, '$t1'  # Devuelve el código generado y el registro con la dirección del método
 
+        def handle_param(quad):
+            operador, op1, op2, result = quad
+
+            if op2 == "Int":
+                self.data_content.append(f"\t{result}: .word 4")
+            elif op2 == "String":
+                self.data_content.append(f"\t{result}: .space 256")
+            elif op2 == "Bool":
+                self.data_content.append(f"\t{result}: .word 1")
+
+        
+        def handle_assing_param(quad):
+            operador, op1, op2, result = quad
+            indent = self.get_indent()
             
+            codigo_mips.append(f"{indent}la $t0, {result}")
+            codigo_mips.append(f"{indent}sw ${op1}, 0($t0)")
+            
+
+            
+
         # ... (más manejadores)
 
         # Mapeo de operaciones a sus manejadores
@@ -206,6 +226,8 @@ class Traductor:
             'NEW' : handle_new,
             'DECLARE_VAR': handle_vardeclare,
             'CALL': handle_method_call,
+            'ASSIGN_PARAM': handle_assing_param,
+            'PARAM' : handle_param
 
             # ... (más manejadores)
         }

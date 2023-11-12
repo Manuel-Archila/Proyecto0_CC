@@ -4,7 +4,7 @@ class Uno inherits IO {
 
     
     count( initial : Int ) : Int {
-        initial + 1
+        initial + 4
     };
     
 };

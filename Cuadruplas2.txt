@@ -1,7 +1,7 @@
 CLASS,Uno,IO,None
-PARAM,None,None,initial
+PARAM,None,Int,initial
 DECLARE,count,None,None
-PUT,1,None,t0
+PUT,4,None,t0
 +,initial,t0,t1
 RETURN_FUNCTION,t1,None,None
 END_FUNCTION,count,None,None
@@ -11,9 +11,9 @@ DECLARE_VAR,x,None,BaseInstancia + offsetx
 NEW,Uno,None,t0
 ASSIGN,t0,None,BaseInstancia + offsetx
 DECLARE,main,None,None
-PUT,5,None,t1
+PUT,2,None,t1
 ASSIGN_PARAM,t1,None,initial
-CALL,count,1,t2
+CALL,count,Uno,t2
 RETURN_FUNCTION,t2,None,None
 END_FUNCTION,main,None,None
 END_CLASS,Main,None,None

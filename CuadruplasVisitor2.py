@@ -38,7 +38,7 @@ class CuadruplasVisitor2(yaplVisitor):
                     params.append((string[0], string[1]))
                     
             for tupla in params:
-                self.cuadruplas.agregar_cuadrupla('PARAM', None, None, tupla[0])
+                self.cuadruplas.agregar_cuadrupla('PARAM', None, tupla[1], tupla[0])
             
 
         if ctx.COLON():
@@ -487,11 +487,14 @@ class CuadruplasVisitor2(yaplVisitor):
 
                     funtion = ctx.ID()[0].getText()
 
+                    tipo = ctx.getChild(2).getText()
+
 
                     
                     
                     # self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
                     print(funtion)
+                    print(tipo)
                     parametroos = self.cuadruplas.get_function_params(funtion)
                     parametroos = parametroos[::-1]
 
@@ -504,7 +507,7 @@ class CuadruplasVisitor2(yaplVisitor):
 
                         self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tempo, None, parametro)
                     
-                    self.cuadruplas.agregar_cuadrupla('CALL', funtion, len(argumentoss), "t")
+                    self.cuadruplas.agregar_cuadrupla('CALL', funtion, tipo, "t")
 
             return ctx.getText()
         
