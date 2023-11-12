@@ -1,12 +1,13 @@
 from tabulate import tabulate
 
 class Cuadruplas:
-    def __init__(self):
+    def __init__(self, clases):
         self.cuadruplas = {}
         self.temporal_counter = 0
         self.labels = 1
         self.contCuadruplas = 1
         self.fijas()
+        self.clases = clases
 
     def fijas(self):
 
@@ -281,4 +282,29 @@ class Cuadruplas:
         if self.cuadruplas:
             for i in range(0, 37):
                 primer_elemento = next(iter(self.cuadruplas))  
-                self.cuadruplas.pop(primer_elemento)  
+                self.cuadruplas.pop(primer_elemento)
+    
+    def get_metodos(self, clase):
+        metodos = []
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            if cuadrupla[0] == "CLASS" and cuadrupla[1] == clase:
+                is_method = True
+                while is_method:
+                    num_cuadrupla += 1
+                    cuadrupla = self.cuadruplas[num_cuadrupla]
+                    if cuadrupla[0] == "DECLARE":
+                        metodos.append(cuadrupla[1])
+                    if cuadrupla[0] == "END_CLASS":
+                        is_method = False
+                        return metodos
+
+        
+
+    def agregar_metodos(self):
+        for num_cuadrupla, cuadrupla in self.cuadruplas.items():
+            if cuadrupla[0] == "CLASS":
+                clase = cuadrupla[1]
+                metodos = self.get_metodos(clase)
+                self.clases[clase]["metodos"] = metodos
+                
+                

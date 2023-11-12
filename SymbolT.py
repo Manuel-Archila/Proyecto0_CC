@@ -8,6 +8,7 @@ class Symbol:
         self.hereda = hereda
         self.params = params
         self.memoria = memoria
+        
     def __repr__(self):
         return str(self.name) + " " + str(self.line) + " " + str(self.symbol_type) + " " + str(self.data_type) + " " + str(self.scope) + " " + str(self.hereda) + " " + str(self.params) + " " + str(self.memoria) 
 
@@ -36,6 +37,7 @@ class Scope:
 
 class SymbolT:
     def __init__(self):
+        self.clases = {}
         self.current_scope = None
         self.scope_counter = 0
         self.root = None
@@ -63,9 +65,16 @@ class SymbolT:
             self.current_scope = self.current_scope.parent
     
     def put(self, name, line, symbol_type, data_type=None, hereda=None, params=None, memoria = None):
+        if symbol_type == "class":
+            memoria = 4
+            self.clases[name] = {}
+            self.clases[name]["size"] = memoria
+
         symbol = Symbol(name, line, symbol_type, self.current_scope.name, data_type, hereda, params, memoria)
         self.current_scope.put(symbol)
-    
+
+
+            
     def enter_scope2(self):
         if self.scope_counter2 == 0:
             self.root2 = Scope(str(self.scope_counter2))
@@ -210,8 +219,14 @@ class SymbolT:
         while current_scope:
             if name in current_scope.symbols:
                 current_scope.symbols[name].memoria = peso
+
+                if peso == 0 :
+                    peso = 4
+
+                self.clases[name]["size"] = peso
                 return True
             current_scope = current_scope.parent
+        
         
 
     def __repr__(self):

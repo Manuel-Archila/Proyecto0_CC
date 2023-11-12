@@ -187,12 +187,11 @@ def cerrar_ventana():
 
             print("============ CUADRUPLAS ==============\n\n")
 
-            cuadruplas = Cuadruplas()
+            cuadruplas = Cuadruplas(semanticV.symbol_table.clases)
 
             genCuadruplas = CuadruplasVisitor2(semanticV.symbol_table, cuadruplas)
 
             genCuadruplas.visit_program(tree)
-
 
             cuadruplas.imprimir_cuadruplas()
 
@@ -202,7 +201,10 @@ def cerrar_ventana():
 
             print("============ MIPS ==============\n\n")
 
-            traductor = Traductor(cuadruplas.cuadruplas)
+            cuadruplas.agregar_metodos()
+
+
+            traductor = Traductor(cuadruplas.cuadruplas, cuadruplas.clases)
 
 
             trad = traductor.generar_codigo_mips()

@@ -1,17 +1,12 @@
 (* COMENTARIO *)
 
 class Uno inherits IO {
-    
-    x :Int <- 12;
+
     
     count( initial : Int ) : Int {
-        if initial < 10 then
-            out_int(initial)
-        else
-            out_int(1)
-        fi
+        initial + 1
     };
-
+    
 };
 
 class Main { 
@@ -20,7 +15,7 @@ class Main {
 
    main() : Int {
         x @ Uno.count(5)
-        
+ 
     };
 
-};	
+};
