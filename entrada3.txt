@@ -2,9 +2,16 @@
 
 class Uno inherits IO {
 
-    
-    count( initial : Int ) : Int {
-        initial + 4
+    sum( init : Int, inil : Int) : Int {
+        init - inil
+    };
+
+    count( initial : Int, ini : Int) : Int {
+        initial + ini
+    };
+
+    contar( mas : Int, pas : Int) : Int {
+        mas * pas
     };
     
 };
@@ -14,7 +21,7 @@ class Main {
    x : Uno <- new Uno;
 
    main() : Int {
-        x @ Uno.count(5)
+        x @ Uno.contar(3,3)
  
     };
 

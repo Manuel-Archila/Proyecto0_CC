@@ -125,9 +125,9 @@ class Traductor:
                 op1 = 't6'
             
             if op2 not in temps:
-                codigo_mips.append(f"{self.get_indent()}la $t5, {op2})")
-                codigo_mips.append(f"{self.get_indent()}lw $t6, 0($t5)")
-                op1 = 't6'
+                codigo_mips.append(f"{self.get_indent()}la $t7, {op2}")
+                codigo_mips.append(f"{self.get_indent()}lw $t8, 0($t7)")
+                op2 = 't8'
 
 
             indent = self.get_indent()
@@ -169,25 +169,19 @@ class Traductor:
 
         def handle_method_call(quad):
             operador, op1, op2, result = quad
+            
+            cant = 0
+            metodos = self.classes[op2]['metodos']
+
+            for metodo in metodos:
+                if metodo == op1:
+                    break
+                cant += 4
 
             codigo_mips.append(f"{self.get_indent()}lw $t0, object_{op2}")
-            codigo_mips.append(f"{self.get_indent()}lw $t1, 0($t0)")
+            codigo_mips.append(f"{self.get_indent()}lw $t1, {cant}($t0)")
             codigo_mips.append(f"{self.get_indent()}jalr $t1")
                 
-            
-        
-        def find_method_address(self, objeto_reg, metodo):
-            indent = self.get_indent()
-            codigo_mips = []
-            metodo_offset = self.classes[clase]['metodos'][metodo]
-
-            # Cargar la vTable del objeto
-            codigo_mips.append(f"{indent}lw $t0, 0(${objeto_reg})")  # $t0 tiene la vTable
-
-            # Cargar la dirección del método desde la vTable
-            codigo_mips.append(f"{indent}lw $t1, {metodo_offset}($t0)")  # $t1 tiene la dirección del método
-
-            return codigo_mips, '$t1'  # Devuelve el código generado y el registro con la dirección del método
 
         def handle_param(quad):
             operador, op1, op2, result = quad
