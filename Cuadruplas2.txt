@@ -1,8 +1,39 @@
 CLASS,Main,None,None
+DECLARE_VAR,x,None,BaseInstancia + offsetx
 DECLARE,main,None,None
-PUT,2,None,t0
-PUT,6,None,t1
-+,t0,t1,t2
-RETURN_FUNCTION,t2,None,None
+ASSING,"Hola Mundo",None,BaseInstancia + offsetx
+RETURN_FUNCTION,BaseInstancia + offsetx,None,None
 END_FUNCTION,main,None,None
 END_CLASS,Main,None,None
+CLASS,Tres,None,None
+PARAM,None,Int,initial
+PARAM,None,Int,ini
+PARAM,None,Int,iner
+DECLARE,hola,None,None
+PUT,1,None,t0
+PUT,1,None,t1
++,t0,t1,t2
+RETURN_FUNCTION,t2,None,None
+END_FUNCTION,hola,None,None
+END_CLASS,Tres,None,None
+CLASS,Uno,None,None
+DECLARE_VAR,x,None,BaseInstancia + offsetx
+PUT,12,None,t0
+ASSIGN,x,None,t1
+PARAM,None,Int,initial
+DECLARE,count,None,None
+ASSING,initial,None,BaseInstancia + offsetx
+RETURN_FUNCTION,BaseInstancia + offsetx,None,None
+END_FUNCTION,count,None,None
+END_CLASS,Uno,None,None
+CLASS,Dos,Tres,None
+DECLARE_VAR,x,None,BaseInstancia + offsetx
+NEW,Uno,None,t0
+ASSIGN,t0,None,BaseInstancia + offsetx
+DECLARE,constructor,None,None
+PUT,2,None,t1
+ASSIGN_PARAM,t1,None,initial
+CALL,count,2,t2
+RETURN_FUNCTION,t2,None,None
+END_FUNCTION,constructor,None,None
+END_CLASS,Dos,None,None

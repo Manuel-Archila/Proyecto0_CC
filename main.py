@@ -202,7 +202,7 @@ def cerrar_ventana():
             print("============ MIPS ==============\n\n")
 
             cuadruplas.agregar_metodos()
-
+            cuadruplas.clases['IO']['metodos'] = ['in_int', 'out_int', 'in_string', 'out_string']
 
             traductor = Traductor(cuadruplas.cuadruplas, cuadruplas.clases)
 

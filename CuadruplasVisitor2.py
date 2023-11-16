@@ -505,7 +505,12 @@ class CuadruplasVisitor2(yaplVisitor):
 
                         tempo = self.cuadruplas.get_cuadrupla_put(argumento[0])
 
-                        self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tempo, None, parametro)
+                        if parametro in ['inty']:
+                            self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tipo, None, parametro)
+
+                        else:
+
+                            self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tempo, None, parametro)
                     
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, tipo, "t")
 

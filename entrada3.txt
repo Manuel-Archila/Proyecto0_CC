@@ -11,7 +11,7 @@ class Uno inherits IO {
     };
 
     contar( mas : Int, pas : Int) : Int {
-        mas * pas
+        out_int(mas)
     };
     
 };
