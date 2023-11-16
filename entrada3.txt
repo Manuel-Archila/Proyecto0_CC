@@ -2,6 +2,8 @@
 
 class Uno inherits IO {
 
+    x : Int;
+
     sum( init : Int, inil : Int) : Int {
         init - inil
     };
@@ -11,7 +13,7 @@ class Uno inherits IO {
     };
 
     contar( mas : Int, pas : Int) : Int {
-        out_int(mas)
+        x <- in_int()
     };
     
 };

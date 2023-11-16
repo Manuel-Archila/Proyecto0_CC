@@ -2,6 +2,7 @@ from tabulate import tabulate
 
 class Traductor:
     def __init__(self, cuadruplas, classes):
+        self.clase_actual = None
         self.cuadruplas = cuadruplas
         self.indent_level = 0
         self.classes = classes
@@ -68,6 +69,7 @@ class Traductor:
         # Definimos manejadores para cada tipo de operación
         def handle_class(quad):
             operador, op1, op2, result = quad
+            self.clase_actual = op1
 
             if op1 not in self.fijas:
                 self.increment_indent()
@@ -95,7 +97,6 @@ class Traductor:
                 self.increment_indent()
                 self.constructors.append(f"{self.get_indent()}la $t0, {op1}_vtable")
                 self.constructors.append(f"{self.get_indent()}sw $t0, object_{op1}")
-                self.constructors.append(f"{self.get_indent()}jr $ra")
                 self.decrement_indent()
 
             if op1 =="Main":
@@ -167,7 +168,16 @@ class Traductor:
             codigo_mips.append(f"{self.get_indent()}jal {op1}_constructor")
 
         def handle_vardeclare(quad):
-            pass
+            operador, op1, op2, result = quad
+
+            if op2 == "Int":
+                self.data_content.append(f"\t{self.clase_actual}_{op1}: .word 4")
+                self.constructors.append(f"\tli $t0, 0")
+                self.constructors.append(f"\tsw $t0, {self.clase_actual}_{op1}")
+            elif op2 == "String":
+                self.data_content.append(f"\t{self.clase_actual}_{op1}: .space 256")
+            elif op2 == "Bool":
+                self.data_content.append(f"\t{self.clase_actual}_{op1}: .word 1")
 
         def handle_method_call(quad):
             operador, op1, op2, result = quad
@@ -223,6 +233,23 @@ class Traductor:
             
                 codigo_mips.append(f"{indent}la $t0, {result}")
                 codigo_mips.append(f"{indent}sw ${op1}, 0($t0)")
+        
+        def handle_end_class(quad):
+            operador, op1, op2, result = quad
+
+            if op1 != 'Main':
+                self.constructors.append(f"\tjr $ra")
+        
+        # def handle_assign(quad):
+        #     operador, op1, op2, result = quad
+        #     indent = self.get_indent()
+        #     var_name = result.replace('BaseInstancia + offset', "")
+        #     print("var_name", var_name)
+        #     variable = f"{self.clase_actual}_{var_name}"
+        #     print("op1", op1)
+
+        #     if op1 == 'in_int()':
+        #         codigo_mips.append(f"{indent}sw $v0, {variable}")
             
 
             
@@ -244,7 +271,9 @@ class Traductor:
             'DECLARE_VAR': handle_vardeclare,
             'CALL': handle_method_call,
             'ASSIGN_PARAM': handle_assing_param,
-            'PARAM' : handle_param
+            'PARAM' : handle_param,
+            'END_CLASS' : handle_end_class,
+            #'ASSIGN': handle_assign,
 
             # ... (más manejadores)
         }

@@ -953,12 +953,12 @@ class CuadruplasVisitor(yaplVisitor):
 
                 if val is not None:
 
-                    self.cuadruplas.agregar_cuadrupla("ASSING", val, None, first_child)
+                    self.cuadruplas.agregar_cuadrupla("ASSIGN", val, None, first_child)
                 else:
                     num = self.cuadruplas.encontrar_cuadrupla_param(second_child.getText())
 
                     if num is not None:
-                        self.cuadruplas.agregar_cuadrupla("ASSING", second_child.getText(), None, first_child)
+                        self.cuadruplas.agregar_cuadrupla("ASSIGN", second_child.getText(), None, first_child)
 
             if ctx.LPAR():
                     
