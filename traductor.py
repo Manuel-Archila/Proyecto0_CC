@@ -13,6 +13,7 @@ class Traductor:
         self.constructors = ['IO_constructor:', '\tla $t0, IO_vtable', '\tsw $t0, object_IO', '\tjr $ra']
         self.functions = []
         self.metodos_fijos = ['in_int', 'out_int', 'in_string', 'out_string']
+        self.atributos = {}
         self.add_fijas()
     
     def increment_indent(self):
@@ -70,6 +71,7 @@ class Traductor:
         def handle_class(quad):
             operador, op1, op2, result = quad
             self.clase_actual = op1
+            self.atributos[self.clase_actual] = []
 
             if op1 not in self.fijas:
                 self.increment_indent()
@@ -79,11 +81,14 @@ class Traductor:
                 string_vtalbe = f"{self.get_indent()}{op1}_vtable: .word "
 
 
-
-                for metodo in metodos:
-                    string_vtalbe += f"{metodo}, "
-                
-                string_vtalbe = string_vtalbe[:-2]
+                if len(metodos) > 0:
+                    for metodo in metodos:
+                        string_vtalbe += f"{metodo}, "
+                    
+                    string_vtalbe = string_vtalbe[:-2]
+                else:
+                    string_vtalbe += "0"
+                    
                 self.data_content.append(string_vtalbe)
                 
                 # codigo_mips.append(string_vtalbe)
@@ -144,7 +149,8 @@ class Traductor:
                 codigo_mips.append(f"{indent}div ${result}, ${op1}, ${op2}")
 
         def handle_return_function(quad):
-            codigo_mips.append(f"{self.get_indent()}move $v0, $t0")
+            operador, op1, op2, result = quad
+            #codigo_mips.append(f"{self.get_indent()}move $v0, $t0")
 
         def handle_end_function(quad):
             nombre_funcion = quad[1]
@@ -169,6 +175,7 @@ class Traductor:
 
         def handle_vardeclare(quad):
             operador, op1, op2, result = quad
+            self.atributos[self.clase_actual].append(op1)
 
             if op2 == "Int":
                 self.data_content.append(f"\t{self.clase_actual}_{op1}: .word 4")
@@ -222,7 +229,13 @@ class Traductor:
                     is_int = True
                 except:
                     pass
-                
+
+                for elem in self.atributos[self.clase_actual]:
+                    if elem == op1:
+                        op1 = f"{self.clase_actual}_{op1}"
+                        break
+
+
                 if not is_int:
                     codigo_mips.append(f"{indent}lw $t0, {op1}")
                 
@@ -240,16 +253,17 @@ class Traductor:
             if op1 != 'Main':
                 self.constructors.append(f"\tjr $ra")
         
-        # def handle_assign(quad):
-        #     operador, op1, op2, result = quad
-        #     indent = self.get_indent()
-        #     var_name = result.replace('BaseInstancia + offset', "")
-        #     print("var_name", var_name)
-        #     variable = f"{self.clase_actual}_{var_name}"
-        #     print("op1", op1)
+        def handle_assign(quad):
+            operador, op1, op2, result = quad
+            indent = self.get_indent()
+            var_name = result.replace('BaseInstancia + offset', "")
+            print("var_name", var_name)
+            variable = f"{self.clase_actual}_{var_name}"
+            print("op1", op1)
 
-        #     if op1 == 'in_int()':
-        #         codigo_mips.append(f"{indent}sw $v0, {variable}")
+            if op1 == 'in_int()':
+                codigo_mips.append(f"{indent}lw $t0, input_number")
+                codigo_mips.append(f"{indent}sw $t0, {variable}")
             
 
             
@@ -273,7 +287,7 @@ class Traductor:
             'ASSIGN_PARAM': handle_assing_param,
             'PARAM' : handle_param,
             'END_CLASS' : handle_end_class,
-            #'ASSIGN': handle_assign,
+            'ASSIGN': handle_assign,
 
             # ... (más manejadores)
         }

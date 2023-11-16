@@ -1,7 +1,25 @@
+CLASS Uno
+    DECLARE x
+    PARAM None
+    PARAM None
+    DECLARE sum
+        t0 = inil - init
+    END_FUNCTION sum
+    PARAM None
+    PARAM None
+    DECLARE count
+        t0 = ini + initial
+    END_FUNCTION count
+    PARAM None
+    PARAM None
+    DECLARE contar
+    END_FUNCTION contar
+END_CLASS Uno
 CLASS Main
+    DECLARE x
+        Uno = NEW None
     DECLARE main
-        t0 = 1
-        t1 = 1
-        t2 = t1 + t0
+        t1 = 3
+        t2 = 3
     END_FUNCTION main
 END_CLASS Main

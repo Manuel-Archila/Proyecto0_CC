@@ -1,35 +1,21 @@
-CLASS,Uno,IO,None
-DECLARE_VAR,x,Int,BaseInstancia + offsetx
-PARAM,None,Int,init
-PARAM,None,Int,inil
-DECLARE,sum,None,None
--,init,inil,t0
-RETURN_FUNCTION,t0,None,None
-END_FUNCTION,sum,None,None
+CLASS,Dos,IO,None
 PARAM,None,Int,initial
-PARAM,None,Int,ini
 DECLARE,count,None,None
-+,initial,ini,t0
+ASSIGN_PARAM,initial,None,inty
+CALL,out_int,initial,t0
 RETURN_FUNCTION,t0,None,None
 END_FUNCTION,count,None,None
-PARAM,None,Int,mas
-PARAM,None,Int,pas
-DECLARE,contar,None,None
-CALL,in_int,),t0
-ASSIGN,in_int(),None,BaseInstancia + offsetx
-RETURN_FUNCTION,BaseInstancia + offsetx,None,None
-END_FUNCTION,contar,None,None
+END_CLASS,Dos,None,None
+CLASS,Uno,Dos,None
 END_CLASS,Uno,None,None
 CLASS,Main,None,None
 DECLARE_VAR,x,Uno,BaseInstancia + offsetx
 NEW,Uno,None,t0
 ASSIGN,t0,None,BaseInstancia + offsetx
 DECLARE,main,None,None
-PUT,3,None,t1
-PUT,3,None,t2
-ASSIGN_PARAM,t1,None,mas
-ASSIGN_PARAM,t1,None,pas
-CALL,contar,Uno,t3
-RETURN_FUNCTION,t3,None,None
+PUT,5,None,t1
+ASSIGN_PARAM,t1,None,initial
+CALL,count,Uno,t2
+RETURN_FUNCTION,t2,None,None
 END_FUNCTION,main,None,None
 END_CLASS,Main,None,None

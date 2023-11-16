@@ -1,16 +1,14 @@
 (* COMENTARIO *)
 
-class Uno inherits IO {
+class Dos inherits IO{
     
-    x :Int <- 12;
-    
-    count( initial : Int ) : Int {
-        if initial < 10 then
-            out_int(initial)
-        else
-            out_int(1)
-        fi
+    count( initial : Int ) : Void {
+        out_int(initial)
     };
+
+};
+
+class Uno inherits Dos {
 
 };
 
@@ -18,9 +16,7 @@ class Main {
 
    x : Uno <- new Uno;
 
-   main() : Int {
+   main() : Void {
         x @ Uno.count(5)
-        
     };
-
 };	

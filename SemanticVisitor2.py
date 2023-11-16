@@ -103,7 +103,7 @@ class SemanticV2(yaplVisitor):
 
                             type2 = resp[1]
 
-                            if tipo != type2:
+                            if tipo != type2 and tipo != 'Void':
                                 mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
                                 self.errores.append(mensaje)
 
@@ -160,7 +160,7 @@ class SemanticV2(yaplVisitor):
 
                                                 type2 = resp[1]
 
-                                                if tipo != type2:
+                                                if tipo != type2 and tipo != 'Void':
                                                     mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
                                                     self.errores.append(mensaje)
 
@@ -178,7 +178,7 @@ class SemanticV2(yaplVisitor):
 
                             type2 = resp[1]
 
-                            if tipo != type2:
+                            if tipo != type2 and tipo != 'Void':
                                 mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
                                 self.errores.append(mensaje)
                         
@@ -238,7 +238,7 @@ class SemanticV2(yaplVisitor):
 
                                             type2 = resp[1]
 
-                                            if tipo != type2:
+                                            if tipo != type2 and tipo != 'Void':
                                                 mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
                                                 self.errores.append(mensaje)
 
@@ -256,7 +256,7 @@ class SemanticV2(yaplVisitor):
 
                         type2 = resp[1]
 
-                        if tipo != type2:
+                        if tipo != type2 and tipo != 'Void':
                             mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(tipo)
                             self.errores.append(mensaje)
                    
@@ -276,7 +276,7 @@ class SemanticV2(yaplVisitor):
 
                         ty = ctx.TYPE().getText()
 
-                        if ty != type2:
+                        if ty != type2 and ty != 'Void':
                             mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
                             self.errores.append(mensaje)
 
@@ -287,7 +287,7 @@ class SemanticV2(yaplVisitor):
 
                         ty = ctx.TYPE().getText()
 
-                        if ty != type2:
+                        if ty != type2 and ty != 'Void':
                             mensaje = "Error en línea " + str(self.get_line(ctx)) + ": El tipo " + str(type2) + " no coincide con el retorno " + str(ty)
                             self.errores.append(mensaje)
 
@@ -652,6 +652,8 @@ class SemanticV2(yaplVisitor):
             #hay que revisar tabla de simbolos aqui
             for hijo in ctx.getChildren():
                 if hijo.getText() not in [';', '{', '}']:
+
+                    argumentoss = []
 
                     if(hijo.LPAR()):
 
