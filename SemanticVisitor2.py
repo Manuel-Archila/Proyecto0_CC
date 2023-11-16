@@ -96,7 +96,7 @@ class SemanticV2(yaplVisitor):
 
                         if resp[0] == False:
                             error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + fun2
-                            self.errores.append(error)
+                            #self.errores.append(error)
                             return "Indefinido"
                         
                         else:

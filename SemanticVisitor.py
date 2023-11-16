@@ -509,7 +509,6 @@ class SemanticR(yaplVisitor):
 
                 scopeH = self.symbol_table.getSpecificScope(padre)
 
-
                 resp = self.symbol_table.getItem(funtion, scopeH)
 
                 argumentTemp = self.symbol_table.getSymbol(funtion, scopeH)
@@ -519,8 +518,8 @@ class SemanticR(yaplVisitor):
 
 
                 if resp[0] == False:
-                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
-                    self.errores.append(error)
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer " + funtion
+                    #self.errores.append(error)
                     return "Indefinido"
                 else:
 
@@ -633,7 +632,7 @@ class SemanticR(yaplVisitor):
                             seaClass = False
                         
                 if respuesta1[0] == False:
-                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                    error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer " + funtion
                     self.errores.append(error)
                     # #print(error)
                     return "Indefinido"
@@ -669,7 +668,7 @@ class SemanticR(yaplVisitor):
 
 
                     if respuesta1[0] == False:
-                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + ctx.ID()[0].getText()
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer " + ctx.ID()[0].getText()
                         self.errores.append(error)
 
                         return (self.visitChildren(ctx))
@@ -791,7 +790,7 @@ class SemanticR(yaplVisitor):
                                             return resp[1]
                                         
                                     elif r.hereda == "Main":
-                                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  4" + funtion
                                         self.errores.append(error)
                                         # #print(error)
                                         return "Indefinido"
@@ -804,7 +803,7 @@ class SemanticR(yaplVisitor):
                                 seaClass = False
                             
                     if respuesta1[0] == False:
-                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer  " + funtion
+                        error = "Error en línea " + str(self.get_line(ctx)) + ": No se puede reconocer " + funtion
                         self.errores.append(error)
                         # #print(error)
                         return "Indefinido"

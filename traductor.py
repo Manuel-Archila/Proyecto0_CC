@@ -14,6 +14,9 @@ class Traductor:
         self.functions = []
         self.metodos_fijos = ['in_int', 'out_int', 'in_string', 'out_string']
         self.atributos = {}
+
+        print(self.classes)
+
         self.add_fijas()
     
     def increment_indent(self):
@@ -87,7 +90,7 @@ class Traductor:
                     
                     string_vtalbe = string_vtalbe[:-2]
                 else:
-                    string_vtalbe += "0"
+                    string_vtalbe += "4"
                     
                 self.data_content.append(string_vtalbe)
                 
@@ -109,6 +112,7 @@ class Traductor:
                 self.increment_indent()
                 codigo_mips.append(f"{self.get_indent()}move $fp, $sp")
                 codigo_mips.append(f"{self.get_indent()}jal IO_constructor")
+                
                 
 
         def handle_declare(quad):
@@ -189,8 +193,16 @@ class Traductor:
         def handle_method_call(quad):
             operador, op1, op2, result = quad
 
-            if op1 in self.metodos_fijos:
-                op2 = 'IO'
+            print("op1", op1)
+            print("op2", op2)
+
+            if op1 not in self.classes[op2]['metodos']:
+                for clase in self.classes[op2]['hereda']:
+                    print("clase", clase)
+                    if op1 in self.classes[clase]['metodos']:
+                        codigo_mips.append(f"{self.get_indent()}jal {clase}_constructor")
+                        op2 = clase
+                        break
 
             
             cant = 0
@@ -259,7 +271,6 @@ class Traductor:
             var_name = result.replace('BaseInstancia + offset', "")
             print("var_name", var_name)
             variable = f"{self.clase_actual}_{var_name}"
-            print("op1", op1)
 
             if op1 == 'in_int()':
                 codigo_mips.append(f"{indent}lw $t0, input_number")

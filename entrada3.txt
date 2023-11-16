@@ -3,12 +3,20 @@
 class Uno inherits IO {
 
     x : Int;
+    y : Int;
+    z : Int;
 
-    sum( init : Int, inil : Int) : Int {
-        init - inil
+    prueba() : Void {
+        {
+            x <- in_int();
+            y <- in_int();
+            z <- in_int();
+            x + y + z;
+            
+        }
     };
 
-    count( initial : Int, ini : Int) : Int {
+    suma( initial : Int, ini : Int) : Int {
         initial + ini
     };
 

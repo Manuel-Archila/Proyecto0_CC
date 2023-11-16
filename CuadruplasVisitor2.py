@@ -513,6 +513,10 @@ class CuadruplasVisitor2(yaplVisitor):
 
                             self.cuadruplas.agregar_cuadrupla('ASSIGN_PARAM', tempo, None, parametro)
                     
+                    if funtion in ['in_int', 'out_int', 'out_string', 'in_string']:
+                        tipo = 'IO'
+
+                    
                     self.cuadruplas.agregar_cuadrupla('CALL', funtion, tipo, "t")
 
             return ctx.getText()

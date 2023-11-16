@@ -5,7 +5,7 @@ digraph {
 	1 -> 2
 	2 [label=class]
 	1 -> 3
-	3 [label=Dos]
+	3 [label=Uno]
 	1 -> 4
 	4 [label=inherits]
 	1 -> 5
@@ -15,129 +15,289 @@ digraph {
 	1 -> 7
 	7 [label=Feature]
 	7 -> 8
-	8 [label=count]
+	8 [label=x]
 	7 -> 9
-	9 [label="("]
+	9 [label=":"]
 	7 -> 10
-	10 [label=Formal]
-	10 -> 11
-	11 [label=initial]
-	10 -> 12
-	12 [label=":"]
-	10 -> 13
-	13 [label=Int]
-	7 -> 14
-	14 [label=")"]
-	7 -> 15
-	15 [label=":"]
-	7 -> 16
-	16 [label=Void]
-	7 -> 17
-	17 [label="{"]
-	7 -> 18
-	18 [label=Expr]
-	18 -> 19
-	19 [label=out_int]
-	18 -> 20
-	20 [label="("]
-	18 -> 21
-	21 [label=Expr]
-	21 -> 22
-	22 [label=initial]
-	18 -> 23
-	23 [label=")"]
-	7 -> 24
-	24 [label="}"]
-	1 -> 25
-	25 [label=";"]
-	1 -> 26
-	26 [label="}"]
-	0 -> 27
-	27 [label=";"]
-	0 -> 28
-	28 [label=Class]
-	28 -> 29
-	29 [label=class]
-	28 -> 30
-	30 [label=Uno]
-	28 -> 31
-	31 [label=inherits]
-	28 -> 32
-	32 [label=Dos]
-	28 -> 33
-	33 [label="{"]
-	28 -> 34
-	34 [label="}"]
-	0 -> 35
-	35 [label=";"]
-	0 -> 36
-	36 [label=Class]
-	36 -> 37
-	37 [label=class]
-	36 -> 38
-	38 [label=Main]
-	36 -> 39
-	39 [label="{"]
-	36 -> 40
-	40 [label=Feature]
-	40 -> 41
-	41 [label=x]
-	40 -> 42
-	42 [label=":"]
-	40 -> 43
-	43 [label=Uno]
-	40 -> 44
-	44 [label="<-"]
-	40 -> 45
-	45 [label=Expr]
-	45 -> 46
-	46 [label=new]
-	45 -> 47
-	47 [label=Uno]
-	36 -> 48
-	48 [label=";"]
-	36 -> 49
-	49 [label=Feature]
-	49 -> 50
-	50 [label=main]
-	49 -> 51
-	51 [label="("]
-	49 -> 52
-	52 [label=")"]
-	49 -> 53
-	53 [label=":"]
-	49 -> 54
-	54 [label=Void]
-	49 -> 55
-	55 [label="{"]
-	49 -> 56
+	10 [label=Int]
+	1 -> 11
+	11 [label=";"]
+	1 -> 12
+	12 [label=Feature]
+	12 -> 13
+	13 [label=y]
+	12 -> 14
+	14 [label=":"]
+	12 -> 15
+	15 [label=Int]
+	1 -> 16
+	16 [label=";"]
+	1 -> 17
+	17 [label=Feature]
+	17 -> 18
+	18 [label=z]
+	17 -> 19
+	19 [label=":"]
+	17 -> 20
+	20 [label=Int]
+	1 -> 21
+	21 [label=";"]
+	1 -> 22
+	22 [label=Feature]
+	22 -> 23
+	23 [label=prueba]
+	22 -> 24
+	24 [label="("]
+	22 -> 25
+	25 [label=")"]
+	22 -> 26
+	26 [label=":"]
+	22 -> 27
+	27 [label=Void]
+	22 -> 28
+	28 [label="{"]
+	22 -> 29
+	29 [label=Expr]
+	29 -> 30
+	30 [label="{"]
+	29 -> 31
+	31 [label=Expr]
+	31 -> 32
+	32 [label=x]
+	31 -> 33
+	33 [label="<-"]
+	31 -> 34
+	34 [label=Expr]
+	34 -> 35
+	35 [label=in_int]
+	34 -> 36
+	36 [label="("]
+	34 -> 37
+	37 [label=")"]
+	29 -> 38
+	38 [label=";"]
+	29 -> 39
+	39 [label=Expr]
+	39 -> 40
+	40 [label=y]
+	39 -> 41
+	41 [label="<-"]
+	39 -> 42
+	42 [label=Expr]
+	42 -> 43
+	43 [label=in_int]
+	42 -> 44
+	44 [label="("]
+	42 -> 45
+	45 [label=")"]
+	29 -> 46
+	46 [label=";"]
+	29 -> 47
+	47 [label=Expr]
+	47 -> 48
+	48 [label=z]
+	47 -> 49
+	49 [label="<-"]
+	47 -> 50
+	50 [label=Expr]
+	50 -> 51
+	51 [label=in_int]
+	50 -> 52
+	52 [label="("]
+	50 -> 53
+	53 [label=")"]
+	29 -> 54
+	54 [label=";"]
+	29 -> 55
+	55 [label=Expr]
+	55 -> 56
 	56 [label=Expr]
 	56 -> 57
-	57 [label=Expr]
-	57 -> 58
-	58 [label=x]
-	56 -> 59
-	59 [label="@"]
-	56 -> 60
-	60 [label=Uno]
-	56 -> 61
-	61 [label="."]
-	56 -> 62
-	62 [label=count]
-	56 -> 63
-	63 [label="("]
-	56 -> 64
-	64 [label=Expr]
-	64 -> 65
-	65 [label=5]
-	56 -> 66
-	66 [label=")"]
-	49 -> 67
-	67 [label="}"]
-	36 -> 68
-	68 [label=";"]
-	36 -> 69
-	69 [label="}"]
-	0 -> 70
-	70 [label=";"]
+	57 [label=x]
+	55 -> 58
+	58 [label="+"]
+	55 -> 59
+	59 [label=Expr]
+	59 -> 60
+	60 [label=y]
+	29 -> 61
+	61 [label=";"]
+	29 -> 62
+	62 [label="}"]
+	22 -> 63
+	63 [label="}"]
+	1 -> 64
+	64 [label=";"]
+	1 -> 65
+	65 [label=Feature]
+	65 -> 66
+	66 [label=suma]
+	65 -> 67
+	67 [label="("]
+	65 -> 68
+	68 [label=Formal]
+	68 -> 69
+	69 [label=initial]
+	68 -> 70
+	70 [label=":"]
+	68 -> 71
+	71 [label=Int]
+	65 -> 72
+	72 [label=","]
+	65 -> 73
+	73 [label=Formal]
+	73 -> 74
+	74 [label=ini]
+	73 -> 75
+	75 [label=":"]
+	73 -> 76
+	76 [label=Int]
+	65 -> 77
+	77 [label=")"]
+	65 -> 78
+	78 [label=":"]
+	65 -> 79
+	79 [label=Int]
+	65 -> 80
+	80 [label="{"]
+	65 -> 81
+	81 [label=Expr]
+	81 -> 82
+	82 [label=Expr]
+	82 -> 83
+	83 [label=initial]
+	81 -> 84
+	84 [label="+"]
+	81 -> 85
+	85 [label=Expr]
+	85 -> 86
+	86 [label=ini]
+	65 -> 87
+	87 [label="}"]
+	1 -> 88
+	88 [label=";"]
+	1 -> 89
+	89 [label=Feature]
+	89 -> 90
+	90 [label=contar]
+	89 -> 91
+	91 [label="("]
+	89 -> 92
+	92 [label=")"]
+	89 -> 93
+	93 [label=":"]
+	89 -> 94
+	94 [label=Void]
+	89 -> 95
+	95 [label="{"]
+	89 -> 96
+	96 [label=Expr]
+	96 -> 97
+	97 [label="{"]
+	96 -> 98
+	98 [label=Expr]
+	98 -> 99
+	99 [label=x]
+	98 -> 100
+	100 [label="<-"]
+	98 -> 101
+	101 [label=Expr]
+	101 -> 102
+	102 [label=in_int]
+	101 -> 103
+	103 [label="("]
+	101 -> 104
+	104 [label=")"]
+	96 -> 105
+	105 [label=";"]
+	96 -> 106
+	106 [label=Expr]
+	106 -> 107
+	107 [label=out_int]
+	106 -> 108
+	108 [label="("]
+	106 -> 109
+	109 [label=Expr]
+	109 -> 110
+	110 [label=x]
+	106 -> 111
+	111 [label=")"]
+	96 -> 112
+	112 [label=";"]
+	96 -> 113
+	113 [label="}"]
+	89 -> 114
+	114 [label="}"]
+	1 -> 115
+	115 [label=";"]
+	1 -> 116
+	116 [label="}"]
+	0 -> 117
+	117 [label=";"]
+	0 -> 118
+	118 [label=Class]
+	118 -> 119
+	119 [label=class]
+	118 -> 120
+	120 [label=Main]
+	118 -> 121
+	121 [label="{"]
+	118 -> 122
+	122 [label=Feature]
+	122 -> 123
+	123 [label=x]
+	122 -> 124
+	124 [label=":"]
+	122 -> 125
+	125 [label=Uno]
+	122 -> 126
+	126 [label="<-"]
+	122 -> 127
+	127 [label=Expr]
+	127 -> 128
+	128 [label=new]
+	127 -> 129
+	129 [label=Uno]
+	118 -> 130
+	130 [label=";"]
+	118 -> 131
+	131 [label=Feature]
+	131 -> 132
+	132 [label=main]
+	131 -> 133
+	133 [label="("]
+	131 -> 134
+	134 [label=")"]
+	131 -> 135
+	135 [label=":"]
+	131 -> 136
+	136 [label=Void]
+	131 -> 137
+	137 [label="{"]
+	131 -> 138
+	138 [label=Expr]
+	138 -> 139
+	139 [label=Expr]
+	139 -> 140
+	140 [label=x]
+	138 -> 141
+	141 [label="@"]
+	138 -> 142
+	142 [label=Uno]
+	138 -> 143
+	143 [label="."]
+	138 -> 144
+	144 [label=prueba]
+	138 -> 145
+	145 [label="("]
+	138 -> 146
+	146 [label=")"]
+	131 -> 147
+	147 [label="}"]
+	118 -> 148
+	148 [label=";"]
+	118 -> 149
+	149 [label="}"]
+	0 -> 150
+	150 [label=";"]
 }

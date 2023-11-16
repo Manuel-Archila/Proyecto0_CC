@@ -1,21 +1,37 @@
-CLASS,Dos,IO,None
+CLASS,Uno,IO,None
+DECLARE_VAR,x,Int,BaseInstancia + offsetx
+DECLARE_VAR,y,Int,BaseInstancia + offsety
+DECLARE_VAR,z,Int,BaseInstancia + offsetz
+DECLARE,prueba,None,None
+CALL,in_int,IO,t0
+ASSIGN,in_int(),None,BaseInstancia + offsetx
+CALL,in_int,IO,t1
+ASSIGN,in_int(),None,BaseInstancia + offsety
+CALL,in_int,IO,t2
+ASSIGN,in_int(),None,BaseInstancia + offsetz
++,x,y,t3
+RETURN_FUNCTION,t3,None,None
+END_FUNCTION,prueba,None,None
 PARAM,None,Int,initial
-DECLARE,count,None,None
-ASSIGN_PARAM,initial,None,inty
-CALL,out_int,initial,t0
+PARAM,None,Int,ini
+DECLARE,suma,None,None
++,initial,ini,t0
 RETURN_FUNCTION,t0,None,None
-END_FUNCTION,count,None,None
-END_CLASS,Dos,None,None
-CLASS,Uno,Dos,None
+END_FUNCTION,suma,None,None
+DECLARE,contar,None,None
+CALL,in_int,IO,t0
+ASSIGN,in_int(),None,BaseInstancia + offsetx
+ASSIGN_PARAM,x,None,inty
+CALL,out_int,IO,t1
+RETURN_FUNCTION,t1,None,None
+END_FUNCTION,contar,None,None
 END_CLASS,Uno,None,None
 CLASS,Main,None,None
 DECLARE_VAR,x,Uno,BaseInstancia + offsetx
 NEW,Uno,None,t0
 ASSIGN,t0,None,BaseInstancia + offsetx
 DECLARE,main,None,None
-PUT,5,None,t1
-ASSIGN_PARAM,t1,None,initial
-CALL,count,Uno,t2
-RETURN_FUNCTION,t2,None,None
+CALL,prueba,Uno,t1
+RETURN_FUNCTION,t1,None,None
 END_FUNCTION,main,None,None
 END_CLASS,Main,None,None

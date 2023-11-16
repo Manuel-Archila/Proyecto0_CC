@@ -306,5 +306,7 @@ class Cuadruplas:
                 clase = cuadrupla[1]
                 metodos = self.get_metodos(clase)
                 self.clases[clase]["metodos"] = metodos
+                if cuadrupla[2] != None:
+                    self.clases[clase]["hereda"] = [cuadrupla[2]]
                 
                 
