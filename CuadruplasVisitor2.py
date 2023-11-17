@@ -530,6 +530,8 @@ class CuadruplasVisitor2(yaplVisitor):
             valor = self.cuadruplas.agregar_cuadrupla('PUT', ctx.getText(), None, "t")
 
             self.visited_nodes[ctx] = valor
+
+            return ctx.getText()
         
         if ctx.TRUE() or ctx.FALSE():
 
